@@ -1,0 +1,156 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{01E90EDB-B85F-4CF9-B63A-0F8E3AF10985}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{7DB6BB18-D65F-400A-8B3E-BEACE3F5E13E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Presentation", "1 - Presentation", "{C5BF1DDC-6A2D-402C-94B3-AEA9E75C9F28}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Application", "2 - Application", "{C066B156-F075-4194-9C38-3AE954444508}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Domain", "3 - Domain", "{D69A179B-3CE0-4DE6-917E-33C20F05C803}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infra", "4 - Infra", "{577EDA0A-E6F0-4997-A06A-31AFFEE63578}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Entities", "5 - Entities", "{0BB22100-DB60-41D6-9565-9647F59FCF5A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{68C3A38C-740D-4E18-AB22-25E6890EAFD5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{0970D6C2-09F9-4F94-A8D8-E386897D94AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeusRecursos", "MeusRecursos\MeusRecursos.csproj", "{5A6073AA-3F28-4D90-8ACD-181213AE36FC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationAPP", "ApplicationAPP\ApplicationAPP.csproj", "{69B6183F-BDCF-4BAF-8360-8849CAEAD025}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhasPrioridades", "MinhasPrioridades\MinhasPrioridades.csproj", "{C9C3852D-027A-44E4-ADF1-5BA52A03458E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notification", "Notification\Notification.csproj", "{7B333BE5-3AA5-42EC-9FBF-1F8801F0A953}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Prioridades", "Domain.Prioridade\Domain.Prioridades.csproj", "{03340E66-EF8F-40B2-9E42-A8F1CD54FC37}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationPrioridadesAPP", "ApplicationPrioridadesAPP\ApplicationPrioridadesAPP.csproj", "{B7F5F7F9-69B7-47C7-860F-8929ECA95CEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{30273B7F-DD7E-4ACB-8601-A4BA581D229E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01E90EDB-B85F-4CF9-B63A-0F8E3AF10985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01E90EDB-B85F-4CF9-B63A-0F8E3AF10985}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01E90EDB-B85F-4CF9-B63A-0F8E3AF10985}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01E90EDB-B85F-4CF9-B63A-0F8E3AF10985}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DB6BB18-D65F-400A-8B3E-BEACE3F5E13E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DB6BB18-D65F-400A-8B3E-BEACE3F5E13E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DB6BB18-D65F-400A-8B3E-BEACE3F5E13E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DB6BB18-D65F-400A-8B3E-BEACE3F5E13E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68C3A38C-740D-4E18-AB22-25E6890EAFD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68C3A38C-740D-4E18-AB22-25E6890EAFD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68C3A38C-740D-4E18-AB22-25E6890EAFD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68C3A38C-740D-4E18-AB22-25E6890EAFD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0970D6C2-09F9-4F94-A8D8-E386897D94AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0970D6C2-09F9-4F94-A8D8-E386897D94AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0970D6C2-09F9-4F94-A8D8-E386897D94AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0970D6C2-09F9-4F94-A8D8-E386897D94AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A6073AA-3F28-4D90-8ACD-181213AE36FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A6073AA-3F28-4D90-8ACD-181213AE36FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A6073AA-3F28-4D90-8ACD-181213AE36FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A6073AA-3F28-4D90-8ACD-181213AE36FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69B6183F-BDCF-4BAF-8360-8849CAEAD025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69B6183F-BDCF-4BAF-8360-8849CAEAD025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69B6183F-BDCF-4BAF-8360-8849CAEAD025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69B6183F-BDCF-4BAF-8360-8849CAEAD025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9C3852D-027A-44E4-ADF1-5BA52A03458E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9C3852D-027A-44E4-ADF1-5BA52A03458E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9C3852D-027A-44E4-ADF1-5BA52A03458E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9C3852D-027A-44E4-ADF1-5BA52A03458E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B333BE5-3AA5-42EC-9FBF-1F8801F0A953}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B333BE5-3AA5-42EC-9FBF-1F8801F0A953}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B333BE5-3AA5-42EC-9FBF-1F8801F0A953}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B333BE5-3AA5-42EC-9FBF-1F8801F0A953}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03340E66-EF8F-40B2-9E42-A8F1CD54FC37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03340E66-EF8F-40B2-9E42-A8F1CD54FC37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03340E66-EF8F-40B2-9E42-A8F1CD54FC37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03340E66-EF8F-40B2-9E42-A8F1CD54FC37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7F5F7F9-69B7-47C7-860F-8929ECA95CEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7F5F7F9-69B7-47C7-860F-8929ECA95CEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7F5F7F9-69B7-47C7-860F-8929ECA95CEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7F5F7F9-69B7-47C7-860F-8929ECA95CEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30273B7F-DD7E-4ACB-8601-A4BA581D229E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30273B7F-DD7E-4ACB-8601-A4BA581D229E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30273B7F-DD7E-4ACB-8601-A4BA581D229E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30273B7F-DD7E-4ACB-8601-A4BA581D229E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{01E90EDB-B85F-4CF9-B63A-0F8E3AF10985} = {0BB22100-DB60-41D6-9565-9647F59FCF5A}
+		{68C3A38C-740D-4E18-AB22-25E6890EAFD5} = {D69A179B-3CE0-4DE6-917E-33C20F05C803}
+		{0970D6C2-09F9-4F94-A8D8-E386897D94AF} = {577EDA0A-E6F0-4997-A06A-31AFFEE63578}
+		{5A6073AA-3F28-4D90-8ACD-181213AE36FC} = {C5BF1DDC-6A2D-402C-94B3-AEA9E75C9F28}
+		{69B6183F-BDCF-4BAF-8360-8849CAEAD025} = {C066B156-F075-4194-9C38-3AE954444508}
+		{C9C3852D-027A-44E4-ADF1-5BA52A03458E} = {C5BF1DDC-6A2D-402C-94B3-AEA9E75C9F28}
+		{7B333BE5-3AA5-42EC-9FBF-1F8801F0A953} = {D69A179B-3CE0-4DE6-917E-33C20F05C803}
+		{03340E66-EF8F-40B2-9E42-A8F1CD54FC37} = {D69A179B-3CE0-4DE6-917E-33C20F05C803}
+		{B7F5F7F9-69B7-47C7-860F-8929ECA95CEC} = {C066B156-F075-4194-9C38-3AE954444508}
+		{30273B7F-DD7E-4ACB-8601-A4BA581D229E} = {D69A179B-3CE0-4DE6-917E-33C20F05C803}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F75FFC38-CC6D-4E73-B3DD-6E46CE1C14F0}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 12
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://dev.azure.com/meusrecursos
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ApplicationAPP\\ApplicationAPP.csproj
+		SccProjectTopLevelParentUniqueName1 = MeusRecursos.sln
+		SccProjectName1 = ApplicationAPP
+		SccLocalPath1 = ApplicationAPP
+		SccProjectUniqueName2 = Contracts\\Contracts.csproj
+		SccProjectName2 = Contracts
+		SccLocalPath2 = Contracts
+		SccProjectUniqueName3 = Domain\\Domain.csproj
+		SccProjectTopLevelParentUniqueName3 = MeusRecursos.sln
+		SccProjectName3 = Domain
+		SccLocalPath3 = Domain
+		SccProjectUniqueName4 = Entities\\Entities.csproj
+		SccProjectTopLevelParentUniqueName4 = MeusRecursos.sln
+		SccProjectName4 = Entities
+		SccLocalPath4 = Entities
+		SccProjectUniqueName5 = Infrastructure\\Infrastructure.csproj
+		SccProjectTopLevelParentUniqueName5 = MeusRecursos.sln
+		SccProjectName5 = Infrastructure
+		SccLocalPath5 = Infrastructure
+		SccProjectUniqueName6 = MeusRecursos\\MeusRecursos.csproj
+		SccProjectTopLevelParentUniqueName6 = MeusRecursos.sln
+		SccProjectName6 = MeusRecursos
+		SccLocalPath6 = MeusRecursos
+		SccProjectUniqueName7 = MinhasPrioridades\\MinhasPrioridades.csproj
+		SccProjectTopLevelParentUniqueName7 = MeusRecursos.sln
+		SccProjectName7 = MinhasPrioridades
+		SccLocalPath7 = MinhasPrioridades
+		SccProjectUniqueName8 = Notification\\Notification.csproj
+		SccProjectTopLevelParentUniqueName8 = MeusRecursos.sln
+		SccProjectName8 = Notification
+		SccLocalPath8 = Notification
+		SccProjectUniqueName9 = Domain.Prioridade\\Domain.Prioridades.csproj
+		SccProjectTopLevelParentUniqueName9 = MeusRecursos.sln
+		SccProjectName9 = Domain.Prioridade
+		SccLocalPath9 = Domain.Prioridade
+		SccProjectUniqueName10 = ApplicationPrioridadesAPP\\ApplicationPrioridadesAPP.csproj
+		SccProjectTopLevelParentUniqueName10 = MeusRecursos.sln
+		SccProjectName10 = ApplicationPrioridadesAPP
+		SccLocalPath10 = ApplicationPrioridadesAPP
+		SccProjectUniqueName11 = Utils\\Utils.csproj
+		SccProjectTopLevelParentUniqueName11 = MeusRecursos.sln
+		SccProjectName11 = Utils
+		SccLocalPath11 = Utils
+	EndGlobalSection
+EndGlobal
