@@ -1,46 +1,81 @@
 ﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
+
 namespace Utils
 {
-	public  class Hash
+	public  class Criptografia
 	{
-		private HashAlgorithm _algoritmo;
+		byte[] salt = new byte[128 / 8];
+		private const string senha = "thug$2Pac";
 
-		public Hash(HashAlgorithm algoritmo)
+
+		public Byte[] CriptografarSenha(string valor)
 		{
-			_algoritmo = algoritmo;
+			var chave = new Rfc2898DeriveBytes(senha, salt);
+			var algoritmo = new RijndaelManaged();
+
+			algoritmo.Key = chave.GetBytes(16);
+
+			var fonteBytes = new UnicodeEncoding().GetBytes(valor);
+
+            using (MemoryStream streamFonte = new MemoryStream(fonteBytes))
+            {
+                using (MemoryStream streamDestino = new MemoryStream())
+                {
+					using (CryptoStream crypto = new CryptoStream(streamFonte, algoritmo.CreateEncryptor(), CryptoStreamMode.Read))
+					{
+						moveBytes(crypto, streamDestino);
+						return streamDestino.ToArray();
+					}
+                }
+            }
+	
 		}
 
-		public string CriptografarSenha(string senha)
-		{
-			var encodedValue = Encoding.UTF8.GetBytes(senha);
-			var encryptedPassword = _algoritmo.ComputeHash(encodedValue);
+		private void moveBytes(Stream fonte , Stream destino)
+        {
+			byte[] bytes = new byte[2049];
+			var contador = fonte.Read(bytes, 0, bytes.Length - 1);
+            while (0 != contador)
+            {
+				destino.Write(bytes, 0, contador);
 
-			var sb = new StringBuilder();
-			foreach (var caracter in encryptedPassword)
-			{
-				sb.Append(caracter.ToString("X2"));
+				contador = fonte.Read(bytes, 0, bytes.Length - 1);
+
 			}
 
-			return sb.ToString();
 		}
-
-		public bool VerificarSenha(string senhaDigitada, string senhaCadastrada)
-		{
-			if (string.IsNullOrEmpty(senhaCadastrada))
-				throw new NullReferenceException("Cadastre uma senha.");
-
-			var encryptedPassword = _algoritmo.ComputeHash(Encoding.UTF8.GetBytes(senhaDigitada));
-
-			var sb = new StringBuilder();
-			foreach (var caractere in encryptedPassword)
-			{
-				sb.Append(caractere.ToString("X2"));
+		public string Decriptografar(Byte[] valor)
+        {
+			if(valor == null)
+            {
+				throw new Exception("Os dados não estão criptografados!");
 			}
 
-			return sb.ToString() == senhaCadastrada;
+			var chave = new Rfc2898DeriveBytes(senha, salt);
+
+			var algoritmo = new RijndaelManaged();
+			algoritmo.Key = chave.GetBytes(16);
+			algoritmo.IV = chave.GetBytes(16);
+
+            using (MemoryStream StreamFonte = new MemoryStream(valor))
+            {
+                using (MemoryStream StreamDestino = new MemoryStream())
+                {
+                    using (CryptoStream crypto = new CryptoStream(StreamFonte, algoritmo.CreateDecryptor(), CryptoStreamMode.Read))
+                    {
+						moveBytes(crypto, StreamDestino);
+						Byte[] bytesDescriptografados = StreamDestino.ToArray();
+						var mensagemDescriptografada = new UnicodeEncoding().GetString(bytesDescriptografados);
+						return mensagemDescriptografada;
+					}
+                }
+            }  
 		}
+		
+		
 	}
 }

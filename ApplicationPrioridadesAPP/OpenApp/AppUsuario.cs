@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Domain.Prioridades.Interface;
 using System.Linq;
 using System.Security.Cryptography;
+using Domain.Prioridades.ViewModels;
 
 namespace ApplicationPrioridadesAPP.OpenApp
 {
@@ -19,9 +20,13 @@ namespace ApplicationPrioridadesAPP.OpenApp
             this._IUsuario = IUsuario;
         }
 
-        public async Task AddUsuario(Domain.Prioridades.Entities.Usuario usuario)
+        public async Task AddUsuario(LoginViewModel loginViewModel)
         {
-            usuario.Password = new Utils.Hash(SHA512.Create()).CriptografarSenha(usuario.Password);
+
+            var usuario = new Domain.Prioridades.Entities.Usuario();
+            usuario.Username = loginViewModel.Username;
+            usuario.Password = new Utils.Criptografia().CriptografarSenha(loginViewModel.Password);
+                               
             await _IUsuario.Add(usuario);
         }
 
@@ -47,8 +52,8 @@ namespace ApplicationPrioridadesAPP.OpenApp
 
         public async Task<Domain.Prioridades.Entities.Usuario> ObterUsuario(string login, string senha)
         {
-            senha = new Utils.Hash(SHA512.Create()).CriptografarSenha(senha);
-            return await _IUsuario.ObterUsuario(login, senha);
+            var strSenha = new Utils.Criptografia().CriptografarSenha(senha);
+            return await _IUsuario.ObterUsuario(login, strSenha);
         }
 
         public async Task UpdateUsuario(Domain.Prioridades.Entities.Usuario usuario)

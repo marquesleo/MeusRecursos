@@ -6,6 +6,8 @@ namespace Domain.Prioridades.ViewModels
 {
     public class LoginViewModel
     {
+        public Guid Id { get; set; }
+
         [Required(ErrorMessage = "O Campo {0} é obrigatório")]
         [StringLength(30, ErrorMessage = "O Campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 2)]
         public string Username { get; set; }

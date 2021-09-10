@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\MinhasSenhasController.cs" />
+    <Compile Remove="Controllers\V1\HomeController.cs" />
   </ItemGroup>
 
   <ItemGroup>

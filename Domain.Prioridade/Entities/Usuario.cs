@@ -13,7 +13,7 @@ namespace Domain.Prioridades.Entities
 
         [Column("password", TypeName = "varchar(200)")]
         [JsonIgnore]
-        public string Password { get; set; }
+        public byte[] Password { get; set; }
 
         public void Map(ViewModels.LoginViewModel loginViewModel)
         {

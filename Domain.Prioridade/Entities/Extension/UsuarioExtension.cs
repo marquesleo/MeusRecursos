@@ -10,7 +10,7 @@ namespace Domain.Prioridades.Entities.Extension
                                ViewModels.LoginViewModel loginViewModel)
         {
             dbUsuario.Username = loginViewModel.Username;
-            dbUsuario.Password = loginViewModel.Password;
+            //dbUsuario.Password = loginViewModel.Password;
         }
     }
 }

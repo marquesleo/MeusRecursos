@@ -1,4 +1,5 @@
 ﻿using Domain.Prioridades.Entities;
+using Domain.Prioridades.ViewModels;
 using System.Threading.Tasks;
 
 namespace ApplicationPrioridadesAPP.Interfaces
@@ -6,7 +7,7 @@ namespace ApplicationPrioridadesAPP.Interfaces
     public interface InterfaceUsuarioApp :Generics.InterfaceGenericsApp<Usuario>
     {
         Task<Usuario> ObterUsuario(string login, string senha);
-        Task AddUsuario(Usuario usuario);
+        Task AddUsuario(LoginViewModel loginViewModel);
         Task UpdateUsuario(Usuario usuario);
     }
 }
