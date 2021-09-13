@@ -25,9 +25,10 @@ namespace ApplicationPrioridadesAPP.OpenApp
 
             var usuario = new Domain.Prioridades.Entities.Usuario();
             usuario.Username = loginViewModel.Username;
-            usuario.Password = new Utils.Criptografia().CriptografarSenha(loginViewModel.Password);
+            usuario.Password = Utils.Criptografia.CriptografarSenha(loginViewModel.Password);
                                
             await _IUsuario.Add(usuario);
+            loginViewModel.Id = usuario.Id;
         }
 
         public async Task Delete(Domain.Prioridades.Entities.Usuario objeto)
@@ -52,8 +53,9 @@ namespace ApplicationPrioridadesAPP.OpenApp
 
         public async Task<Domain.Prioridades.Entities.Usuario> ObterUsuario(string login, string senha)
         {
-            var strSenha = new Utils.Criptografia().CriptografarSenha(senha);
-            return await _IUsuario.ObterUsuario(login, strSenha);
+           
+
+            return await _IUsuario.ObterUsuario(login, senha);
         }
 
         public async Task UpdateUsuario(Domain.Prioridades.Entities.Usuario usuario)

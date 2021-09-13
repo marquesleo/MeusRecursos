@@ -6,76 +6,73 @@ using System.Text;
 
 namespace Utils
 {
-	public  class Criptografia
+	public static class Criptografia
 	{
-		byte[] salt = new byte[128 / 8];
-		private const string senha = "thug$2Pac";
-
-
-		public Byte[] CriptografarSenha(string valor)
+		public static string CriptografarSenha(string valor)
 		{
-			var chave = new Rfc2898DeriveBytes(senha, salt);
-			var algoritmo = new RijndaelManaged();
-
-			algoritmo.Key = chave.GetBytes(16);
-
-			var fonteBytes = new UnicodeEncoding().GetBytes(valor);
-
-            using (MemoryStream streamFonte = new MemoryStream(fonteBytes))
+            try
             {
-                using (MemoryStream streamDestino = new MemoryStream())
+                
+                string ToReturn = "";
+                string publickey = "12345678";
+                string secretkey = "87654321";
+                byte[] secretkeyByte = { };
+                secretkeyByte = System.Text.Encoding.UTF8.GetBytes(secretkey);
+                byte[] publickeybyte = { };
+                publickeybyte = System.Text.Encoding.UTF8.GetBytes(publickey);
+                MemoryStream ms = null;
+                CryptoStream cs = null;
+                byte[] inputbyteArray = System.Text.Encoding.UTF8.GetBytes(valor);
+                using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
                 {
-					using (CryptoStream crypto = new CryptoStream(streamFonte, algoritmo.CreateEncryptor(), CryptoStreamMode.Read))
-					{
-						moveBytes(crypto, streamDestino);
-						return streamDestino.ToArray();
-					}
+                    ms = new MemoryStream();
+                    cs = new CryptoStream(ms, des.CreateEncryptor(publickeybyte, secretkeyByte), CryptoStreamMode.Write);
+                    cs.Write(inputbyteArray, 0, inputbyteArray.Length);
+                    cs.FlushFinalBlock();
+                    ToReturn = Convert.ToBase64String(ms.ToArray());
                 }
+                return ToReturn;
             }
-	
-		}
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex.InnerException);
+            }
+        }
 
-		private void moveBytes(Stream fonte , Stream destino)
+		public static string Decriptografar(string valor)
         {
-			byte[] bytes = new byte[2049];
-			var contador = fonte.Read(bytes, 0, bytes.Length - 1);
-            while (0 != contador)
+            try
             {
-				destino.Write(bytes, 0, contador);
-
-				contador = fonte.Read(bytes, 0, bytes.Length - 1);
-
-			}
-
-		}
-		public string Decriptografar(Byte[] valor)
-        {
-			if(valor == null)
-            {
-				throw new Exception("Os dados não estão criptografados!");
-			}
-
-			var chave = new Rfc2898DeriveBytes(senha, salt);
-
-			var algoritmo = new RijndaelManaged();
-			algoritmo.Key = chave.GetBytes(16);
-			algoritmo.IV = chave.GetBytes(16);
-
-            using (MemoryStream StreamFonte = new MemoryStream(valor))
-            {
-                using (MemoryStream StreamDestino = new MemoryStream())
+                
+                string ToReturn = "";
+                string publickey = "12345678";
+                string secretkey = "87654321";
+                byte[] privatekeyByte = { };
+                privatekeyByte = System.Text.Encoding.UTF8.GetBytes(secretkey);
+                byte[] publickeybyte = { };
+                publickeybyte = System.Text.Encoding.UTF8.GetBytes(publickey);
+                MemoryStream ms = null;
+                CryptoStream cs = null;
+                byte[] inputbyteArray = new byte[valor.Replace(" ", "+").Length];
+                inputbyteArray = Convert.FromBase64String(valor.Replace(" ", "+"));
+                using (DESCryptoServiceProvider des = new DESCryptoServiceProvider())
                 {
-                    using (CryptoStream crypto = new CryptoStream(StreamFonte, algoritmo.CreateDecryptor(), CryptoStreamMode.Read))
-                    {
-						moveBytes(crypto, StreamDestino);
-						Byte[] bytesDescriptografados = StreamDestino.ToArray();
-						var mensagemDescriptografada = new UnicodeEncoding().GetString(bytesDescriptografados);
-						return mensagemDescriptografada;
-					}
+                    ms = new MemoryStream();
+                    cs = new CryptoStream(ms, des.CreateDecryptor(publickeybyte, privatekeyByte), CryptoStreamMode.Write);
+                    cs.Write(inputbyteArray, 0, inputbyteArray.Length);
+                    cs.FlushFinalBlock();
+                    Encoding encoding = Encoding.UTF8;
+                    ToReturn = encoding.GetString(ms.ToArray());
                 }
-            }  
-		}
-		
-		
-	}
+                return ToReturn;
+            }
+            catch (Exception ae)
+            {
+                throw new Exception(ae.Message, ae.InnerException);
+            }
+        }
+        
+    }
 }
+		
+
