@@ -11,6 +11,10 @@ using Domain.Prioridades.InterfaceService;
 using Domain.Prioridades.Services;
 using Notification;
 using AutoMapper;
+using System.Reflection;
+using System.IO;
+using System;
+using Microsoft.OpenApi.Models;
 
 namespace MinhasPrioridades.Extensions
 {
@@ -44,6 +48,45 @@ namespace MinhasPrioridades.Extensions
                };
            });
         }
+
+        public static void ConfigureSwagger(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+
+            services.AddSwaggerGen(c =>
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization header using Bearer scheme (Example: 'Bearer 1234abcdef')",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer"
+            }));
+            services.AddSwaggerGen(c =>
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+
+                }
+           }));
+        }
+
+
         public static void ConfigureDependences(this IServiceCollection services,
                                                IConfiguration configuration)
         {

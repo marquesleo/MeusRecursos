@@ -8,12 +8,14 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>5</WarningLevel>
     <OutputPath></OutputPath>
+    <DocumentationFile>MinhasPrioridades.xml</DocumentationFile>
+    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,8 +37,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.11" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.1" />
   </ItemGroup>
 
   <ItemGroup>

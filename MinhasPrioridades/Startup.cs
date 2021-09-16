@@ -24,6 +24,7 @@ namespace MinhasPrioridades
             services.AddControllers();
             services.AddCors();
             services.ConfigureJWT();
+            services.ConfigureSwagger();
             services.Init(Configuration);
             services.ConfigureDependences(Configuration);
             services.AddAutoMapper(typeof(ApplicationPrioridadesAPP.AutoMapper.AutoMapperConfig));
@@ -53,6 +54,14 @@ namespace MinhasPrioridades
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            //config swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Orcamento Api");
+                c.RoutePrefix = string.Empty; //swagger
             });
         }
     }

@@ -15,6 +15,8 @@ namespace Domain.Prioridades.Entities
         public int Valor { get; set; }
         [Column("ativo")]
         public bool Ativo { get; set; }
+
+
         [ForeignKey("usuario")]
         public virtual Usuario Usuario { get; set; }
         public void Map(ViewModels.PrioridadeViewModel prioridadeViewModel)

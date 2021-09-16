@@ -13,14 +13,14 @@ using Domain.Prioridades.ViewModels;
 
 namespace MinhasPrioridades.Controllers.V1
 {
-    [Route("api/v{version:apiVersion}/login")]
+    [Route("api/v{version:apiVersion}/usuario")]
     [ApiController]
     [ApiVersion("1.0")]
-    public class LoginController : BaseController
+    public class UsuarioController : BaseController
     {
         private readonly IMapper _mapper;
         private readonly InterfaceUsuarioApp _InterfaceUsuarioApp;
-        public LoginController(InterfaceUsuarioApp interfaceUsuarioApp,
+        public UsuarioController(InterfaceUsuarioApp interfaceUsuarioApp,
                                      IMapper mapper,
                                      INotificador notificador) : base(notificador)
         {
@@ -30,7 +30,7 @@ namespace MinhasPrioridades.Controllers.V1
 
 
         [HttpPost]
-        [Route("login")]
+        [Route("autenticar")]
         [AllowAnonymous]
         public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginViewModel loginViewModel)
         {
