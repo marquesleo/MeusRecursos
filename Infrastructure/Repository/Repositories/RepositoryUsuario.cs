@@ -12,14 +12,17 @@ namespace Infrastructure.Repository.Repositories
 
         public async Task<Usuario> ObterUsuario(string login, string senha)
         {
-            var usuarios = await FindByCondition(p => p.Username.Equals(login));
-            Usuario usuario = null;
-                if (usuarios != null && usuarios.Count > 0)
-            {
-               usuario =   usuarios.Where(p => senha.Equals(Utils.Criptografia.Decriptografar(p.Password))).FirstOrDefault();
-            }
+            var usuarios = await FindByCondition(p => p.Username.Equals(login) && 
+                                                senha.Equals(Utils.Criptografia.Decriptografar(p.Password)));
+          
 
-            return usuario;
+            return usuarios.FirstOrDefault();
+        }
+
+        public async Task<Usuario> ObterUsuario(string login)
+        {
+            var usuarios = await FindByCondition(p => p.Username.Equals(login));
+            return usuarios.FirstOrDefault();
         }
     }
 }

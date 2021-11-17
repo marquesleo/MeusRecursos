@@ -92,10 +92,12 @@ namespace MinhasPrioridades.Controllers.V1
 
                 if (ModelState.IsValid)
                 {
-
-                  
-                    await _InterfaceUsuarioApp.AddUsuario(loginViewModel);
-                    return CreatedAtAction(nameof(GetById), new { id = loginViewModel.Id }, loginViewModel);
+                    if (! _InterfaceUsuarioApp.IsUsuarioExiste(loginViewModel.Username))
+                   { 
+                        await _InterfaceUsuarioApp.AddUsuario(loginViewModel);
+                        return CreatedAtAction(nameof(GetById), new { id = loginViewModel.Id }, loginViewModel);
+                   }else
+                      return  BadRequest($"Usuário {loginViewModel.Username} já está cadastrado!");
                 }
                 return BadRequest();
 

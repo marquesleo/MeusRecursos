@@ -7,5 +7,6 @@ namespace Domain.Prioridades.Interface
     public interface IUsuario: IGeneric<Usuario>
     {
         Task<Usuario> ObterUsuario(string login, string senha);
+        Task<Usuario> ObterUsuario(string login);
     }
 }

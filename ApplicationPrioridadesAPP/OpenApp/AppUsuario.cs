@@ -46,6 +46,15 @@ namespace ApplicationPrioridadesAPP.OpenApp
             return await _IUsuario.GetEntityById(id);
         }
 
+        public bool IsUsuarioExiste(string login)
+        {
+            var usuario = this.ObterUsuario(login).Result;
+            if (usuario == null )
+               return true;
+            else
+               return false;
+        }
+
         public async Task<List<Domain.Prioridades.Entities.Usuario>> List()
         {
             return await _IUsuario.List();
@@ -53,9 +62,12 @@ namespace ApplicationPrioridadesAPP.OpenApp
 
         public async Task<Domain.Prioridades.Entities.Usuario> ObterUsuario(string login, string senha)
         {
-           
-
             return await _IUsuario.ObterUsuario(login, senha);
+        }
+
+        public async Task<Domain.Prioridades.Entities.Usuario> ObterUsuario(string login)
+        {
+            return await _IUsuario.ObterUsuario(login);
         }
 
         public async Task UpdateUsuario(Domain.Prioridades.Entities.Usuario usuario)
