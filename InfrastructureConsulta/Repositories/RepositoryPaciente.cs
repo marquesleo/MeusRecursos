@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using System.Linq;
 using Domain.Consulta.Entities;
-using Domain.Consulta.Interface;
 using Infrastructure.Consulta.Configuration;
 using Infrastructure.Consulta.Repository.Generics;
 using Domain.Consulta.Interfaces;
 using System.Collections.Generic;
+using System;
 
 namespace Infrastructure.Consulta.Repository.Repositories
 {
@@ -16,16 +16,22 @@ namespace Infrastructure.Consulta.Repository.Repositories
 
         public async Task<Paciente> ObterPaciente(string id)
         {
-            var pacientes = await FindByCondition(p => p.Id.Equals(id));
-
-
-            return pacientes.FirstOrDefault();
+            var pacientes = await GetEntityById(Guid.Parse(id));
+           
+            return pacientes;
         }
 
         public async Task<List<Paciente>> ObterPacientes(string nomeCompleto)
         {
-            var pacientes = await FindByCondition(p => p.Nome.Contains(nomeCompleto));
+            if (nomeCompleto == null)
+                nomeCompleto = string.Empty;
+            var pacientes = await FindByCondition(p => p.Nome.ToUpper().Contains(nomeCompleto.ToUpper()));
             return pacientes;
+        }
+
+        public async Task<List<Paciente>> ObterPacientes(Guid Empresa_Id)
+        {
+            return await FindByCondition(p => p.Acesso.Empresa_Id == Empresa_Id);
         }
     }
 }

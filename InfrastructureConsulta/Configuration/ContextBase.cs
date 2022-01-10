@@ -70,10 +70,46 @@ namespace Infrastructure.Consulta.Configuration
            .WithOne(ad => ad.Psicologa)
            .HasForeignKey<Domain.Consulta.Entities.Consulta>(ad => ad.Psicologa_Id);
 
+            modelBuilder.Entity<Psicologa>()
+            .HasIndex(b => b.Acesso_Id)
+            .IsUnique(false);
+
             modelBuilder.Entity<Paciente>()
             .HasOne<Domain.Consulta.Entities.Consulta>(s => s.Consulta)
             .WithOne(ad => ad.Paciente)
             .HasForeignKey<Domain.Consulta.Entities.Consulta>(ad => ad.Paciente_Id);
+
+
+            modelBuilder.Entity<Acesso>()
+              .HasIndex(b => b.Usuario_Id)
+            .IsUnique(false);
+
+            modelBuilder.Entity<Acesso>()
+        .HasIndex(b => b.Empresa_Id)
+        .IsUnique(false);
+
+
+            modelBuilder.Entity<Paciente>()
+           .HasIndex(b => b.Acesso_Id)
+           .IsUnique(false);
+
+            modelBuilder.Entity<Domain.Consulta.Entities.Consulta>()
+          .HasIndex(b => b.Paciente_Id)
+          .IsUnique(false);
+
+            modelBuilder.Entity<Domain.Consulta.Entities.Consulta>()
+            .HasIndex(b => b.Psicologa_Id)
+            .IsUnique(false);
+
+            modelBuilder.Entity<Empresa>()
+           .HasIndex(b => b.cnpj)
+            .IsUnique(true);
+
+
+            modelBuilder.Entity<Empresa>()
+           .HasIndex(b => b.Email)
+         .IsUnique(true);
+
 
         }
 

@@ -13,8 +13,15 @@ namespace Domain.Consulta.ViewModels
         public string Username { get; set; }
 
         [Required(ErrorMessage = "O Campo {0} é obrigatório")]
+        [MaxLength(200, ErrorMessage = "O Campo {0} precisa ter no máximo {1}")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "E-mail em formato inválido.")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "O Campo {0} é obrigatório")]
         [MaxLength(10, ErrorMessage = "O Campo {0} precisa ter no máximo {1}")]
         public string Password { get; set; }
-       
+
+        public bool Ativo { get; set; }
+
     }
 }

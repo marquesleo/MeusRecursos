@@ -1,5 +1,6 @@
 ﻿using ApplicationConsultaAPP.Interfaces;
 using AutoMapper;
+using ConsultaServer.Controllers.Filtros;
 using Domain.Consulta.Entities;
 using Domain.Consulta.Services;
 using Domain.Consulta.ViewModels;
@@ -17,45 +18,90 @@ namespace ConsultaServer.Controllers.V1
     [Route("api/v{version:apiVersion}/usuario")]
     [ApiController]
     [ApiVersion("1.0")]
+ 
     public class UsuarioController : BaseController { 
+        
         private readonly InterfaceUsuarioApp _InterfaceUsuarioApp;
+        private readonly InterfaceAcessoApp _InterfaceAcessoApp;
         private readonly IMapper _mapper;
 
     public UsuarioController(InterfaceUsuarioApp interfaceUsuarioApp,
-                                 IMapper mapper,
-                                 INotificador notificador) : base(notificador)
+                             InterfaceAcessoApp interfaceAcessoApp,
+                             IMapper mapper,
+                             INotificador notificador) : base(notificador)
     {
         _InterfaceUsuarioApp = interfaceUsuarioApp;
+        _InterfaceAcessoApp = interfaceAcessoApp;
         _mapper = mapper;
     }
 
 
-    [HttpPost]
-    [Route("autenticar")]
-    [AllowAnonymous]
-    public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginViewModel loginViewModel)
+    [HttpGet]
+    [Route("obterporusuarioesenha")]
+    [Authorize]
+    public async Task<ActionResult<dynamic>> ObterPorUsuarioeSenha([FromQuery] string username,
+                                                                   [FromQuery] string password)
     {
-        if (ModelState.IsValid)
-        {
 
-            var usuario = await _InterfaceUsuarioApp.ObterUsuario(loginViewModel.Username, loginViewModel.Password);
-
-            if (usuario == null)
-                return NotFound(new { messagem = "Usuário ou Senha inválidos" });
-
-            var token = TokenService.GenerateToken(usuario);
-
-            return new
+            try
             {
-                user = usuario,
-                token = token
-            };
+                var usuario = await _InterfaceUsuarioApp.ObterUsuario(username, password);
 
-        }
-        else
-            return BadRequest();
+                if (usuario == null)
+                    return NotFound(new { mensagem = "Usuário ou Senha inválidos" });
+
+                return Ok(usuario);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+          
+
+        
 
     }
+
+        [HttpPost]
+        [Route("autenticar")]
+        [AllowAnonymous]
+        [ValidacaoModelStateCustomizado]
+        public async Task<ActionResult<dynamic>> autenticar([FromBody] LoginViewModel loginViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    var usuario = await _InterfaceUsuarioApp.ObterUsuario(loginViewModel.Username, loginViewModel.Password);
+
+                    if (usuario == null)
+                        return NotFound(new { mensagem = "Usuário ou Senha inválidos" });
+
+                    var token = TokenService.GenerateToken(usuario);
+                    var acesso = await _InterfaceAcessoApp.ObterAcessoPorUsuario(usuario.Id);
+                    return new
+                    {
+                        user = usuario,
+                        acesso = acesso,
+                        token = token,
+
+                    };
+
+                }
+                else
+                    return BadRequest();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+            
+          
+
+        }
 
 
     [HttpGet("{id}")]
@@ -73,6 +119,7 @@ namespace ConsultaServer.Controllers.V1
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetAll()
     {
         try
@@ -86,6 +133,8 @@ namespace ConsultaServer.Controllers.V1
     }
 
     [HttpPost]
+    [AllowAnonymous]
+    [ValidacaoModelStateCustomizado]
     public async Task<IActionResult> Add([FromBody] LoginViewModel loginViewModel)
     {
         try
@@ -113,6 +162,8 @@ namespace ConsultaServer.Controllers.V1
 
 
     [HttpPut()]
+    [AllowAnonymous]
+    [ValidacaoModelStateCustomizado]
     public async Task<IActionResult> Update([FromBody] LoginViewModel loginViewModel)
     {
         try

@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,6 +10,8 @@ using System.Threading.Tasks;
 namespace Domain.Consulta.Entities
 {
     [Table("consulta", Schema = "consultapsi")]
+    [Index(nameof(Consulta.Psicologa_Id), IsUnique = false)]
+    [Index(nameof(Consulta.Paciente_Id), IsUnique = false)]
     public class Consulta : Base
     {
 
@@ -40,13 +43,16 @@ namespace Domain.Consulta.Entities
         public bool JaViuSatisfacao { get; set; }
 
         [Column("psicologa_id", TypeName = "uuid")]
+      
         public Guid Psicologa_Id { get; set; }
 
         [Column("paciente_id", TypeName = "uuid")]
+
+      
         public Guid Paciente_Id { get; set; }
 
-        public Psicologa Psicologa { get; set; }
+        public virtual Psicologa Psicologa { get; set; }
 
-        public Paciente Paciente { get; set; }
+        public virtual Paciente Paciente { get; set; }
     }
 }

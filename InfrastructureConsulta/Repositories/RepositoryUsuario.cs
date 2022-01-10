@@ -5,6 +5,7 @@ using Domain.Consulta.Entities;
 using Domain.Consulta.Interface;
 using Infrastructure.Consulta.Configuration;
 using Infrastructure.Consulta.Repository.Generics;
+using System;
 
 namespace Infrastructure.Consulta.Repository.Repositories
 {
@@ -14,17 +15,37 @@ namespace Infrastructure.Consulta.Repository.Repositories
 
         public async Task<Usuario> ObterUsuario(string login, string senha)
         {
-            var usuarios = await FindByCondition(p => p.Username.Equals(login) && 
-                                                senha.Equals(Utils.Criptografia.Decriptografar(p.Password)));
-          
+            try
+            {
+                var usuarios = await FindByCondition(p => p.Username.Equals(login));
+                if (usuarios != null && usuarios.Any())
+                {
+                    return usuarios.FirstOrDefault(p => p.Username.Equals(login) &&
+                                            senha.Equals(Utils.Criptografia.Decriptografar(p.Password)));
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
 
-            return usuarios.FirstOrDefault();
+                throw ex;
+            }
+            
         }
 
         public async Task<Usuario> ObterUsuario(string login)
         {
-            var usuarios = await FindByCondition(p => p.Username.Equals(login));
-            return usuarios.FirstOrDefault();
+            try
+            {
+                var usuarios = await FindByCondition(p => p.Username.Equals(login));
+                return usuarios.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+          
         }
     }
 }

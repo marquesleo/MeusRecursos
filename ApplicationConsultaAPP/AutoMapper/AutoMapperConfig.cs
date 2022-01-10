@@ -12,6 +12,9 @@ namespace ApplicationConsultaAPP.AutoMapper
         {
             CreateMap<Usuario, LoginViewModel>().ReverseMap();
             CreateMap<Paciente, PacienteViewModel>().ReverseMap();
+            CreateMap<Acesso, AcessoViewModel>().ReverseMap();
+            CreateMap<Psicologa, PsicologaViewModel>().ReverseMap();
+            CreateMap<Consulta, ConsultaViewModel>().ReverseMap();
         }
         
     }

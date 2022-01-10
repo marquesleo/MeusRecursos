@@ -22,6 +22,7 @@ namespace ApplicationConsultaAPP.OpenApp
 
             var usuario = new Usuario();
             usuario.Username = loginViewModel.Username;
+            usuario.Email = loginViewModel.Email;
             usuario.Password = Utils.Criptografia.CriptografarSenha(loginViewModel.Password);
                                
             await _IUsuario.Add(usuario);
@@ -47,9 +48,9 @@ namespace ApplicationConsultaAPP.OpenApp
         {
             var usuario = this.ObterUsuario(login).Result;
             if (usuario == null )
-               return true;
-            else
                return false;
+            else
+               return true;
         }
 
         public async Task<List<Usuario>> List()
@@ -69,6 +70,7 @@ namespace ApplicationConsultaAPP.OpenApp
 
         public async Task Alterar(Usuario usuario)
         {
+            usuario.Password = Utils.Criptografia.CriptografarSenha(usuario.Password);
             await _IUsuario.Update(usuario);
         }
     }

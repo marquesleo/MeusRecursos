@@ -9,10 +9,10 @@ namespace Domain.Consulta.InterfaceService
 {
     public interface IServicePaciente
     {
-        Task AddPaciente(Paciente paciente);
-
+        Task<bool> AddPaciente(Paciente paciente);
         Task AlterarPaciente(Paciente paciente);
         Task<Paciente> ObterPaciente(string id);
         Task<List<Paciente>> ObterPacientes(string nomeCompleto);
+        Task<List<Paciente>> ObterPacientes(Guid Empresa_Id);
     }
 }

@@ -18,6 +18,9 @@ namespace Domain.Consulta.Entities
         [JsonIgnore]
         public string Password { get; set; }
 
+        [Column("ativo", TypeName = "boolean")]
+        public bool Ativo { get; set; }
+
         [JsonIgnore]
         public Acesso Acesso { get; set; }
 

@@ -11,9 +11,11 @@ namespace ApplicationConsultaAPP.Interfaces
 {
     public interface InterfacePacienteApp : Generics.InterfaceGenericsApp<Paciente>
     {
-       
         Task Incluir(PacienteViewModel pacienteViewModel);
         Task Alterar(Paciente paciente);
         bool IsPacienteExiste(string nome,string email,string telefone);
+        Task<List<Paciente>> ObterPorNome(string nome);
+        Task<List<Paciente>> ObterPacientes(Guid Empresa_Id);
+      
     }
 }

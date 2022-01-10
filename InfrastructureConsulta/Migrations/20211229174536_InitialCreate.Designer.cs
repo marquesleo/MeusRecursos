@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Consulta.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    [Migration("20211125021728_InitialCreate")]
+    [Migration("20211229174536_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,11 +42,9 @@ namespace Infrastructure.Consulta.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Empresa_Id")
-                        .IsUnique();
+                    b.HasIndex("Empresa_Id");
 
-                    b.HasIndex("Usuario_Id")
-                        .IsUnique();
+                    b.HasIndex("Usuario_Id");
 
                     b.ToTable("acesso", "consultapsi");
                 });
@@ -104,11 +102,9 @@ namespace Infrastructure.Consulta.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Paciente_Id")
-                        .IsUnique();
+                    b.HasIndex("Paciente_Id");
 
-                    b.HasIndex("Psicologa_Id")
-                        .IsUnique();
+                    b.HasIndex("Psicologa_Id");
 
                     b.ToTable("consulta", "consultapsi");
                 });
@@ -172,6 +168,10 @@ namespace Infrastructure.Consulta.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("acesso_id");
 
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean")
+                        .HasColumnName("ativo");
+
                     b.Property<string>("Bairro")
                         .HasColumnType("varchar(150)")
                         .HasColumnName("bairro");
@@ -210,8 +210,7 @@ namespace Infrastructure.Consulta.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Acesso_Id")
-                        .IsUnique();
+                    b.HasIndex("Acesso_Id");
 
                     b.ToTable("paciente", "consultapsi");
                 });
@@ -226,6 +225,10 @@ namespace Infrastructure.Consulta.Migrations
                     b.Property<Guid>("Acesso_Id")
                         .HasColumnType("uuid")
                         .HasColumnName("acesso_id");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean")
+                        .HasColumnName("ativo");
 
                     b.Property<string>("Bairro")
                         .HasColumnType("varchar(150)")
@@ -269,8 +272,7 @@ namespace Infrastructure.Consulta.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Acesso_Id")
-                        .IsUnique();
+                    b.HasIndex("Acesso_Id");
 
                     b.ToTable("psicologa", "consultapsi");
                 });
@@ -281,6 +283,10 @@ namespace Infrastructure.Consulta.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean")
+                        .HasColumnName("ativo");
 
                     b.Property<string>("Email")
                         .HasColumnType("varchar(200)")

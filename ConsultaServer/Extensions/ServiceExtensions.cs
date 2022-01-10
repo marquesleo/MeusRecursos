@@ -16,6 +16,7 @@ using Domain.Consulta.Services;
 using Infrastructure.Consulta.Configuration;
 using Infrastructure.Consulta.Repository.Generics;
 using Domain.Consulta.Interfaces;
+using Domain.Consulta.InterfaceServices;
 
 namespace ConsultaServer.Extensions
 {
@@ -99,9 +100,25 @@ namespace ConsultaServer.Extensions
             services.AddSingleton<InterfaceUsuarioApp, ApplicationConsultaAPP.OpenApp.AppUsuario>();
             services.AddSingleton<IServiceUsuario, ServicesUsuario>();
 
+            services.AddSingleton<IEmpresa, Infrastructure.Consulta.Repository.Repositories.RepositoryEmpresa>();
+            services.AddSingleton<InterfaceEmpresaApp, ApplicationConsultaAPP.OpenApp.AppEmpresa>();
+            services.AddSingleton<IServiceEmpresa, ServiceEmpresa>();
+
+            services.AddSingleton<IAcesso, Infrastructure.Consulta.Repository.Repositories.RepositoryAcesso>();
+            services.AddSingleton<InterfaceAcessoApp, ApplicationConsultaAPP.OpenApp.AppAcesso>();
+            services.AddSingleton<IServiceAcesso, ServiceAcesso>();
+
             services.AddSingleton<IPaciente, Infrastructure.Consulta.Repository.Repositories.RepositoryPaciente>();
             services.AddSingleton<InterfacePacienteApp, ApplicationConsultaAPP.OpenApp.AppPaciente>();
             services.AddSingleton<IServicePaciente, ServicePaciente>();
+
+            services.AddSingleton<IPsicologa, Infrastructure.Consulta.Repository.Repositories.RepositoryPsicologa>();
+            services.AddSingleton<InterfacePsicologaApp, ApplicationConsultaAPP.OpenApp.AppPsicologa>();
+            services.AddSingleton<IServicePsicologa, ServicePsicologa>();
+
+            services.AddSingleton<IConsulta, Infrastructure.Consulta.Repository.Repositories.RepositoryConsulta>();
+            services.AddSingleton<InterfaceConsultaApp, ApplicationConsultaAPP.OpenApp.AppConsulta>();
+            services.AddSingleton<IServiceConsulta, ServiceConsulta>();
 
             services.AddDbContext<ContextBase>(p => p.UseNpgsql(GetStringConectionConfig(configuration)));
         }

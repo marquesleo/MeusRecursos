@@ -20,7 +20,7 @@ namespace Domain.Consulta.Services
                     new Claim(ClaimTypes.Name,usuario.Username),
                     new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddHours(24),
                 SigningCredentials = new SigningCredentials( new SymmetricSecurityKey(key),SecurityAlgorithms.HmacSha256Signature)
                 
             };

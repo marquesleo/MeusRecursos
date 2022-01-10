@@ -12,5 +12,7 @@ namespace Domain.Consulta.Interfaces
     {
         Task<Paciente> ObterPaciente(string id);
         Task<List<Paciente>> ObterPacientes(string nomeCompleto);
+        Task<List<Paciente>> ObterPacientes(Guid Empresa_Id);
+
     }
 }

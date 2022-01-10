@@ -4,6 +4,7 @@ using Domain.Consulta.Interfaces;
 using Domain.Consulta.InterfaceService;
 using Domain.Consulta.Validations;
 using Notification;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,10 +21,15 @@ namespace Domain.Consulta.Services
             this._IPaciente = IPaciente;
         }
 
-        public async Task AddPaciente(Paciente paciente)
+        public async Task<bool> AddPaciente(Paciente paciente)
         {
-            if (!ExecutarValidacao(new PacienteValidation(), paciente)) return;
+            if (!ExecutarValidacao(new PacienteValidation(), paciente))
+            {
+                return false;
+            };
+
             await _IPaciente.Add(paciente);
+            return true;
         }
 
         public async Task AlterarPaciente(Paciente paciente)
@@ -40,6 +46,11 @@ namespace Domain.Consulta.Services
         public async Task<List<Paciente>> ObterPacientes(string nomeCompleto)
         {
             return await _IPaciente.ObterPacientes(nomeCompleto);
+        }
+
+        public async Task<List<Paciente>> ObterPacientes(Guid Empresa_Id)
+        {
+            return await _IPaciente.ObterPacientes(Empresa_Id);
         }
     }
 }

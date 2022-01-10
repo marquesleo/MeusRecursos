@@ -18,7 +18,7 @@ namespace Domain.Consulta.Validations
 
             RuleFor(c => c.Telefone)
               .NotEmpty().WithMessage("O campo {PropertyName} precisa ser informado")
-              .Length(14).WithMessage("O campo {PropertyName} deve ter {MaxLength} caracteres");
+              .MaximumLength(14).WithMessage("O campo {PropertyName} deve ter {MaxLength} caracteres");
 
              
         }

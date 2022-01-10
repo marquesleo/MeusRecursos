@@ -5,10 +5,11 @@ namespace ConsultaServer.Controllers
 {
     public abstract class BaseController : Controller
     {
-        private readonly INotificador _notificador;
+        protected readonly INotificador _notificador;
         public BaseController(INotificador notificador)
         {
             _notificador = notificador;
+            
         }
 
 

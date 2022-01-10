@@ -11,11 +11,14 @@ namespace Domain.Consulta.Entities
         [Column("dt_nascimento", TypeName = "Date")]
         public DateTime DtNascimento { get; set; }
 
-        public Acesso Acesso { get; set; }
+        public virtual Acesso Acesso { get; set; }
 
         [Column("acesso_id", TypeName = "uuid")]
         public Guid Acesso_Id { get; set; }
 
         public Consulta Consulta { get; set; }
+
+        [Column("ativo", TypeName = "boolean")]
+        public bool Ativo { get; set; }
     }
 }

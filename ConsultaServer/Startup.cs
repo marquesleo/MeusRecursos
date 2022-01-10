@@ -32,7 +32,7 @@ namespace ConsultaServer
             services.AddControllers();
             services.AddCors();
             services.ConfigureJWT();
-          // services.ConfigureSwagger();
+            services.ConfigureSwagger();
             services.Init(Configuration);
             services.ConfigureDependences(Configuration);
             services.AddAutoMapper(typeof(ApplicationConsultaAPP.AutoMapper.AutoMapperConfig));
@@ -45,6 +45,9 @@ namespace ConsultaServer
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -52,12 +55,9 @@ namespace ConsultaServer
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ConsultaServer v1"));
             }
 
-            app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

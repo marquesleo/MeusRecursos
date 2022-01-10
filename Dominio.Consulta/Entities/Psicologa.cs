@@ -23,5 +23,8 @@ namespace Domain.Consulta.Entities
 
         public Consulta Consulta { get; set; }
 
+        [Column("ativo", TypeName = "boolean")]
+        public bool Ativo { get; set; }
+
     }
 }

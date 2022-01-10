@@ -1,7 +1,9 @@
 ﻿using ApplicationConsultaAPP.Interfaces;
 using AutoMapper;
+using ConsultaServer.Controllers.Filtros;
 using Domain.Consulta.Entities;
 using Domain.Consulta.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Notification;
@@ -15,6 +17,7 @@ namespace ConsultaServer.Controllers.V1
     [Route("api/v{version:apiVersion}/paciente")]
     [ApiController]
     [ApiVersion("1.0")]
+    [Authorize]
     public class PacienteController : BaseController
     {
 
@@ -44,6 +47,23 @@ namespace ConsultaServer.Controllers.V1
 
         }
 
+        [HttpGet()]
+        [Route("obterporempresa/{id_empresa}")]
+        public async Task<IActionResult> GetPacientesByEmpresa(Guid id_empresa)
+        {
+            try
+            {
+                var lstPacientes = await _InterfacePacienteApp.ObterPacientes(id_empresa);
+                return Ok(_mapper.Map<IEnumerable<PacienteViewModel>>(lstPacientes));
+               
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -57,7 +77,22 @@ namespace ConsultaServer.Controllers.V1
             }
         }
 
+        [HttpGet]
+        [Route("obterporfiltros")]
+        public async Task<IActionResult> ObterPorFiltros([FromQuery]string nomeDoPaciente)
+        {
+            try
+            {
+                return Ok(_mapper.Map<IEnumerable<PacienteViewModel>>(await _InterfacePacienteApp.ObterPorNome(nomeDoPaciente)));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
+        [ValidacaoModelStateCustomizado]
         public async Task<IActionResult> Add([FromBody] PacienteViewModel pacienteViewModel)
         {
             try
@@ -68,17 +103,19 @@ namespace ConsultaServer.Controllers.V1
                     if (!_InterfacePacienteApp.IsPacienteExiste(pacienteViewModel.Nome,pacienteViewModel.Email,pacienteViewModel.Telefone))
                     {
                         await _InterfacePacienteApp.Incluir(pacienteViewModel);
+                        
+
                         return CreatedAtAction(nameof(GetById), new { id = pacienteViewModel.Id }, pacienteViewModel);
                     }
                     else
-                        return BadRequest($"Usuário {pacienteViewModel.Nome} já está cadastrado!");
+                        return BadRequest($"Paciente {pacienteViewModel.Nome} já está cadastrado!");
                 }
                 return BadRequest();
 
             }
             catch (Exception ex)
             {
-                return BadRequest("Erro ao incluir usuario " + ex.Message);
+                return BadRequest("Erro ao incluir paciente " + ex.Message);
             }
 
         }

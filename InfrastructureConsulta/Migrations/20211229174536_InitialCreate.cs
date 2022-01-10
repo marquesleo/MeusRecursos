@@ -39,7 +39,8 @@ namespace Infrastructure.Consulta.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     username = table.Column<string>(type: "varchar(50)", nullable: true),
                     email = table.Column<string>(type: "varchar(200)", nullable: true),
-                    password = table.Column<string>(type: "varchar(200)", nullable: true)
+                    password = table.Column<string>(type: "varchar(200)", nullable: true),
+                    ativo = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,6 +84,7 @@ namespace Infrastructure.Consulta.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     dt_nascimento = table.Column<DateTime>(type: "Date", nullable: false),
                     acesso_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ativo = table.Column<bool>(type: "boolean", nullable: false),
                     nome = table.Column<string>(type: "varchar(200)", nullable: true),
                     email = table.Column<string>(type: "varchar(200)", nullable: true),
                     celular = table.Column<string>(type: "varchar(14)", nullable: true),
@@ -113,6 +115,7 @@ namespace Infrastructure.Consulta.Migrations
                     dt_nascimento = table.Column<DateTime>(type: "Date", nullable: false),
                     crp = table.Column<string>(type: "varchar(20)", nullable: true),
                     acesso_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ativo = table.Column<bool>(type: "boolean", nullable: false),
                     nome = table.Column<string>(type: "varchar(200)", nullable: true),
                     email = table.Column<string>(type: "varchar(200)", nullable: true),
                     celular = table.Column<string>(type: "varchar(14)", nullable: true),
@@ -175,43 +178,37 @@ namespace Infrastructure.Consulta.Migrations
                 name: "IX_acesso_empresa_id",
                 schema: "consultapsi",
                 table: "acesso",
-                column: "empresa_id",
-                unique: true);
+                column: "empresa_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_acesso_usuario_id",
                 schema: "consultapsi",
                 table: "acesso",
-                column: "usuario_id",
-                unique: true);
+                column: "usuario_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_consulta_paciente_id",
                 schema: "consultapsi",
                 table: "consulta",
-                column: "paciente_id",
-                unique: true);
+                column: "paciente_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_consulta_psicologa_id",
                 schema: "consultapsi",
                 table: "consulta",
-                column: "psicologa_id",
-                unique: true);
+                column: "psicologa_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_paciente_acesso_id",
                 schema: "consultapsi",
                 table: "paciente",
-                column: "acesso_id",
-                unique: true);
+                column: "acesso_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_psicologa_acesso_id",
                 schema: "consultapsi",
                 table: "psicologa",
-                column: "acesso_id",
-                unique: true);
+                column: "acesso_id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
