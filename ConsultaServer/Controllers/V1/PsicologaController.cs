@@ -36,7 +36,7 @@ namespace ConsultaServer.Controllers.V1
         {
             try
             {
-                return Ok(await _InterfacePsicologaApp.GetEntityById(id));
+                return Ok(_mapper.Map<PsicologaViewModel>(await _InterfacePsicologaApp.GetEntityById(id)));
             }
             catch (Exception ex)
             {

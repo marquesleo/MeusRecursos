@@ -56,8 +56,8 @@ namespace Domain.Consulta.Services
             {
                 return await _IConsulta.FindByCondition(p => p.Psicologa.Acesso.Empresa_Id == empresa_id &&
                                                        diaInicial.Year > 1900 && diaFinal.Year > 1900 ?
-                                                        p.Horario >= diaInicial && p.Horario <= diaFinal :
-                                                        p.Horario >= DateTime.MinValue && p.Horario <= DateTime.MaxValue &&
+                                                        p.Horario.Date >= diaInicial.Date && p.Horario.Date <= diaFinal.Date :
+                                                        p.Horario.Date >= DateTime.MinValue.Date && p.Horario.Date <= DateTime.MaxValue.Date &&
                                                        (paciente_id == Guid.Empty || p.Paciente_Id == paciente_id) && 
                                                        (psicologo_id == Guid.Empty || p.Psicologa_Id == psicologo_id));
             }

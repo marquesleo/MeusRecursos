@@ -38,7 +38,7 @@ namespace ConsultaServer.Controllers.V1
         {
             try
             {
-                return Ok(await _InterfaceConsultaApp.GetEntityById(id));
+                return Ok(_mapper.Map<ConsultaViewModel>( await _InterfaceConsultaApp.GetEntityById(id)));
             }
             catch (Exception ex)
             {

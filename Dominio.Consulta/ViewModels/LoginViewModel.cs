@@ -21,6 +21,8 @@ namespace Domain.Consulta.ViewModels
         [MaxLength(10, ErrorMessage = "O Campo {0} precisa ter no máximo {1}")]
         public string Password { get; set; }
 
+        public Guid Empresa_Id { get; set; }
+
         public bool Ativo { get; set; }
 
     }

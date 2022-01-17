@@ -47,8 +47,8 @@ namespace ApplicationConsultaAPP.OpenApp
             acesso.Empresa_Id = acessoViewModel.Empresa_Id;
             acesso.Usuario_Id = acessoViewModel.Usuario_Id;
             acesso.tipo = acessoViewModel.Tipo;
-            acesso.Usuario = await _IUsuario.GetEntityById(acesso.Usuario_Id);
-            acesso.Empresa = await _IEmpresa.GetEntityById(acesso.Empresa_Id);
+           
+          
             return acesso;
         }
 

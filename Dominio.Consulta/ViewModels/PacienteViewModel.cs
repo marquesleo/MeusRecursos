@@ -23,7 +23,7 @@ namespace Domain.Consulta.ViewModels
         [MaxLength(14, ErrorMessage = "O Campo {0} precisa ter no máximo {1}")]
         public string Celular { get; set; }
 
-        [Required(ErrorMessage = "O Campo {0} é obrigatório")]
+        
         [MaxLength(14, ErrorMessage = "O Campo {0} precisa ter no máximo {1}")]
         public string Telefone { get; set; }
         public string Endereco { get; set; }

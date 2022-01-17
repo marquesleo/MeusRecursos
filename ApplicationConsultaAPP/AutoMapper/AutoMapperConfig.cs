@@ -15,6 +15,7 @@ namespace ApplicationConsultaAPP.AutoMapper
             CreateMap<Acesso, AcessoViewModel>().ReverseMap();
             CreateMap<Psicologa, PsicologaViewModel>().ReverseMap();
             CreateMap<Consulta, ConsultaViewModel>().ReverseMap();
+            CreateMap<Empresa, EmpresaViewModel>().ReverseMap();
         }
         
     }

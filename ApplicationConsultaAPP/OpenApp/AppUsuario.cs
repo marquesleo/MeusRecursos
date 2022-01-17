@@ -17,16 +17,17 @@ namespace ApplicationConsultaAPP.OpenApp
             this._IUsuario = IUsuario;
         }
 
-        public async Task Incluir(LoginViewModel loginViewModel)
+        public async Task<Usuario> Incluir(LoginViewModel loginViewModel)
         {
 
             var usuario = new Usuario();
             usuario.Username = loginViewModel.Username;
             usuario.Email = loginViewModel.Email;
             usuario.Password = Utils.Criptografia.CriptografarSenha(loginViewModel.Password);
-                               
-            await _IUsuario.Add(usuario);
+
+             await _IUsuario.Add(usuario);
             loginViewModel.Id = usuario.Id;
+            return usuario;
         }
 
         public async Task Delete(Usuario objeto)
@@ -72,6 +73,11 @@ namespace ApplicationConsultaAPP.OpenApp
         {
             usuario.Password = Utils.Criptografia.CriptografarSenha(usuario.Password);
             await _IUsuario.Update(usuario);
+        }
+
+        public async Task<List<Usuario>> ObterPorEmpresa(Guid empresa_id)
+        {
+            return await _IUsuario.ObterPorEmpresa(empresa_id);
         }
     }
 }

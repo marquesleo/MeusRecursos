@@ -46,10 +46,7 @@ namespace ConsultaServer.Controllers.V1
             try
             {
                 var usuario = await _InterfaceUsuarioApp.ObterUsuario(username, password);
-
-                if (usuario == null)
-                    return NotFound(new { mensagem = "Usuário ou Senha inválidos" });
-
+                             
                 return Ok(usuario);
             }
             catch (Exception ex)
@@ -77,7 +74,7 @@ namespace ConsultaServer.Controllers.V1
                     var usuario = await _InterfaceUsuarioApp.ObterUsuario(loginViewModel.Username, loginViewModel.Password);
 
                     if (usuario == null)
-                        return NotFound(new { mensagem = "Usuário ou Senha inválidos" });
+                        return NotFound("Usuário ou Senha inválidos" );
 
                     var token = TokenService.GenerateToken(usuario);
                     var acesso = await _InterfaceAcessoApp.ObterAcessoPorUsuario(usuario.Id);
@@ -118,13 +115,14 @@ namespace ConsultaServer.Controllers.V1
 
     }
 
-    [HttpGet]
+    [HttpGet()]
+    [Route("obterporempresa/{empresa_id}")]
     [Authorize]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(Guid empresa_id)
     {
         try
         {
-            return Ok(_mapper.Map<IEnumerable<LoginViewModel>>(await _InterfaceUsuarioApp.List()));
+            return Ok(_mapper.Map<IEnumerable<LoginViewModel>>(await _InterfaceUsuarioApp.ObterPorEmpresa(empresa_id)));
         }
         catch (Exception ex)
         {
@@ -132,7 +130,9 @@ namespace ConsultaServer.Controllers.V1
         }
     }
 
-    [HttpPost]
+     
+
+        [HttpPost]
     [AllowAnonymous]
     [ValidacaoModelStateCustomizado]
     public async Task<IActionResult> Add([FromBody] LoginViewModel loginViewModel)
@@ -144,8 +144,13 @@ namespace ConsultaServer.Controllers.V1
             {
                 if (!_InterfaceUsuarioApp.IsUsuarioExiste(loginViewModel.Username))
                 {
-                    await _InterfaceUsuarioApp.Incluir(loginViewModel);
-                    return CreatedAtAction(nameof(GetById), new { id = loginViewModel.Id }, loginViewModel);
+                   var usuario = await _InterfaceUsuarioApp.Incluir(loginViewModel);
+                        var acesso = new AcessoViewModel() { Empresa_Id = loginViewModel.Empresa_Id, Usuario_Id = usuario.Id, Tipo = "S" };
+                        await _InterfaceAcessoApp.Incluir(acesso);
+
+
+
+                    return CreatedAtAction(nameof(GetById), new { id = usuario.Id }, loginViewModel);
                 }
                 else
                     return BadRequest($"Usuário {loginViewModel.Username} já está cadastrado!");

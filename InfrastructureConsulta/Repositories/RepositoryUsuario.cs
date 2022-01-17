@@ -6,12 +6,26 @@ using Domain.Consulta.Interface;
 using Infrastructure.Consulta.Configuration;
 using Infrastructure.Consulta.Repository.Generics;
 using System;
+using System.Collections.Generic;
 
 namespace Infrastructure.Consulta.Repository.Repositories
 {
     public class RepositoryUsuario :RepositoryGeneric<Usuario>, IUsuario
     {
         public RepositoryUsuario(MyDB myDB):base(myDB){ }
+
+        public async Task<List<Usuario>> ObterPorEmpresa(Guid empresa_id)
+        {
+            try
+            {
+                return await FindByCondition(p => p.Acesso.Empresa_Id == empresa_id);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
 
         public async Task<Usuario> ObterUsuario(string login, string senha)
         {
