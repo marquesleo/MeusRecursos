@@ -13,6 +13,7 @@ namespace Contracts.Generics
         Task Delete(T objeto);
         Task<T> GetEntityById(Guid id);
         Task<List<T>> List();
+        Task Exec(string sql, T Objeto);
         Task<List<T>> FindByCondition(Expression<Func<T, bool>> expression);
 
 

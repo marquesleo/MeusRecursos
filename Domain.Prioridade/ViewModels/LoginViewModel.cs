@@ -15,6 +15,10 @@ namespace Domain.Prioridades.ViewModels
         [Required(ErrorMessage = "O Campo {0} é obrigatório")]
         [MaxLength(10, ErrorMessage = "O Campo {0} precisa ter no máximo {1}")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "O Campo {0} é obrigatório")]
+        [MaxLength(200, ErrorMessage = "O Campo {0} precisa ter no máximo {200}")]
+        public string Email { get; set; }
        
     }
 }

@@ -12,6 +12,7 @@ namespace Domain.Prioridades.Entities.Extension
             dbPrioridade.Ativo = prioridadeViewModel.Ativo;
             dbPrioridade.Id = prioridadeViewModel.Id;
             dbPrioridade.Valor = prioridadeViewModel.Valor;
+            dbPrioridade.Feito = prioridadeViewModel.Feito;
                     
         }
     }

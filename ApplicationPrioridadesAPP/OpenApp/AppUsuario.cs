@@ -1,14 +1,11 @@
-﻿using ApplicationPrioridadesAPP.Interfaces.Generics;
-using ApplicationPrioridadesAPP.Interfaces;
-using Entities.Models;
+﻿using ApplicationPrioridadesAPP.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Domain.Prioridades.Interface;
-using System.Linq;
-using System.Security.Cryptography;
 using Domain.Prioridades.ViewModels;
+using Domain.Prioridades.Entities;
 
 namespace ApplicationPrioridadesAPP.OpenApp
 {
@@ -26,52 +23,73 @@ namespace ApplicationPrioridadesAPP.OpenApp
             var usuario = new Domain.Prioridades.Entities.Usuario();
             usuario.Username = loginViewModel.Username;
             usuario.Password = Utils.Criptografia.CriptografarSenha(loginViewModel.Password);
+            usuario.Email = loginViewModel.Email;
                                
             await _IUsuario.Add(usuario);
             loginViewModel.Id = usuario.Id;
         }
 
-        public async Task Delete(Domain.Prioridades.Entities.Usuario objeto)
+        public async Task Delete(Usuario objeto)
         {
            await _IUsuario.Delete(objeto);
         }
 
-        public async Task<List<Domain.Prioridades.Entities.Usuario>> FindByCondition(Expression<Func<Domain.Prioridades.Entities.Usuario, bool>> expression)
+        public async Task<List<Usuario>> FindByCondition(Expression<Func<Usuario, bool>> expression)
         {
             return await _IUsuario.FindByCondition(expression);
         }
 
-        public async Task<Domain.Prioridades.Entities.Usuario> GetEntityById(Guid id)
+        public async Task<Usuario> GetEntityById(Guid id)
         {
-            return await _IUsuario.GetEntityById(id);
+            var usuario = await _IUsuario.GetEntityById(id);
+          
+            return Criptografar(usuario);
         }
+
+        private Usuario Criptografar(Usuario usuario){
+            if (usuario != null)
+                usuario.Password = Utils.Criptografia.Decriptografar(usuario.Password);
+            else
+                usuario = new Usuario();
+
+           return usuario;
+
+        }
+
 
         public bool IsUsuarioExiste(string login)
         {
             var usuario = this.ObterUsuario(login).Result;
             if (usuario == null )
-               return true;
-            else
                return false;
+            else
+               return true;
         }
 
-        public async Task<List<Domain.Prioridades.Entities.Usuario>> List()
+        public async Task<List<Usuario>> List()
         {
             return await _IUsuario.List();
         }
 
-        public async Task<Domain.Prioridades.Entities.Usuario> ObterUsuario(string login, string senha)
+        public async Task<Usuario> ObterUsuario(string login, string senha)
         {
-            return await _IUsuario.ObterUsuario(login, senha);
+            var usuario = await _IUsuario.ObterUsuario(login, senha);
+            return  Criptografar(usuario);;
         }
 
-        public async Task<Domain.Prioridades.Entities.Usuario> ObterUsuario(string login)
+        public async Task<Usuario> ObterUsuario(string login)
         {
-            return await _IUsuario.ObterUsuario(login);
+            var usuario = await _IUsuario.ObterUsuario(login);
+            return Criptografar(usuario);;
         }
 
-        public async Task UpdateUsuario(Domain.Prioridades.Entities.Usuario usuario)
+        public async Task UpdateUsuario(LoginViewModel loginViewModel)
         {
+             var usuario = new Domain.Prioridades.Entities.Usuario();
+            usuario.Username = loginViewModel.Username;
+            usuario.Password = Utils.Criptografia.CriptografarSenha(loginViewModel.Password);
+            usuario.Email = loginViewModel.Email;
+            usuario.Id = loginViewModel.Id;
             await _IUsuario.Update(usuario);
         }
     }

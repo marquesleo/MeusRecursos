@@ -16,6 +16,9 @@ namespace Domain.Prioridades.Entities
         [Column("ativo")]
         public bool Ativo { get; set; }
 
+        [Column("feito")]
+        public bool Feito { get; set; }
+
 
         [ForeignKey("usuario")]
         public virtual Usuario Usuario { get; set; }

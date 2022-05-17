@@ -46,7 +46,7 @@ namespace Infrastructure.Consulta.Repository.Repositories
             }
             
         }
-
+        
         public async Task<Usuario> ObterUsuario(string login)
         {
             try

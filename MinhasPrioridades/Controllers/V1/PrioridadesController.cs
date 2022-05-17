@@ -7,12 +7,12 @@ using Domain.Prioridades.Entities;
 using AutoMapper;
 using ApplicationPrioridadesAPP.Interfaces;
 using Domain.Prioridades.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 
 namespace MinhasPrioridades.Controllers.V1
 {
-    [Route("api/[controller]")]
-    [ApiController]
+     [Route("api/v{version:apiVersion}/propriedades")]
+     [ApiController]
+     [ApiVersion("1.0")]
     public class PrioridadesController : BaseController
     {
         private readonly IMapper _mapper;
@@ -61,7 +61,8 @@ namespace MinhasPrioridades.Controllers.V1
                 if (ModelState.IsValid)
                 {
 
-                    var prioridade = _mapper.Map<Prioridade>(prioridadeViewModel);
+                    var prioridade = new Prioridade();
+                    prioridade.Map(prioridadeViewModel);
                     await _InterfacePrioridadeApp.AddPrioridade(prioridade);
                     return CreatedAtAction(nameof(GetById), new { id = prioridade.Id }, prioridade);
                 }

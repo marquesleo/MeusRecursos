@@ -34,25 +34,34 @@ namespace MinhasPrioridades.Controllers.V1
         [AllowAnonymous]
         public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginViewModel loginViewModel)
         {
-            if (ModelState.IsValid)
+          
+          try{
+        
+        
+         if (ModelState.IsValid)
             {
 
-                var usuario = await _InterfaceUsuarioApp.ObterUsuario(loginViewModel.Username, loginViewModel.Password);
+                var usuario = await _InterfaceUsuarioApp.ObterUsuario(loginViewModel.Username,
+                                                                      loginViewModel.Password);
 
-                if (usuario == null)
-                    return NotFound(new { messagem = "Usuário ou Senha inválidos" });
+                if (usuario == null || usuario.IsEmptyObject())
+                     return BadRequest(new { message = "Usuário ou senha inválidos" });
 
                 var token = TokenService.GenerateToken(usuario);
                
-                return new
-                {
+                return Ok( new {
                     user = usuario,
                     token = token
-                };
+                });
 
             }
             else
                 return BadRequest();
+
+          }catch(Exception ex){
+            return StatusCode(500,ex.Message);
+          }
+          
 
         }
 
@@ -110,15 +119,17 @@ namespace MinhasPrioridades.Controllers.V1
         }
 
 
-        [HttpPut()]
-        public async Task<IActionResult> Update([FromBody] LoginViewModel loginViewModel)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] LoginViewModel loginViewModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    loginViewModel.Id = id;
                     var usuario = _mapper.Map<Usuario>(loginViewModel);
-                    await this._InterfaceUsuarioApp.UpdateUsuario(usuario);
+
+                    await this._InterfaceUsuarioApp.UpdateUsuario(loginViewModel);
                     return Ok();
                 }
                 return BadRequest();

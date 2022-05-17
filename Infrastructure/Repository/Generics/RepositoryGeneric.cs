@@ -103,6 +103,21 @@ namespace Infrastructure.Repository.Generics
 
             disposed = true;
         }
+
+      
+        public virtual async Task Exec(string sql,T Objeto)
+        {
+           using (var data = new ContextBase(_optionsBuilder, myDB))
+            {
+                 data.Set<T>().FromSqlRaw(sql, await RetornarParametro(Objeto));
+                await data.SaveChangesAsync();
+            }
+        }
+        protected virtual async Task<List<object>> RetornarParametro(T Objeto) {
+
+            return null;
+        }
+
         #endregion
 
     }

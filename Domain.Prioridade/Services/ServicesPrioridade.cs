@@ -22,7 +22,7 @@ namespace Domain.Prioridades.Services
         {
             if (!ExecutarValidacao(new PrioridadeValidation(), prioridade)) return;
                
-             await _IPrioridade.Add(prioridade);
+             await _IPrioridade.InserirPrioridade(prioridade);
             
         }
         public async Task UpdatePrioridade(Prioridade prioridade)
