@@ -16,7 +16,7 @@ namespace Infrastructure.Consulta.Repository.Generics
     public abstract class RepositoryGeneric<T> : IGeneric<T>, IDisposable where T : class
     {
         protected MyDB myDB;
-        private readonly DbContextOptions<ContextBase> _optionsBuilder;
+        protected readonly DbContextOptions<ContextBase> _optionsBuilder;
         public RepositoryGeneric(MyDB myDB) {
             this.myDB = myDB;
             _optionsBuilder = new DbContextOptions<ContextBase>();
@@ -120,22 +120,8 @@ namespace Infrastructure.Consulta.Repository.Generics
         {
             return base.ToString();
         }
-
-
-        protected virtual async Task<List<object>> RetornarParametro(T Objeto) {
-
-            return null;
-        }
-            
-        
-        public virtual async Task Exec(String sql,T Objeto)
-        {
-           using (var data = new ContextBase(_optionsBuilder, myDB))
-            {
-                 data.Set<T>().FromSqlRaw(sql, await RetornarParametro(Objeto));
-                await data.SaveChangesAsync();
-            }
-        }
+          
+                       
         #endregion
 
     }

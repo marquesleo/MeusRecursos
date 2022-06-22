@@ -60,7 +60,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
         public bool IsUsuarioExiste(string login)
         {
             var usuario = this.ObterUsuario(login).Result;
-            if (usuario == null )
+            if (usuario == null || usuario.Id == Guid.Empty)
                return false;
             else
                return true;

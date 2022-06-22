@@ -106,7 +106,8 @@ namespace MinhasPrioridades.Controllers.V1
                         await _InterfaceUsuarioApp.AddUsuario(loginViewModel);
                         return CreatedAtAction(nameof(GetById), new { id = loginViewModel.Id }, loginViewModel);
                    }else
-                      return  BadRequest($"Usuário {loginViewModel.Username} já está cadastrado!");
+                    return BadRequest(new { message = $"Usuário {loginViewModel.Username} já está cadastrado!" });
+                
                 }
                 return BadRequest();
 
