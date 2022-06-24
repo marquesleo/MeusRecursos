@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/9a9e2c34-5338-4cc7-823c-5873aa5583e0/microsoft.web/sites/subscriptions/9a9e2c34-5338-4cc7-823c-5873aa5583e0/resourceGroups/cadastrodecliente/providers/Microsoft.Web/sites/priorities",
+    "appService.deploySubpath": "MinhasPrioridades\\publish"
+}

@@ -9,6 +9,6 @@ namespace ApplicationPrioridadesAPP.Interfaces
         Task<Usuario> ObterUsuario(string login, string senha);
         bool IsUsuarioExiste(string login);
         Task AddUsuario(LoginViewModel loginViewModel);
-        Task UpdateUsuario(Usuario usuario);
+        Task UpdateUsuario(LoginViewModel loginViewModel);
     }
 }

@@ -2,6 +2,7 @@
 using Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32.SafeHandles;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,6 +104,9 @@ namespace Infrastructure.Repository.Generics
 
             disposed = true;
         }
+
+           
+
         #endregion
 
     }

@@ -15,8 +15,8 @@ namespace Domain.Prioridades.ViewModels
         [Required(ErrorMessage = "O Campo {0} é obrigatório")]
         public int Valor { get; set; }
         public bool Ativo { get; set; }
-
-        public short  Usuario { get; set; }
+        public bool Feito {get;set;}
+        public string  Usuario { get; set; }
         
     }
 }

@@ -8,13 +8,15 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
+
 
 namespace Infrastructure.Consulta.Repository.Generics
 {
-    public class RepositoryGeneric<T> : IGeneric<T>, IDisposable where T : class
+    public abstract class RepositoryGeneric<T> : IGeneric<T>, IDisposable where T : class
     {
         protected MyDB myDB;
-        private readonly DbContextOptions<ContextBase> _optionsBuilder;
+        protected readonly DbContextOptions<ContextBase> _optionsBuilder;
         public RepositoryGeneric(MyDB myDB) {
             this.myDB = myDB;
             _optionsBuilder = new DbContextOptions<ContextBase>();
@@ -103,6 +105,23 @@ namespace Infrastructure.Consulta.Repository.Generics
 
             disposed = true;
         }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+          
+                       
         #endregion
 
     }
