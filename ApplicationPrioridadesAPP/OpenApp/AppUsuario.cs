@@ -21,7 +21,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
         {
 
             var usuario = new Domain.Prioridades.Entities.Usuario();
-            usuario.Username = loginViewModel.Username;
+            usuario.Username = loginViewModel.Username.ToUpper();
             usuario.Password = Utils.Criptografia.CriptografarSenha(loginViewModel.Password);
             usuario.Email = loginViewModel.Email;
                                
@@ -86,7 +86,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
         public async Task UpdateUsuario(LoginViewModel loginViewModel)
         {
              var usuario = new Domain.Prioridades.Entities.Usuario();
-            usuario.Username = loginViewModel.Username;
+            usuario.Username = loginViewModel.Username.ToUpper();
             usuario.Password = Utils.Criptografia.CriptografarSenha(loginViewModel.Password);
             usuario.Email = loginViewModel.Email;
             usuario.Id = loginViewModel.Id;

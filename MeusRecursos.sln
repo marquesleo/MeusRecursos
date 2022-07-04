@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Recursos", "Domain\D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{0970D6C2-09F9-4F94-A8D8-E386897D94AF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeusRecursos", "MeusRecursos\MeusRecursos.csproj", "{5A6073AA-3F28-4D90-8ACD-181213AE36FC}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationAPP", "ApplicationAPP\ApplicationAPP.csproj", "{69B6183F-BDCF-4BAF-8360-8849CAEAD025}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhasPrioridades", "MinhasPrioridades\MinhasPrioridades.csproj", "{C9C3852D-027A-44E4-ADF1-5BA52A03458E}"
