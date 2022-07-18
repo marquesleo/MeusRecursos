@@ -1,26 +1,34 @@
-﻿using Domain.Interface;
-using Entities.Models;
+﻿using ApplicationPrioridadesAPP.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
+using Domain.Prioridades.Interface;
+using Domain.Prioridades.ViewModels;
+using Domain.Prioridades.Entities;
 
 namespace ApplicationPrioridadesAPP.OpenApp
 {
-    public class AppMinhaSenha : InterfaceMinhaSenhaApp
+    public class AppSenha : ApplicationPrioridadesAPP.Interfaces.InterfaceSenhaApp
     {
-        private readonly IMinhaSenha _IMinhaSenha;
-        public AppMinhaSenha(IMinhaSenha IMinhaSenha)
+        private readonly Domain.Prioridades.Interface.ISenha _IMinhaSenha;
+
+        private readonly IServiceSenha _IServiceSenha;
+        private readonly IServiceUsuario _IServiceUsuario;
+
+
+        public AppSenha(ISenha IMinhaSenha,
+                        IServiceSenha IServiceSenha)
         {
             this._IMinhaSenha = IMinhaSenha;
+            this._IServiceSenha =IServiceSenha;
         }
-        public async Task Add(MinhaSenha objeto)
+        public async Task Add(Domain.Prioridades.Entities objeto)
         {
             await _IMinhaSenha.Add(objeto);
         }
 
-        public async Task Delete(MinhaSenha objeto)
+        public async Task Delete(Senha objeto)
         {
             await _IMinhaSenha.Delete(objeto);
         }

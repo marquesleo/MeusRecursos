@@ -96,6 +96,11 @@ namespace MinhasPrioridades.Extensions
             services.AddSingleton<IPrioridade, Infrastructure.Repository.Repositories.RepositoryPrioridade>();
             services.AddSingleton<InterfacePrioridadeApp, ApplicationPrioridadesAPP.OpenApp.AppPrioridade>();
             services.AddSingleton<IServicePrioridade, ServicesPrioridade>();
+
+             services.AddSingleton<ISenha, Infrastructure.Repository.Repositories.RepositoryMinhaSenha>();
+
+            services.AddSingleton<ApplicationSenhaAPP.Interfaces.InterfaceSenhaApp, ApplicationPrioridadesAPP.OpenApp.AppUsuario>();
+            services.AddSingleton<IServicePrioridade, ServicesPrioridade>();
            
             services.AddSingleton<IUsuario, Infrastructure.Repository.Repositories.RepositoryUsuario>();
             services.AddSingleton<InterfaceUsuarioApp, ApplicationPrioridadesAPP.OpenApp.AppUsuario>();

@@ -13,6 +13,7 @@ namespace ApplicationPrioridadesAPP.AutoMapper
            
             CreateMap<Prioridade, PrioridadeViewModel>().ReverseMap() ;
             CreateMap<Usuario, LoginViewModel>().ReverseMap();
+             CreateMap<Senha, SenhaViewModel>().ReverseMap();
         }
         
     }

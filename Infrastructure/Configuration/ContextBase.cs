@@ -22,6 +22,7 @@ namespace Infrastructure.Configuration
         //dotnet ef database --project.\Infrastructure --startup-project.\MinhasPrioridades update
        public DbSet<Domain.Prioridades.Entities.Usuario> Usuarios { get; set; }
        public DbSet<Domain.Prioridades.Entities.Prioridade> Prioridades { get; set; }
+       public DbSet<Domain.Prioridades.Entities.Senha> Senhas { get; set; }
        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
