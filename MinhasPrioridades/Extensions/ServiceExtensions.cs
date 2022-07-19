@@ -99,7 +99,7 @@ namespace MinhasPrioridades.Extensions
 
              services.AddSingleton<ISenha, Infrastructure.Repository.Repositories.RepositoryMinhaSenha>();
 
-            services.AddSingleton<ApplicationSenhaAPP.Interfaces.InterfaceSenhaApp, ApplicationPrioridadesAPP.OpenApp.AppUsuario>();
+            services.AddSingleton<InterfaceSenhaApp, ApplicationPrioridadesAPP.OpenApp.AppSenha>();
             services.AddSingleton<IServicePrioridade, ServicesPrioridade>();
            
             services.AddSingleton<IUsuario, Infrastructure.Repository.Repositories.RepositoryUsuario>();

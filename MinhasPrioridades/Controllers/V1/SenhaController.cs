@@ -16,12 +16,56 @@ namespace MinhasPrioridades.Controllers.V1
     public class SenhaController : BaseController {
 
         private readonly IMapper _mapper;
+
+
+
+        private readonly InterfaceSenhaApp _InterfaceSenhaApp;
       
-         public SenhaController(IMapper mapper,
-                                      INotificador notificador) : base(notificador)
+        public SenhaController(IMapper mapper,
+                               INotificador notificador,
+                               InterfaceSenhaApp InterfaceSenhaApp) : base(notificador)
         {
+            _InterfaceSenhaApp = InterfaceSenhaApp;
             _mapper = mapper;
         }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            try
+            {
+                return Ok(await _InterfaceSenhaApp.GetEntityById(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] SenhaViewModel senhaViewModel)
+        {
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+                    await _InterfaceSenhaApp.AddSenha(senhaViewModel);
+                    return CreatedAtAction(nameof(GetById), new { id = senhaViewModel.Id }, senhaViewModel);
+                }
+                return BadRequest();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
+        }
+
 
     }
 }

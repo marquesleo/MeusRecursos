@@ -33,7 +33,7 @@ namespace Domain.Prioridades.Services
         public async Task AddSenha(Senha Senha)
         {
               if (!ExecutarValidacao(new ServiceValidation(), Senha)) return;
-           await _ISenha.Inserir(Senha);
+           await _ISenha.Add(Senha);
         }
                   
     }

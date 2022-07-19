@@ -9,9 +9,8 @@ namespace ApplicationPrioridadesAPP.Interfaces
 {
     public interface InterfaceSenhaApp : InterfaceGenericsApp<Senha>
     {
-        Task AddSenha(Senha senha);
-        Task UpdateSenha(Senha senha);
-        Task ExcluirSenha(Senha senha);
+        Task AddSenha(SenhaViewModel senha);
+        Task UpdateSenha(SenhaViewModel senha);
         Task<List<SenhaViewModel>> ObterRegistros(string id_usuario);
 
     }

@@ -27,6 +27,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
             this._IServicePrioridade = IServicePrioridade;
             this._IUsuario = IUsuario;
             this._IServiceUsuario = IServiceUsuario;
+          
         }   
         
        private async Task CarregarUsuario(Prioridade prioridade){
