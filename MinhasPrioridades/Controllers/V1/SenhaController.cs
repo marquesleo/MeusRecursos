@@ -7,20 +7,18 @@ using Domain.Prioridades.Entities;
 using AutoMapper;
 using ApplicationPrioridadesAPP.Interfaces;
 using Domain.Prioridades.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MinhasPrioridades.Controllers.V1
 {
      [Route("api/v{version:apiVersion}/Senha")]
      [ApiController]
      [ApiVersion("1.0")]
+     [Authorize]
     public class SenhaController : BaseController {
 
         private readonly IMapper _mapper;
-
-
-
         private readonly InterfaceSenhaApp _InterfaceSenhaApp;
-      
         public SenhaController(IMapper mapper,
                                INotificador notificador,
                                InterfaceSenhaApp InterfaceSenhaApp) : base(notificador)
@@ -39,9 +37,22 @@ namespace MinhasPrioridades.Controllers.V1
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery]string usuario_id)
+        {
+            try
+            {
+               return Ok(await _InterfaceSenhaApp.ObterRegistros(usuario_id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
@@ -64,6 +75,50 @@ namespace MinhasPrioridades.Controllers.V1
                 return BadRequest(new { message = ex.Message });
             }
 
+        }
+
+          [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id,
+                                                 [FromBody] SenhaViewModel senhaViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    senhaViewModel.Id = id;
+                   
+                    await this._InterfaceSenhaApp.UpdateSenha(senhaViewModel);
+                    return Ok();
+                }
+                return BadRequest();
+
+            }
+            catch (Exception ex)
+            {
+                 return BadRequest(new { message = ex.Message });
+            }
+
+        }
+
+          [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                Senha senha = await _InterfaceSenhaApp.GetEntityById(id);
+                if (senha != null)
+                {
+                    await this._InterfaceSenhaApp.Delete(senha);
+                    return Ok();
+                }
+                else
+                    return BadRequest("Registro não encontrado ");
+            }
+            catch (Exception ex)
+            {
+
+               return BadRequest(new { message = ex.Message });
+            }
         }
 
 

@@ -28,37 +28,63 @@ namespace ApplicationPrioridadesAPP.OpenApp
             this._IServiceSenha = IServiceSenha;
         }
 
-        public async Task AddSenha(Senha senha)
+        public async Task AddSenha(SenhaViewModel senha)
         {
-            await _IServiceSenha.AddSenha(senha);
+            try{
+                var senhaNova = new Senha();
+                senhaNova.Map(senha);
+                await _IServiceSenha.AddSenha(senhaNova);
+            } catch(Exception ex){
+                  throw ex;  
+            }
+           
         }
 
         public async Task Delete(Senha objeto)
         {
-            await _ISenha.Delete(objeto);
+            try{ 
+                await _ISenha.Delete(objeto);
+            }catch(Exception ex){
+                throw ex;
+            }
         }
               
         public async Task<List<Senha>> FindByCondition(Expression<Func<Senha, bool>> expression)
         {
-            return await _ISenha.FindByCondition(expression);
+            try{
+                return await _ISenha.FindByCondition(expression);
+            }catch(Exception ex){
+                 throw ex;
+            }  
+            
         }
 
         public async Task<Senha> GetEntityById(Guid id)
         {
-            return await _ISenha.GetEntityById(id);
+            try
+            { 
+              return await _ISenha.GetEntityById(id);
+            } catch(Exception ex){
+                 throw ex;
+            }  
         }
 
         public async Task<List<Senha>> List()
         {
-            return await _ISenha.List();
+            try{
+                return await _ISenha.List();
+            }catch(Exception ex){
+                 throw ex;
+            }
         }
 
         public async Task<List<SenhaViewModel>> ObterRegistros(string id_usuario)
         {
             var lstSenhas = await _ISenha.FindByCondition(p => p.Usuario.Id == Guid.Parse( id_usuario));
             var lstSenhaViewModel = new List<SenhaViewModel>();
-            if (lstSenhas !=null && lstSenhas.Any())
-            {
+            try
+            {            
+             if (lstSenhas !=null && lstSenhas.Any())
                 if (lstSenhas != null && lstSenhas.Any())
                 {
                     foreach (var obj in lstSenhas)
@@ -79,21 +105,46 @@ namespace ApplicationPrioridadesAPP.OpenApp
 
                 }
             }
-
+            
+            catch (Exception ex) 
+            {
+                
+                throw ex;
+            }
             return  lstSenhaViewModel;
-
         }
-
+        
         private async Task CarregarUsuario(Senha senha)
         {
-            senha.Usuario = await _IUsuario.GetEntityById(senha.Usuario.Id);
+            try
+            {
+
+                 senha.Usuario = await _IUsuario.GetEntityById(senha.Usuario.Id);
          
+            }
+            catch (Exception ex)
+            {
+                
+                throw ex;
+            }
+           
         }
 
-        public async Task UpdateSenha(Senha senha)
+        public async Task UpdateSenha(SenhaViewModel senha)
         {
-            await CarregarUsuario(senha);
-            await _IServiceSenha.UpdateSenha(senha);
+            try
+            {
+                var  senhaNova = new Senha();
+                senhaNova.Map(senha);
+                 await CarregarUsuario(senhaNova);
+                 await _IServiceSenha.UpdateSenha(senhaNova);
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+           
         }
     }
 }
