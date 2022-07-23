@@ -17,6 +17,8 @@ using Infrastructure.Consulta.Configuration;
 using Infrastructure.Consulta.Repository.Generics;
 using Domain.Consulta.Interfaces;
 using Domain.Consulta.InterfaceServices;
+using Contracts.Generics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConsultaServer.Extensions
 {
@@ -49,6 +51,14 @@ namespace ConsultaServer.Extensions
                    ValidateAudience = false
                };
            });
+            services.AddAuthorization(opt =>
+            {
+                var defaultAuthorizationPolicyBuilder = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme);
+
+                defaultAuthorizationPolicyBuilder = defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
+
+                opt.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
+            });
         }
 
         public static void ConfigureSwagger(this IServiceCollection services)
@@ -93,8 +103,8 @@ namespace ConsultaServer.Extensions
                                                IConfiguration configuration)
         {
             services.AddSingleton<INotificador, Notificacador>();
-
-            services.AddSingleton(typeof(Contracts.Generics.IGeneric<>), typeof(RepositoryGeneric<>));
+           // services.AddScoped(typeof(IGeneric<>), typeof(IGeneric<>));
+            services.AddSingleton(typeof(IGeneric<>), typeof(RepositoryGeneric<>));
                  
             services.AddSingleton<IUsuario, Infrastructure.Consulta.Repository.Repositories.RepositoryUsuario>();
             services.AddSingleton<InterfaceUsuarioApp, ApplicationConsultaAPP.OpenApp.AppUsuario>();

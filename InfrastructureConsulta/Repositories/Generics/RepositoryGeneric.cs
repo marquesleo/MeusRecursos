@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 namespace Infrastructure.Consulta.Repository.Generics
 {
-    public abstract class RepositoryGeneric<T> : IGeneric<T>, IDisposable where T : class
+    public  class RepositoryGeneric<T> : IGeneric<T>, IDisposable where T : class
     {
         protected MyDB myDB;
         protected readonly DbContextOptions<ContextBase> _optionsBuilder;

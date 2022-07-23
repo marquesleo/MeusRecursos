@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
+#nullable disable
+
 namespace Infrastructure.Consulta.Migrations
 {
     [DbContext(typeof(ContextBase))]
@@ -15,9 +17,10 @@ namespace Infrastructure.Consulta.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseIdentityByDefaultColumns()
-                .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.0");
+                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Domain.Consulta.Entities.Acesso", b =>
                 {
@@ -59,11 +62,11 @@ namespace Infrastructure.Consulta.Migrations
                         .HasColumnName("comentario");
 
                     b.Property<DateTime>("Horario")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("horario");
 
                     b.Property<DateTime>("HorarioSatisfacao")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("horariosatisfacao");
 
                     b.Property<bool>("JaViuSatisfacao")
@@ -151,6 +154,12 @@ namespace Infrastructure.Consulta.Migrations
                         .HasColumnName("cnpj");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("cnpj")
+                        .IsUnique();
 
                     b.ToTable("empresa", "consultapsi");
                 });

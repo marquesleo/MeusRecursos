@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace Infrastructure.Consulta.Migrations
 {
     public partial class InitialCreate : Migration
@@ -143,14 +145,14 @@ namespace Infrastructure.Consulta.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    horario = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    horario = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     proposito = table.Column<string>(type: "varchar(50)", nullable: true),
                     umahora = table.Column<bool>(type: "boolean", nullable: false),
                     observacao = table.Column<string>(type: "varchar(500)", nullable: true),
                     status = table.Column<string>(type: "char(1)", nullable: true),
                     satisfacao = table.Column<int>(type: "int", nullable: false),
                     comentario = table.Column<string>(type: "varchar(500)", nullable: true),
-                    horariosatisfacao = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    horariosatisfacao = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     javiusatisfacao = table.Column<bool>(type: "boolean", nullable: false),
                     psicologa_id = table.Column<Guid>(type: "uuid", nullable: false),
                     paciente_id = table.Column<Guid>(type: "uuid", nullable: false)
@@ -197,6 +199,20 @@ namespace Infrastructure.Consulta.Migrations
                 schema: "consultapsi",
                 table: "consulta",
                 column: "psicologa_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_empresa_cnpj",
+                schema: "consultapsi",
+                table: "empresa",
+                column: "cnpj",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_empresa_email",
+                schema: "consultapsi",
+                table: "empresa",
+                column: "email",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_paciente_acesso_id",

@@ -16,6 +16,7 @@ namespace MinhasPrioridades.Controllers.V1
     [Route("api/v{version:apiVersion}/usuario")]
     [ApiController]
     [ApiVersion("1.0")]
+    [Authorize]
     public class UsuarioController : BaseController
     {
         private readonly IMapper _mapper;

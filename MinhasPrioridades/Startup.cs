@@ -38,31 +38,34 @@ namespace MinhasPrioridades
                 app.UseDeveloperExceptionPage();
             }
 
+            //config swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Prioridades Api");
+                c.RoutePrefix = string.Empty; //swagger
+            });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             //faz parte da autenticacao JWT
-            app.UseCors(x => x
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+            //app.UseCors(x => x
+            //.AllowAnyOrigin()
+            //.AllowAnyMethod()
+            //.AllowAnyHeader());
 
-            app.UseAuthorization();
             app.UseAuthentication();//parte do JWT
+            app.UseAuthorization();
+           
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
-            //config swagger
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Orcamento Api");
-                c.RoutePrefix = string.Empty; //swagger
-            });
+           
         }
     }
 }
