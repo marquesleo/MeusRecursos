@@ -51,10 +51,10 @@ namespace MinhasPrioridades
             app.UseRouting();
 
             //faz parte da autenticacao JWT
-            //app.UseCors(x => x
-            //.AllowAnyOrigin()
-            //.AllowAnyMethod()
-            //.AllowAnyHeader());
+            app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 
             app.UseAuthentication();//parte do JWT
             app.UseAuthorization();
