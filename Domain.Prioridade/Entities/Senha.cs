@@ -30,8 +30,21 @@ namespace Domain.Prioridades.Entities
         [Column("url_img_site",TypeName ="text")]
         public string UrlImageSite { get; set; }
 
-        [ForeignKey("usuario")]
+        [Column("imagem",TypeName ="bytea")]
+        public byte[] Imagem { get; set; }
+
+        [Column("nomeimagem",TypeName ="varchar(200)")]
+        public string NomeImagem { get; set; }
+
+        //[ForeignKey("usuario")]
         public virtual Usuario Usuario { get; set; }
+
+        [Column("usuario", TypeName = "uuid")]
+        public Guid Usuario_Id { get; set; }
+
+        [Column("usuario_site", TypeName = "varchar(200)")]
+        public string Usuario_Site { get; set; }
+
         public void Map(ViewModels.SenhaViewModel senhaViewModel)
         {
            Extension.SenhaExtension.Map(this, senhaViewModel);

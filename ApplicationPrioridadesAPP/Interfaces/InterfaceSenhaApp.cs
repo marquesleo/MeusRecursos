@@ -13,5 +13,7 @@ namespace ApplicationPrioridadesAPP.Interfaces
         Task UpdateSenha(SenhaViewModel senha);
         Task<List<SenhaViewModel>> ObterRegistros(string id_usuario);
 
+        Task<SenhaViewModel> GetSenhaById(string id);
+
     }
 }

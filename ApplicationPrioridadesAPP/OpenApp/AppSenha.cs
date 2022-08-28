@@ -33,6 +33,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
             try{
                 var senhaNova = new Senha();
                 senhaNova.Map(senha);
+                //await CarregarUsuario(senhaNova);
                 await _IServiceSenha.AddSenha(senhaNova);
             } catch(Exception ex){
                   throw ex;  
@@ -59,6 +60,20 @@ namespace ApplicationPrioridadesAPP.OpenApp
             
         }
 
+        public async Task<SenhaViewModel> GetSenhaById(string id)
+        {
+            try
+            {
+                var senha = await GetEntityById(Guid.Parse(id));
+                var senhaViewModel = SenhaEntityToSenhaViewModel(senha);
+                return senhaViewModel;
+               
+            }
+            catch(Exception e)
+            {
+                throw e;                
+            }
+        }
         public async Task<Senha> GetEntityById(Guid id)
         {
             try
@@ -78,6 +93,26 @@ namespace ApplicationPrioridadesAPP.OpenApp
             }
         }
 
+        private SenhaViewModel SenhaEntityToSenhaViewModel(Senha senha)
+        {
+                        var senhaViewModel = new SenhaViewModel();
+                        senhaViewModel.Ativo = senha.Ativo;
+                        senhaViewModel.Descricao = senha.Descricao;
+                        senhaViewModel.Site = senha.Site;
+                        senhaViewModel.Id = senha.Id;
+                        senhaViewModel.Observacao = senha.Observacao;
+                        senhaViewModel.Usuario =  senha.Usuario_Id.ToString();
+                        senhaViewModel.DtAtualizacao = senha.DtAtualizacao;
+                        senhaViewModel.Password = senha.Password;
+                        senhaViewModel.UrlImageSite = senha.UrlImageSite;
+                        senhaViewModel.Usuario_Site = senha.Usuario_Site;
+                        if (senha.Imagem != null && senha.Imagem.Length > 0)
+                        {
+                          string base64String = Convert.ToBase64String(senha.Imagem, 0, senha.Imagem.Length);
+                          senhaViewModel.ImagemData = "data:image/png;base64," + base64String;
+                        }
+                        return senhaViewModel;
+        }
         public async Task<List<SenhaViewModel>> ObterRegistros(string id_usuario)
         {
             var lstSenhas = await _ISenha.FindByCondition(p => p.Usuario.Id == Guid.Parse( id_usuario));
@@ -89,17 +124,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
                 {
                     foreach (var obj in lstSenhas)
                     {
-                        var senhaViewModel = new SenhaViewModel();
-                        senhaViewModel.Ativo = obj.Ativo;
-                        senhaViewModel.Descricao = obj.Descricao;
-                        senhaViewModel.Site = obj.Site;
-                        senhaViewModel.Id = obj.Id;
-                        senhaViewModel.Observacao = obj.Observacao;
-                        senhaViewModel.Usuario =id_usuario;
-                        senhaViewModel.DtAtualizacao = obj.DtAtualizacao;
-                        senhaViewModel.Password = obj.Password;
-                        senhaViewModel.UrlImageSite = obj.UrlImageSite;
-                       
+                        var senhaViewModel = SenhaEntityToSenhaViewModel(obj);
                         lstSenhaViewModel.Add(senhaViewModel);
                     }
 
@@ -146,5 +171,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
             }
            
         }
+
+        
     }
 }

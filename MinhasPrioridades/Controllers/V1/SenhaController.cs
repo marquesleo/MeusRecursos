@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using Notification;
-using System.Collections.Generic;
 using Domain.Prioridades.Entities;
 using AutoMapper;
 using ApplicationPrioridadesAPP.Interfaces;
@@ -33,7 +32,7 @@ namespace MinhasPrioridades.Controllers.V1
         {
             try
             {
-                return Ok(await _InterfaceSenhaApp.GetEntityById(id));
+                return Ok(await _InterfaceSenhaApp.GetSenhaById(id.ToString()));
             }
             catch (Exception ex)
             {

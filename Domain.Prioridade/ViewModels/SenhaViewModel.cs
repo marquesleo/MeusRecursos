@@ -21,7 +21,10 @@ namespace Domain.Prioridades.ViewModels
          public DateTime DtAtualizacao { get; set; }
          public string UrlImageSite { get; set; }
          public string  Usuario { get; set; }
+
+         public string  Usuario_Site { get; set; }
          public string Observacao {get;set;}
-        
+         public string ImagemData {get;set;}
+         public string NomeDaImagem {get;set;}        
     }
 }

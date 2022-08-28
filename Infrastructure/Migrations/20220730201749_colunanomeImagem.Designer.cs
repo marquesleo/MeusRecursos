@@ -3,15 +3,17 @@ using System;
 using Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    partial class ContextBaseModelSnapshot : ModelSnapshot
+    [Migration("20220730201749_colunanomeImagem")]
+    partial class colunanomeImagem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,17 +97,12 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("url_img_site");
 
-                    b.Property<Guid>("Usuario_Id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("usuario");
-
-                    b.Property<string>("Usuario_Site")
-                        .HasColumnType("varchar(200)")
-                        .HasColumnName("usuario_site");
+                    b.Property<Guid?>("usuario")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Usuario_Id");
+                    b.HasIndex("usuario");
 
                     b.ToTable("senha", "personal");
                 });
@@ -146,17 +143,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Prioridades.Entities.Senha", b =>
                 {
                     b.HasOne("Domain.Prioridades.Entities.Usuario", "Usuario")
-                        .WithOne("senha")
-                        .HasForeignKey("Domain.Prioridades.Entities.Senha", "Usuario_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("usuario");
 
                     b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("Domain.Prioridades.Entities.Usuario", b =>
-                {
-                    b.Navigation("senha");
                 });
 #pragma warning restore 612, 618
         }

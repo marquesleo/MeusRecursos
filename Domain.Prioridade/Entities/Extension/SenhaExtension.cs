@@ -16,8 +16,10 @@ namespace Domain.Prioridades.Entities.Extension
             dbSenha.Password = senhaViewModel.Password;
             dbSenha.UrlImageSite = senhaViewModel.UrlImageSite;
             dbSenha.Site = senhaViewModel.Site;
-            dbSenha.Usuario = new Usuario();
-            dbSenha.Usuario.Id = Guid.Parse(senhaViewModel.Usuario);
+            dbSenha.Usuario_Site = senhaViewModel.Usuario_Site;
+            dbSenha.Imagem = System.Convert.FromBase64String(senhaViewModel.ImagemData.Substring(senhaViewModel.ImagemData.LastIndexOf(',') + 1));
+            dbSenha.NomeImagem = senhaViewModel.NomeDaImagem;
+            dbSenha.Usuario_Id = Guid.Parse(senhaViewModel.Usuario);
       
         }
     }
