@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{01E90EDB-B85F-4CF9-B63A-0F8E3AF10985}"
 EndProject
@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Consulta", "Dominio.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Consulta", "InfrastructureConsulta\Infrastructure.Consulta.csproj", "{80AFB592-8124-461F-8D20-662E56E7DB31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationConsultaAPP", "ApplicationConsultaAPP\ApplicationConsultaAPP.csproj", "{B3E5B962-4896-4FFE-B6E8-7D71D3C51BE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationConsultaAPP", "ApplicationConsultaAPP\ApplicationConsultaAPP.csproj", "{B3E5B962-4896-4FFE-B6E8-7D71D3C51BE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
