@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MinhasPrioridades.Extensions;
 using AutoMapper;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace MinhasPrioridades
 {
@@ -21,14 +23,24 @@ namespace MinhasPrioridades
         public void ConfigureServices(IServiceCollection services)
         {
             services.WebConfig();
-            services.AddControllers();
             services.AddCors();
             services.ConfigureJWT();
             services.ConfigureSwagger();
             services.Init(Configuration);
             services.ConfigureDependences(Configuration);
             services.AddAutoMapper(typeof(ApplicationPrioridadesAPP.AutoMapper.AutoMapperConfig));
-        }
+            services.AddControllers().AddNewtonsoftJson();
+                 JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+             {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+             };
+            var setting = new JsonSerializerSettings
+            {
+                ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
+            };
+            
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -60,7 +72,7 @@ namespace MinhasPrioridades
             app.UseAuthorization();
            
 
-            app.UseEndpoints(endpoints =>
+             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
