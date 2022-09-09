@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace MinhasPrioridades
-{
+{7
     public class Startup
     {
         public Startup(IConfiguration configuration)
