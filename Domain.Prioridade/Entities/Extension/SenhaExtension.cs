@@ -17,7 +17,9 @@ namespace Domain.Prioridades.Entities.Extension
             dbSenha.UrlImageSite = senhaViewModel.UrlImageSite;
             dbSenha.Site = senhaViewModel.Site;
             dbSenha.Usuario_Site = senhaViewModel.Usuario_Site;
-            dbSenha.Imagem = System.Convert.FromBase64String(senhaViewModel.ImagemData.Substring(senhaViewModel.ImagemData.LastIndexOf(',') + 1));
+            if (senhaViewModel.ImagemData != null)
+                 dbSenha.Imagem = System.Convert.FromBase64String(senhaViewModel.ImagemData.Substring(senhaViewModel.ImagemData.LastIndexOf(',') + 1));
+    
             dbSenha.NomeImagem = senhaViewModel.NomeDaImagem;
             dbSenha.Usuario_Id = Guid.Parse(senhaViewModel.Usuario);
       

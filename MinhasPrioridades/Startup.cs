@@ -4,12 +4,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MinhasPrioridades.Extensions;
-using AutoMapper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
+
+
 namespace MinhasPrioridades
-{7
+{
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -29,16 +30,23 @@ namespace MinhasPrioridades
             services.Init(Configuration);
             services.ConfigureDependences(Configuration);
             services.AddAutoMapper(typeof(ApplicationPrioridadesAPP.AutoMapper.AutoMapperConfig));
-            services.AddControllers().AddNewtonsoftJson();
-                 JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            services.AddControllers()
+            .AddJsonOptions(options =>
+               options.JsonSerializerOptions.PropertyNamingPolicy = null);
+               services.AddControllersWithViews().AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
+            services.AddHttpClient();    
+            JsonConvert.DefaultSettings = () =>
+         {
+             var settings = new JsonSerializerSettings
              {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                 PreserveReferencesHandling = PreserveReferencesHandling.None,
+                 Formatting = Formatting.None
              };
-            var setting = new JsonSerializerSettings
-            {
-                ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
-            };
-            
+
+             return settings;
+         }; 
+        }
 
 
 
@@ -71,7 +79,8 @@ namespace MinhasPrioridades
             app.UseAuthentication();//parte do JWT
             app.UseAuthorization();
            
-
+              
+          
              app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
