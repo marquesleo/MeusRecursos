@@ -51,7 +51,12 @@ namespace MinhasPrioridades.Controllers.V1
                 var token = TokenService.GenerateToken(usuario);
                
                 return Ok( new {
-                    user = usuario,
+                    user = new
+                    {
+                        Id = usuario.Id,
+                        Email = usuario.Email,
+                        Usename = usuario.Username
+                     },
                     token = token
                 });
 
