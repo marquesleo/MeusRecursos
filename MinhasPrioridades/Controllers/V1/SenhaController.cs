@@ -96,8 +96,11 @@ namespace MinhasPrioridades.Controllers.V1
             {
                  return BadRequest(new { message = ex.Message });
             }
-
+         
         }
+        
+
+        
 
           [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
@@ -120,6 +123,6 @@ namespace MinhasPrioridades.Controllers.V1
             }
         }
 
-
+         
     }
 }

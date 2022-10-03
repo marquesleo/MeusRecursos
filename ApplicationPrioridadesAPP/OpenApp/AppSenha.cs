@@ -144,7 +144,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
             try
             {
 
-                 senha.Usuario = await _IUsuario.GetEntityById(senha.Usuario.Id);
+                 senha.Usuario = await _IUsuario.GetEntityById(senha.Usuario_Id);
          
             }
             catch (Exception ex)
