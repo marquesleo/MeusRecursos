@@ -95,6 +95,8 @@ namespace ApplicationPrioridadesAPP.OpenApp
 
         private SenhaViewModel SenhaEntityToSenhaViewModel(Senha senha)
         {
+
+            
                         var senhaViewModel = new SenhaViewModel();
                         senhaViewModel.Ativo = senha.Ativo;
                         senhaViewModel.Descricao = senha.Descricao;
@@ -162,6 +164,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
                 var  senhaNova = new Senha();
                 senhaNova.Map(senha);
                  await CarregarUsuario(senhaNova);
+                 senhaNova.DtAtualizacao = DateTime.Now;
                  await _IServiceSenha.UpdateSenha(senhaNova);
             }
             catch (Exception)
