@@ -21,8 +21,7 @@ namespace Domain.Prioridades.Services
         public async Task AddPrioridade(Prioridade prioridade)
         {
             if (!ExecutarValidacao(new PrioridadeValidation(), prioridade)) return;
-               
-             await _IPrioridade.InserirPrioridade(prioridade);
+                await _IPrioridade.InserirPrioridade(prioridade);
             
         }
 

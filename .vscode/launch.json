@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/MinhasPrioridades/bin/Debug/net5.0/MinhasPrioridades.dll",
+            "program": "${workspaceFolder}/MinhasPrioridades/bin/Debug/net6.0/MinhasPrioridades.dll",
             "args": [],
             "cwd": "${workspaceFolder}/MinhasPrioridades",
             "stopAtEntry": false,

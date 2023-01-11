@@ -8,11 +8,9 @@ namespace Domain.Prioridades.Interface
 {
     public interface IPrioridade : IGeneric<Entities.Prioridade>
     { 
-
-
          Task Up(Entities.Prioridade prioridade); 
 
-        Task Down(Entities.Prioridade prioridade); 
+         Task Down(Entities.Prioridade prioridade); 
 
          Task InserirPrioridade(Entities.Prioridade prioridade);   
 

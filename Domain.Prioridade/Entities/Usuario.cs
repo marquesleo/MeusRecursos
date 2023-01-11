@@ -18,6 +18,10 @@ namespace Domain.Prioridades.Entities
         [Column("password", TypeName = "varchar(200)")]
         public string Password { get; set; }
 
+
+       [JsonIgnore]
+        public Senha senha { get; set; }
+
         public void Map(ViewModels.LoginViewModel loginViewModel)
         {
             Extension.UsuarioExtension.Map(this, loginViewModel);

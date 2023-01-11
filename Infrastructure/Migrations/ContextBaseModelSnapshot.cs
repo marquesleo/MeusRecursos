@@ -52,6 +52,64 @@ namespace Infrastructure.Migrations
                     b.ToTable("prioridade", "personal");
                 });
 
+            modelBuilder.Entity("Domain.Prioridades.Entities.Senha", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean")
+                        .HasColumnName("ativo");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("descricao");
+
+                    b.Property<DateTime>("DtAtualizacao")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("data_atualizacao");
+
+                    b.Property<byte[]>("Imagem")
+                        .HasColumnType("bytea")
+                        .HasColumnName("imagem");
+
+                    b.Property<string>("NomeImagem")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("nomeimagem");
+
+                    b.Property<string>("Observacao")
+                        .HasColumnType("text")
+                        .HasColumnName("observacao");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("password");
+
+                    b.Property<string>("Site")
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("site");
+
+                    b.Property<string>("UrlImageSite")
+                        .HasColumnType("text")
+                        .HasColumnName("url_img_site");
+
+                    b.Property<Guid>("Usuario_Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("usuario");
+
+                    b.Property<string>("Usuario_Site")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("usuario_site");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Usuario_Id");
+
+                    b.ToTable("senha", "personal");
+                });
+
             modelBuilder.Entity("Domain.Prioridades.Entities.Usuario", b =>
                 {
                     b.Property<Guid>("Id")
@@ -83,6 +141,22 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("usuario");
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Domain.Prioridades.Entities.Senha", b =>
+                {
+                    b.HasOne("Domain.Prioridades.Entities.Usuario", "Usuario")
+                        .WithOne("senha")
+                        .HasForeignKey("Domain.Prioridades.Entities.Senha", "Usuario_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Domain.Prioridades.Entities.Usuario", b =>
+                {
+                    b.Navigation("senha");
                 });
 #pragma warning restore 612, 618
         }

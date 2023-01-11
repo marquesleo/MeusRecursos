@@ -4,7 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MinhasPrioridades.Extensions;
-using AutoMapper;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+
+
 
 namespace MinhasPrioridades
 {
@@ -21,14 +24,31 @@ namespace MinhasPrioridades
         public void ConfigureServices(IServiceCollection services)
         {
             services.WebConfig();
-            services.AddControllers();
             services.AddCors();
             services.ConfigureJWT();
             services.ConfigureSwagger();
             services.Init(Configuration);
             services.ConfigureDependences(Configuration);
             services.AddAutoMapper(typeof(ApplicationPrioridadesAPP.AutoMapper.AutoMapperConfig));
+            services.AddControllers()
+            .AddJsonOptions(options =>
+               options.JsonSerializerOptions.PropertyNamingPolicy = null);
+               services.AddControllersWithViews().AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
+            services.AddHttpClient();    
+            JsonConvert.DefaultSettings = () =>
+         {
+             var settings = new JsonSerializerSettings
+             {
+                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                 PreserveReferencesHandling = PreserveReferencesHandling.None,
+                 Formatting = Formatting.None
+             };
+
+             return settings;
+         }; 
         }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -37,6 +57,14 @@ namespace MinhasPrioridades
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //config swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Prioridades Api");
+                c.RoutePrefix = string.Empty; //swagger
+            });
 
             app.UseHttpsRedirection();
 
@@ -48,21 +76,17 @@ namespace MinhasPrioridades
             .AllowAnyMethod()
             .AllowAnyHeader());
 
-            app.UseAuthorization();
             app.UseAuthentication();//parte do JWT
-
-            app.UseEndpoints(endpoints =>
+            app.UseAuthorization();
+           
+              
+          
+             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
-            //config swagger
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Orcamento Api");
-                c.RoutePrefix = string.Empty; //swagger
-            });
+           
         }
     }
 }

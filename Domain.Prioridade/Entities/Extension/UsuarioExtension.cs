@@ -9,8 +9,8 @@ namespace Domain.Prioridades.Entities.Extension
         public static void Map(this Usuario dbUsuario, 
                                ViewModels.LoginViewModel loginViewModel)
         {
-            dbUsuario.Username = loginViewModel.Username;
-            //dbUsuario.Password = loginViewModel.Password;
+            dbUsuario.Username = loginViewModel.Username.ToUpper();
+            dbUsuario.Email = loginViewModel.Email;
         }
     }
 }

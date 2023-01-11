@@ -22,16 +22,11 @@ namespace Infrastructure.Consulta.Configuration
         //dotnet ef migrations --project .\Infrastructure  --startup-project .\MinhasPrioridades add EmailColumn
         //dotnet ef database --project.\Infrastructure --startup-project.\MinhasPrioridades update
        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Acesso> Acessos { get; set; }
-
-        public DbSet<Empresa> Empresas { get; set; }
-
+       public DbSet<Acesso> Acessos { get; set; }
+       public DbSet<Empresa> Empresas { get; set; }
         public DbSet<Paciente> Pacientes { get; set; }
         public DbSet<Psicologa> Psicologas { get; set; }
-
         public DbSet<Domain.Consulta.Entities.Consulta> Consultas { get; set; }
-
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

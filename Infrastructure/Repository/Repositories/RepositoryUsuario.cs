@@ -15,10 +15,10 @@ namespace Infrastructure.Repository.Repositories
 
             try
             {
-                var usuarios = await FindByCondition(p => p.Username.Equals(login));
+                var usuarios = await FindByCondition(p => p.Username.ToUpper().Equals(login.ToUpper()));
                 if (usuarios != null && usuarios.Any())
                 {
-                    return usuarios.FirstOrDefault(p => p.Username.Equals(login) &&
+                    return usuarios.FirstOrDefault(p => p.Username.ToUpper().Equals(login.ToUpper()) &&
                                             senha.Equals(Utils.Criptografia.Decriptografar(p.Password)));
                 }
                 return null;

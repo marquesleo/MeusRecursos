@@ -14,16 +14,30 @@ namespace ApplicationPrioridadesAPP.OpenApp
     public class AppPrioridade : InterfacePrioridadeApp
     {
         private readonly IPrioridade _IPrioridade;
+        private readonly IUsuario _IUsuario;
         private readonly IServicePrioridade _IServicePrioridade;
+        private readonly IServiceUsuario _IServiceUsuario;
 
-        public AppPrioridade(IPrioridade IPrioridade , IServicePrioridade IServicePrioridade)
+        public AppPrioridade(IPrioridade IPrioridade ,
+                             IUsuario IUsuario,
+                             IServicePrioridade IServicePrioridade,
+                             IServiceUsuario IServiceUsuario)
         {
             this._IPrioridade = IPrioridade;
             this._IServicePrioridade = IServicePrioridade;
-        }
+            this._IUsuario = IUsuario;
+            this._IServiceUsuario = IServiceUsuario;
+          
+        }   
         
+       private async Task CarregarUsuario(Prioridade prioridade){
+         prioridade.Usuario = await _IUsuario.GetEntityById(prioridade.Usuario.Id);
+       }
+       
+
         public async Task AddPrioridade(Prioridade prioridade)
         {
+            await CarregarUsuario(prioridade);
             await _IServicePrioridade.AddPrioridade(prioridade);
         }
 
@@ -80,6 +94,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
     
         public async Task UpdatePrioridade(Prioridade prioridade)
         {
+            await CarregarUsuario(prioridade);
             await _IServicePrioridade.UpdatePrioridade(prioridade);
         }
 
