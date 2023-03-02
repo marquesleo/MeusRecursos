@@ -30,6 +30,25 @@ namespace MinhasPrioridades.Controllers.V1
         }
 
 
+        public async Task<IActionResult> Refresh(string token,string refreshToken)
+        {
+            var principal = TokenService.GetPrincipalFromExpiredToken(token);
+            var username = principal.Identity.Name;
+            var savedRefreshToken = TokenService.GetRefreshToken(username);
+            if (savedRefreshToken != refreshToken)
+                throw new Exception("Invalid secret token");
+            var newJwtToken = TokenService.GenerateToken(principal);
+            var newRefreshToken = TokenService.GenerateRefreshToken();
+            TokenService.DeleteRefreshToken(username, refreshToken);
+            TokenService.SaveRefreshToken(username, newRefreshToken);
+
+            return new ObjectResult(new
+            {
+                token = newJwtToken,
+                refreshToken = newRefreshToken
+            });
+        }
+
         [HttpPost]
         [Route("autenticar")]
         [AllowAnonymous]
@@ -49,6 +68,9 @@ namespace MinhasPrioridades.Controllers.V1
                      return BadRequest(new { message = "Usuário ou senha inválidos" });
 
                 var token = TokenService.GenerateToken(usuario);
+                    var refreshToken = TokenService.GenerateRefreshToken();
+                    TokenService.SaveRefreshToken(usuario.Username, refreshToken);
+
                
                 return Ok( new {
                     user = new
@@ -57,7 +79,9 @@ namespace MinhasPrioridades.Controllers.V1
                         Email = usuario.Email,
                         Usename = usuario.Username
                      },
-                    token = token
+                    token = token,
+                    refreshToken = refreshToken
+
                 });
 
             }
