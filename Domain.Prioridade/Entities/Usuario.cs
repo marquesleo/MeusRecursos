@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -19,7 +20,10 @@ namespace Domain.Prioridades.Entities
         public string Password { get; set; }
 
 
-       [JsonIgnore]
+        [JsonIgnore]
+        public List<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+
+        [JsonIgnore]
         public Senha senha { get; set; }
 
         public void Map(ViewModels.LoginViewModel loginViewModel)

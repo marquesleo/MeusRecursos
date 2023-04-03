@@ -15,6 +15,8 @@ using System.Reflection;
 using System.IO;
 using System;
 using Microsoft.OpenApi.Models;
+using Domain.Prioridades.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace MinhasPrioridades.Extensions
 {
@@ -46,6 +48,11 @@ namespace MinhasPrioridades.Extensions
                      ValidateIssuer = false,
                      ValidateAudience = false
                  };
+             })
+             .AddCookie("Cookies", options =>
+             {
+                 options.LoginPath = "/login";
+                 options.ExpireTimeSpan = TimeSpan.FromDays(7);
              });
         }
 
@@ -96,9 +103,9 @@ namespace MinhasPrioridades.Extensions
             services.AddSingleton<IPrioridade, Infrastructure.Repository.Repositories.RepositoryPrioridade>();
             services.AddSingleton<InterfacePrioridadeApp, ApplicationPrioridadesAPP.OpenApp.AppPrioridade>();
             services.AddSingleton<IServicePrioridade, ServicesPrioridade>();
-
-             services.AddSingleton<ISenha, Infrastructure.Repository.Repositories.RepositoryMinhaSenha>();
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<ISenha, Infrastructure.Repository.Repositories.RepositoryMinhaSenha>();
+            services.AddSingleton<IRefreshToken, Infrastructure.Repository.Repositories.RepositoryRefreshToken>();
             services.AddSingleton<InterfaceSenhaApp, ApplicationPrioridadesAPP.OpenApp.AppSenha>();
             services.AddSingleton<IServiceSenha, ServicesSenha>();
            

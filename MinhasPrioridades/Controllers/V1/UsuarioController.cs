@@ -9,7 +9,13 @@ using System;
 using System.Collections.Generic;
 using Domain.Prioridades.Entities;
 using Domain.Prioridades.ViewModels;
-
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.DataProtection;
+using Newtonsoft.Json.Linq;
+using static System.Net.WebRequestMethods;
+using System.Net;
+using System.Reflection.Metadata;
+using System.Security.Policy;
 
 namespace MinhasPrioridades.Controllers.V1
 {
@@ -21,70 +27,120 @@ namespace MinhasPrioridades.Controllers.V1
     {
         private readonly IMapper _mapper;
         private readonly InterfaceUsuarioApp _InterfaceUsuarioApp;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public UsuarioController(InterfaceUsuarioApp interfaceUsuarioApp,
                                      IMapper mapper,
-                                     INotificador notificador) : base(notificador)
+                                     INotificador notificador,
+                                     IHttpContextAccessor httpContextAccessor) : base(notificador)
         {
             _InterfaceUsuarioApp = interfaceUsuarioApp;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-
-        public async Task<IActionResult> Refresh(string token,string refreshToken)
-        {
-            var principal = TokenService.GetPrincipalFromExpiredToken(token);
-            var username = principal.Identity.Name;
-            var savedRefreshToken = TokenService.GetRefreshToken(username);
-            if (savedRefreshToken != refreshToken)
-                throw new Exception("Invalid secret token");
-            var newJwtToken = TokenService.GenerateToken(principal);
-            var newRefreshToken = TokenService.GenerateRefreshToken();
-            TokenService.DeleteRefreshToken(username, refreshToken);
-            TokenService.SaveRefreshToken(username, newRefreshToken);
-
-            return new ObjectResult(new
-            {
-                token = newJwtToken,
-                refreshToken = newRefreshToken
-            });
-        }
-
-        [HttpPost]
-        [Route("autenticar")]
         [AllowAnonymous]
-        public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginViewModel loginViewModel)
+        [Route("refresh-token")]
+        [HttpPost()]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenView refreshtoken)
         {
-          
-          try{
-        
-        
-         if (ModelState.IsValid)
+            //var refreshToken = Request.Cookies["refreshToken"];
+            if (refreshtoken != null && !string.IsNullOrEmpty(refreshtoken.refreshtoken)) { 
+                var response = await _InterfaceUsuarioApp.RefreshToken(refreshtoken.refreshtoken, ipAddress());
+
+            if (response == null)
+                return Unauthorized(new { message = "Invalid token" });
+
+            setTokenCookie(response.RefreshToken);
+
+            return Ok(response);
+         }else
+                 return Unauthorized(new { message = "Invalid token" });
+        }
+
+        [HttpPost("revoke-token")]
+        public async Task<IActionResult> RevokeToken([FromBody] RevokeTokenRequest model)
+        {
+            // accept token from request body or cookie
+            var token = model.Token ?? Request.Cookies["refreshToken"];
+
+            if (string.IsNullOrEmpty(token))
+                return BadRequest(new { message = "Token is required" });
+
+            var response = await _InterfaceUsuarioApp.RevokeToken(token, ipAddress());
+
+            if (!response)
+                return NotFound(new { message = "Token not found" });
+
+            return Ok(new { message = "Token revoked" });
+        }
+
+
+        [HttpGet("{id}/refresh-tokens")]
+       
+        public async Task<IActionResult> GetRefreshTokens(Guid id)
+        {
+            var user = await _InterfaceUsuarioApp.GetEntityById(id);
+            if (user == null) return NotFound();
+
+            return Ok(user.RefreshTokens);
+        }
+
+        // helper methods
+
+        private void setTokenCookie(string token)
+        {
+            var cookieOptions = new CookieOptions
             {
+                HttpOnly = true,
+                IsEssential = true,
+                Secure = false,
+                SameSite = SameSiteMode.Strict,
+                Domain = "localhost", //using https://localhost:44340/ here doesn't work
+                Expires = DateTime.UtcNow.AddDays(14)
+            };
+            Response.Cookies.Append("refreshToken", token, cookieOptions);
+            HttpContext.Response.Cookies.Append(
+                     "refreshToken",token,
+                     new CookieOptions() { SameSite = SameSiteMode.Lax });
 
-                var usuario = await _InterfaceUsuarioApp.ObterUsuario(loginViewModel.Username,
-                                                                      loginViewModel.Password);
+        }
+       
+        private string ipAddress()
+        {
+            if (Request.Headers.ContainsKey("X-Forwarded-For"))
+            return Request.Headers["X-Forwarded-For"];
+         else
+            return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        }
+[HttpPost]
+[Route("autenticar")]
+[AllowAnonymous]
+public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginViewModel loginViewModel)
+{
+    try{
+        if (ModelState.IsValid)
+        {
+            var usuario = await _InterfaceUsuarioApp.ObterUsuario(loginViewModel.Username,
+            loginViewModel.Password);
+            if (usuario == null || usuario.IsEmptyObject())
+                return BadRequest(new { message = "Usuário ou senha inválidos" });
+            var response = _InterfaceUsuarioApp.Authenticate(usuario, ipAddress());
+            setTokenCookie(response.RefreshToken);
+            return Ok(response);
 
-                if (usuario == null || usuario.IsEmptyObject())
-                     return BadRequest(new { message = "Usuário ou senha inválidos" });
+            //    return Ok( new {
+            //    user = new
+            //    {
+            //        Id = usuario.Id,
+            //        Email = usuario.Email,
+            //        Usename = usuario.Username
+            //     },
+            //    token = token,
+            //    refreshToken = refreshToken
 
-                var token = TokenService.GenerateToken(usuario);
-                    var refreshToken = TokenService.GenerateRefreshToken();
-                    TokenService.SaveRefreshToken(usuario.Username, refreshToken);
+            //});
 
-               
-                return Ok( new {
-                    user = new
-                    {
-                        Id = usuario.Id,
-                        Email = usuario.Email,
-                        Usename = usuario.Username
-                     },
-                    token = token,
-                    refreshToken = refreshToken
-
-                });
-
-            }
+                }
             else
                 return BadRequest();
 
