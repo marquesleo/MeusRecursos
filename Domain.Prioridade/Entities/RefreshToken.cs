@@ -27,7 +27,7 @@ namespace Domain.Prioridades.Entities
         public string RevokedByIp { get; set; }
         public string ReplacedByToken { get; set; }
         public bool IsActive => Revoked == null && !IsExpired;
-
+        public bool IsRevoked => Revoked != null;
         public Guid UsuarioId {  get; set; }    
         //[ForeignKey("usuario")]
         //public virtual Usuario Usuario { get; set; }

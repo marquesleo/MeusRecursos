@@ -20,6 +20,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Authorization\**" />
+    <Content Remove="Authorization\**" />
+    <EmbeddedResource Remove="Authorization\**" />
+    <None Remove="Authorization\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\MinhasSenhasController.cs" />
     <Compile Remove="Controllers\V1\HomeController.cs" />
   </ItemGroup>
@@ -54,8 +61,5 @@
 
   <ItemGroup>
     <None Remove="Authorization\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Authorization\" />
   </ItemGroup>
 </Project>

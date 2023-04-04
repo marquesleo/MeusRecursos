@@ -15,6 +15,9 @@ using Domain.Prioridades.Services;
 using System.Linq;
 using Domain.Prioridades.Interfaces;
 using Microsoft.VisualBasic;
+using ApplicationPrioridadesAPP.Helpers;
+using Microsoft.Extensions.Options;
+using ApplicationPrioridadesAPP.Authorization;
 
 namespace ApplicationPrioridadesAPP.OpenApp
 {
@@ -22,11 +25,19 @@ namespace ApplicationPrioridadesAPP.OpenApp
     {
         private readonly IUsuario _IUsuario;
         private readonly IRefreshToken _IRefreshToken;
+        private readonly AppSettings _appSettings;
+        private IJwtUtils _jwtUtils;
+
+
         public AppUsuario(IUsuario IUsuario,
-                          IRefreshToken IRefreshToken)
+                          IRefreshToken IRefreshToken,
+                          IOptions<AppSettings> appSettings,
+                          IJwtUtils jwtUtils)
         {
             this._IUsuario = IUsuario;
             this._IRefreshToken = IRefreshToken;
+            this._appSettings = appSettings.Value;
+            this._jwtUtils = jwtUtils;
         }
 
         public async Task AddUsuario(LoginViewModel loginViewModel)
@@ -130,39 +141,37 @@ namespace ApplicationPrioridadesAPP.OpenApp
 
         public async Task<AuthenticateResponse> RefreshToken(string token, string ipAddress)
         {
+
             var refresh = await _IRefreshToken.FindByCondition(r => r.Token == token);
-
-            if (refresh != null && refresh.Any())
+            var usuario = await _IUsuario.GetEntityById(refresh.SingleOrDefault().UsuarioId);
+            if (refresh != null && refresh.SingleOrDefault().IsRevoked)
             {
-                var user = await _IUsuario.FindByCondition(u => u.RefreshTokens.Any(t => t.Token == token));
-
-                // return null if no user found with token
-                if (user == null) return null;
-
-                var refreshToken = await _IRefreshToken.FindByCondition(x => x.Token == token);
-
-                if (refreshToken != null && refreshToken.Any())
-                {
-                    // return null if token is no longer active
-                    if (!refreshToken.SingleOrDefault().IsActive) return null;
-
-                    // replace old refresh token with a new one and save
-                    var newRefreshToken = generateRefreshToken(ipAddress);
-                    refreshToken.SingleOrDefault().Revoked = DateTime.UtcNow;
-                    refreshToken.SingleOrDefault().RevokedByIp = ipAddress;
-                    refreshToken.SingleOrDefault().ReplacedByToken = newRefreshToken.Token;
-                    refreshToken.SingleOrDefault().UsuarioId = user.FirstOrDefault().Id;
-
-                    user.FirstOrDefault().RefreshTokens.Add(newRefreshToken);
-                    await _IRefreshToken.Update(refreshToken.SingleOrDefault());
-                    // generate new jwt
-                    var jwtToken = generateJwtToken(user.FirstOrDefault());
-                    return new AuthenticateResponse(user.SingleOrDefault(), jwtToken, newRefreshToken.Token);
-                }
-                return new AuthenticateResponse(user.FirstOrDefault(), "", "");
+                
+                // revoke all descendant tokens in case this token has been compromised
+                revokeDescendantRefreshTokens(refresh.SingleOrDefault(), usuario, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
+               
+                await _IRefreshToken.Update(refresh.SingleOrDefault());
+              
             }
 
-            return null;
+            if (!refresh.SingleOrDefault().IsActive)
+                throw new AppException("Invalid token");
+
+            // replace old refresh token with a new one (rotate token)
+            var newRefreshToken = rotateRefreshToken(refresh.SingleOrDefault(), ipAddress);
+            usuario.RefreshTokens.Add(newRefreshToken);
+
+            // remove old refresh tokens from user
+            removeOldRefreshTokens(usuario);
+
+            // save changes to db
+            await _IUsuario.Update(usuario);
+
+            // generate new jwt
+            var jwtToken = _jwtUtils.GenerateJwtToken(usuario);
+
+            return new AuthenticateResponse(usuario, jwtToken, newRefreshToken.Token);
+
         }
 
         public async Task<bool> RevokeToken(string token, string ipAddress)
@@ -175,11 +184,10 @@ namespace ApplicationPrioridadesAPP.OpenApp
             var refreshToken = _IRefreshToken.FindByCondition(x => x.Token == token).Result.Single();
 
             // return false if token is not active
-            if (!refreshToken.IsActive) return false;
+            if (!refreshToken.IsActive) throw new AppException("Invalid token");
 
             // revoke token and save
-            refreshToken.Revoked = DateTime.UtcNow;
-            refreshToken.RevokedByIp = ipAddress;
+            revokeRefreshToken(refreshToken, ipAddress, "Revoked without replacement");
             await _IUsuario.Update(user.SingleOrDefault());
 
             return true;
@@ -198,6 +206,10 @@ namespace ApplicationPrioridadesAPP.OpenApp
                 refreshToken.Id = Guid.NewGuid();
                 refreshToken.UsuarioId = usuario.Id;
                 usuario.RefreshTokens.Add(refreshToken);
+
+                removeOldRefreshTokens(usuario);
+
+
                 _IRefreshToken.Add(refreshToken);
                 return new AuthenticateResponse(usuario, jwtToken, refreshToken.Token);
             }
@@ -211,5 +223,49 @@ namespace ApplicationPrioridadesAPP.OpenApp
            
         }
 
+        private void removeOldRefreshTokens(Usuario user)
+        {
+            // remove old inactive refresh tokens from user based on TTL in app settings
+            user.RefreshTokens.RemoveAll(x =>
+                !x.IsActive &&
+                x.Created.AddDays(_appSettings.RefreshTokenTTL) <= DateTime.UtcNow);
+        }
+        private RefreshToken rotateRefreshToken(RefreshToken refreshToken, string ipAddress)
+        {
+            var newRefreshToken = _jwtUtils.GenerateRefreshToken(ipAddress);
+            revokeRefreshToken(refreshToken, ipAddress, "Replaced by new token", newRefreshToken.Token);
+            return newRefreshToken;
+        }
+
+        private async Task<Usuario> getUserByRefreshToken(string token)
+        {
+            var user = await _IUsuario.FindByCondition(u => u.RefreshTokens.Any(t => t.Token == token));
+
+            if (user.SingleOrDefault() == null)
+                throw new AppException("Invalid token");
+
+            return user.SingleOrDefault();
+        }
+
+        
+        private void revokeDescendantRefreshTokens(RefreshToken refreshToken, Usuario user, string ipAddress, string reason)
+        {
+            // recursively traverse the refresh token chain and ensure all descendants are revoked
+            if (!string.IsNullOrEmpty(refreshToken.ReplacedByToken))
+            {
+                var childToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken.ReplacedByToken);
+                if (childToken.IsActive)
+                    revokeRefreshToken(childToken, ipAddress, reason);
+                else
+                    revokeDescendantRefreshTokens(childToken, user, ipAddress, reason);
+            }
+        }
+
+        private void revokeRefreshToken(RefreshToken token, string ipAddress, string reason = null, string replacedByToken = null)
+        {
+            token.Revoked = DateTime.UtcNow;
+            token.RevokedByIp = ipAddress;
+            token.ReplacedByToken = replacedByToken;
+        }
     }
 }

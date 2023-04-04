@@ -1,3 +1,5 @@
+using ApplicationPrioridadesAPP.Authorization;
+using ApplicationPrioridadesAPP.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,9 +32,11 @@ namespace MinhasPrioridades
             
             services.ConfigureSwagger();
             services.Init(Configuration);
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.ConfigureDependences(Configuration);
-
-
+           
+        
+           
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -104,10 +108,13 @@ namespace MinhasPrioridades
             app.UseCookiePolicy();
             app.UseAuthentication();//parte do JWT
             app.UseAuthorization();
-           
-              
-          
-             app.UseEndpoints(endpoints =>
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+
+            // custom jwt auth middleware
+            app.UseMiddleware<JwtMiddleware>();
+
+
+            app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });

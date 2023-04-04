@@ -9,8 +9,9 @@ using System.Text;
 using Domain.Prioridades.Entities;
 using System.Linq;
 using ApplicationPrioridadesAPP.Interfaces;
+using Domain.Prioridades.Interface;
 
-namespace MinhasPrioridades.Authorization
+namespace ApplicationPrioridadesAPP.Authorization
 {
     public interface IJwtUtils
     {
@@ -23,9 +24,9 @@ namespace MinhasPrioridades.Authorization
     {
         
         private readonly AppSettings _appSettings;
-       
         public JwtUtils(IOptions<AppSettings> appSettings)
         {
+          
             _appSettings = appSettings.Value;
         }
 
@@ -94,7 +95,7 @@ namespace MinhasPrioridades.Authorization
                 // token is a cryptographically strong random sequence of values
                 var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
                 // ensure token is unique by checking against db
-                var tokenIsUnique = !_context.Users.Any(u => u.RefreshTokens.Any(t => t.Token == token));
+                var tokenIsUnique = true;  //!_IUsuario.FindByCondition(u => u.RefreshTokens.Any(t => t.Token == token)).Result.Any();
 
                 if (!tokenIsUnique)
                     return getUniqueToken();

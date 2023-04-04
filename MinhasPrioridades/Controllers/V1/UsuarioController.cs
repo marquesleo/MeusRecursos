@@ -41,12 +41,13 @@ namespace MinhasPrioridades.Controllers.V1
         [AllowAnonymous]
         [Route("refresh-token")]
         [HttpPost()]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenView refreshtoken)
+        public async Task<IActionResult> RefreshToken()
         {
+            var refreshToken = Request.Cookies["refreshToken"];
             //var refreshToken = Request.Cookies["refreshToken"];
-            if (refreshtoken != null && !string.IsNullOrEmpty(refreshtoken.refreshtoken))
+            if (refreshToken != null && !string.IsNullOrEmpty(refreshToken))
             {
-                var response = await _InterfaceUsuarioApp.RefreshToken(refreshtoken.refreshtoken, ipAddress());
+                var response = await _InterfaceUsuarioApp.RefreshToken(refreshToken, ipAddress());
 
                 if (response == null)
                     return Unauthorized(new { message = "Invalid token" });
@@ -127,6 +128,7 @@ namespace MinhasPrioridades.Controllers.V1
                     loginViewModel.Password);
                     if (usuario == null || usuario.IsEmptyObject())
                         return BadRequest(new { message = "Usuário ou senha inválidos" });
+
                     var response = _InterfaceUsuarioApp.Authenticate(usuario, ipAddress());
                     setTokenCookie(response.RefreshToken);
                     return Ok(response);
