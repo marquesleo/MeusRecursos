@@ -44,17 +44,19 @@ namespace MinhasPrioridades.Controllers.V1
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenView refreshtoken)
         {
             //var refreshToken = Request.Cookies["refreshToken"];
-            if (refreshtoken != null && !string.IsNullOrEmpty(refreshtoken.refreshtoken)) { 
+            if (refreshtoken != null && !string.IsNullOrEmpty(refreshtoken.refreshtoken))
+            {
                 var response = await _InterfaceUsuarioApp.RefreshToken(refreshtoken.refreshtoken, ipAddress());
 
-            if (response == null)
+                if (response == null)
+                    return Unauthorized(new { message = "Invalid token" });
+
+                setTokenCookie(response.RefreshToken);
+
+                return Ok(response);
+            }
+            else
                 return Unauthorized(new { message = "Invalid token" });
-
-            setTokenCookie(response.RefreshToken);
-
-            return Ok(response);
-         }else
-                 return Unauthorized(new { message = "Invalid token" });
         }
 
         [HttpPost("revoke-token")]
@@ -76,7 +78,7 @@ namespace MinhasPrioridades.Controllers.V1
 
 
         [HttpGet("{id}/refresh-tokens")]
-       
+
         public async Task<IActionResult> GetRefreshTokens(Guid id)
         {
             var user = await _InterfaceUsuarioApp.GetEntityById(id);
@@ -100,54 +102,57 @@ namespace MinhasPrioridades.Controllers.V1
             };
             Response.Cookies.Append("refreshToken", token, cookieOptions);
             HttpContext.Response.Cookies.Append(
-                     "refreshToken",token,
+                     "refreshToken", token,
                      new CookieOptions() { SameSite = SameSiteMode.Lax });
 
         }
-       
+
         private string ipAddress()
         {
             if (Request.Headers.ContainsKey("X-Forwarded-For"))
-            return Request.Headers["X-Forwarded-For"];
-         else
-            return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                return Request.Headers["X-Forwarded-For"];
+            else
+                return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
         }
-[HttpPost]
-[Route("autenticar")]
-[AllowAnonymous]
-public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginViewModel loginViewModel)
-{
-    try{
-        if (ModelState.IsValid)
+        [HttpPost]
+        [Route("autenticar")]
+        [AllowAnonymous]
+        public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginViewModel loginViewModel)
         {
-            var usuario = await _InterfaceUsuarioApp.ObterUsuario(loginViewModel.Username,
-            loginViewModel.Password);
-            if (usuario == null || usuario.IsEmptyObject())
-                return BadRequest(new { message = "Usuário ou senha inválidos" });
-            var response = _InterfaceUsuarioApp.Authenticate(usuario, ipAddress());
-            setTokenCookie(response.RefreshToken);
-            return Ok(response);
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var usuario = await _InterfaceUsuarioApp.ObterUsuario(loginViewModel.Username,
+                    loginViewModel.Password);
+                    if (usuario == null || usuario.IsEmptyObject())
+                        return BadRequest(new { message = "Usuário ou senha inválidos" });
+                    var response = _InterfaceUsuarioApp.Authenticate(usuario, ipAddress());
+                    setTokenCookie(response.RefreshToken);
+                    return Ok(response);
 
-            //    return Ok( new {
-            //    user = new
-            //    {
-            //        Id = usuario.Id,
-            //        Email = usuario.Email,
-            //        Usename = usuario.Username
-            //     },
-            //    token = token,
-            //    refreshToken = refreshToken
+                    //    return Ok( new {
+                    //    user = new
+                    //    {
+                    //        Id = usuario.Id,
+                    //        Email = usuario.Email,
+                    //        Usename = usuario.Username
+                    //     },
+                    //    token = token,
+                    //    refreshToken = refreshToken
 
-            //});
+                    //});
 
                 }
-            else
-                return BadRequest();
+                else
+                    return BadRequest();
 
-          }catch(Exception ex){
-            return StatusCode(500,ex.Message);
-          }
-          
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
 
         }
 
@@ -187,13 +192,14 @@ public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginViewModel 
 
                 if (ModelState.IsValid)
                 {
-                    if (! _InterfaceUsuarioApp.IsUsuarioExiste(loginViewModel.Username))
-                   { 
+                    if (!_InterfaceUsuarioApp.IsUsuarioExiste(loginViewModel.Username))
+                    {
                         await _InterfaceUsuarioApp.AddUsuario(loginViewModel);
                         return CreatedAtAction(nameof(GetById), new { id = loginViewModel.Id }, loginViewModel);
-                   }else
-                    return BadRequest(new { message = $"Usuário {loginViewModel.Username} já está cadastrado!" });
-                
+                    }
+                    else
+                        return BadRequest(new { message = $"Usuário {loginViewModel.Username} já está cadastrado!" });
+
                 }
                 return BadRequest();
 
