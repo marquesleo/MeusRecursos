@@ -41,13 +41,14 @@ namespace MinhasPrioridades.Controllers.V1
         [AllowAnonymous]
         [Route("refresh-token")]
         [HttpPost()]
-        public async Task<IActionResult> RefreshToken()
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenView refreshTokenView)
         {
-            var refreshToken = Request.Cookies["refreshToken"];
+           
             //var refreshToken = Request.Cookies["refreshToken"];
-            if (refreshToken != null && !string.IsNullOrEmpty(refreshToken))
+            if (refreshTokenView != null && !string.IsNullOrEmpty(refreshTokenView.refreshtoken))
             {
-                var response = await _InterfaceUsuarioApp.RefreshToken(refreshToken, ipAddress());
+                var response = await _InterfaceUsuarioApp.RefreshToken(refreshTokenView.refreshtoken,
+                    ipAddress());
 
                 if (response == null)
                     return Unauthorized(new { message = "Invalid token" });
@@ -94,11 +95,11 @@ namespace MinhasPrioridades.Controllers.V1
         {
             var cookieOptions = new CookieOptions
             {
-                HttpOnly = true,
+                HttpOnly = false,
                 IsEssential = true,
                 Secure = false,
                 SameSite = SameSiteMode.Strict,
-                Domain = "localhost", //using https://localhost:44340/ here doesn't work
+                Path = "/",
                 Expires = DateTime.UtcNow.AddDays(14)
             };
             Response.Cookies.Append("refreshToken", token, cookieOptions);
@@ -130,21 +131,9 @@ namespace MinhasPrioridades.Controllers.V1
                         return BadRequest(new { message = "Usuário ou senha inválidos" });
 
                     var response = _InterfaceUsuarioApp.Authenticate(usuario, ipAddress());
-                    setTokenCookie(response.RefreshToken);
                     return Ok(response);
 
-                    //    return Ok( new {
-                    //    user = new
-                    //    {
-                    //        Id = usuario.Id,
-                    //        Email = usuario.Email,
-                    //        Usename = usuario.Username
-                    //     },
-                    //    token = token,
-                    //    refreshToken = refreshToken
-
-                    //});
-
+                  
                 }
                 else
                     return BadRequest();

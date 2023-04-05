@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
-
 using System.Threading.Tasks;
 
 namespace ApplicationPrioridadesAPP.Helpers
 {
-	public class ErrorHandlerMiddleware
-	{
+    public class ErrorHandlerMiddleware
+    {
         private readonly RequestDelegate _next;
 
         public ErrorHandlerMiddleware(RequestDelegate next)

@@ -24,9 +24,11 @@ namespace ApplicationPrioridadesAPP.Authorization
     {
         
         private readonly AppSettings _appSettings;
-        public JwtUtils(IOptions<AppSettings> appSettings)
+        private readonly IUsuario _Iusuario;
+        public JwtUtils(IOptions<AppSettings> appSettings,
+            IUsuario usuario)
         {
-          
+            _Iusuario = usuario;
             _appSettings = appSettings.Value;
         }
 
@@ -95,7 +97,7 @@ namespace ApplicationPrioridadesAPP.Authorization
                 // token is a cryptographically strong random sequence of values
                 var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
                 // ensure token is unique by checking against db
-                var tokenIsUnique = true;  //!_IUsuario.FindByCondition(u => u.RefreshTokens.Any(t => t.Token == token)).Result.Any();
+                var tokenIsUnique = ! _Iusuario.FindByCondition(u => u.RefreshTokens.Any(t => t.Token == token)).Result.Any();
 
                 if (!tokenIsUnique)
                     return getUniqueToken();
