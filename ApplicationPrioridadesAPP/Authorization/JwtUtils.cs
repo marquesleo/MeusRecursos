@@ -16,7 +16,7 @@ namespace ApplicationPrioridadesAPP.Authorization
     public interface IJwtUtils
     {
         public string GenerateJwtToken(Usuario user);
-        public int? ValidateJwtToken(string token);
+        public string ValidateJwtToken(string token);
         public RefreshToken GenerateRefreshToken(string ipAddress);
     }
 
@@ -24,10 +24,13 @@ namespace ApplicationPrioridadesAPP.Authorization
     {
         
         private readonly AppSettings _appSettings;
-        public JwtUtils(IOptions<AppSettings> appSettings)
+        private readonly IUsuario _usuario;
+        public JwtUtils(IOptions<AppSettings> appSettings, 
+             IUsuario usuario)
         {
           
             _appSettings = appSettings.Value;
+            _usuario = usuario;
         }
 
         public string GenerateJwtToken(Usuario user)
@@ -45,7 +48,7 @@ namespace ApplicationPrioridadesAPP.Authorization
             return tokenHandler.WriteToken(token);
         }
 
-        public int? ValidateJwtToken(string token)
+        public string ValidateJwtToken(string token)
         {
             if (token == null)
                 return null;
@@ -65,7 +68,7 @@ namespace ApplicationPrioridadesAPP.Authorization
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
-                var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
+                var userId = jwtToken.Claims.First(x => x.Type == "nameid" || x.Type == "id").Value;
 
                 // return user id from JWT token if validation successful
                 return userId;
@@ -95,7 +98,7 @@ namespace ApplicationPrioridadesAPP.Authorization
                 // token is a cryptographically strong random sequence of values
                 var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
                 // ensure token is unique by checking against db
-                var tokenIsUnique = true;  //!_IUsuario.FindByCondition(u => u.RefreshTokens.Any(t => t.Token == token)).Result.Any();
+                var tokenIsUnique = !_usuario.FindByCondition(u => u.RefreshTokens.Any(t => t.Token == token)).Result.Any();
 
                 if (!tokenIsUnique)
                     return getUniqueToken();

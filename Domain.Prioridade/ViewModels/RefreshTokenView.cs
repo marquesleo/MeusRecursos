@@ -9,5 +9,6 @@ namespace Domain.Prioridades.ViewModels
     public class RefreshTokenView
     {
         public string refreshtoken { get; set; }
+        public string accesstoken { get; set; }
     }
 }

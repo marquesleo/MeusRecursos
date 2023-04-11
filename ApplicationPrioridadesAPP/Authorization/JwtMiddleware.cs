@@ -28,7 +28,7 @@ namespace ApplicationPrioridadesAPP.Authorization
             if (userId != null)
             {
                 // attach user to context on successful jwt validation
-                context.Items["User"] = await userService.GetEntityById(Guid.Parse( userId.Value.ToString()));
+                context.Items["User"] = await userService.GetEntityById(Guid.Parse( userId.ToString()));
             }
 
             await _next(context);

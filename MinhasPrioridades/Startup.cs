@@ -108,8 +108,8 @@ namespace MinhasPrioridades
             app.UseCookiePolicy();
             app.UseAuthentication();//parte do JWT
             app.UseAuthorization();
-            app.UseMiddleware<ErrorHandlerMiddleware>();
 
+            app.UseMiddleware<ErrorHandlerMiddleware>();
             // custom jwt auth middleware
             app.UseMiddleware<JwtMiddleware>();
 

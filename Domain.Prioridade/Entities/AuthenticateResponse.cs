@@ -12,7 +12,6 @@ namespace Domain.Prioridades.Entities
         public Guid Id { get; set; }
         public string Username { get; set; }
         public string token { get; set; }
-        [JsonPropertyName("refreshtoken")]
         public string RefreshToken { get; set; }
 
         public AuthenticateResponse(Usuario user, string jwtToken, string refreshToken)

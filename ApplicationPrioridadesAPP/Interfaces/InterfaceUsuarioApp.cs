@@ -11,7 +11,7 @@ namespace ApplicationPrioridadesAPP.Interfaces
         Task AddUsuario(LoginViewModel loginViewModel);
         Task UpdateUsuario(LoginViewModel loginViewModel);
         AuthenticateResponse Authenticate(Usuario usuario, string ipAddress);
-        Task <AuthenticateResponse> RefreshToken(string token, string ipAddress);
+        Task <AuthenticateResponse> RefreshToken(string token, string refreshToken, string ipAddress);
         Task<bool> RevokeToken(string token, string ipAddress);
     }
 }
