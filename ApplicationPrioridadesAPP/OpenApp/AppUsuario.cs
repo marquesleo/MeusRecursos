@@ -166,18 +166,18 @@ namespace ApplicationPrioridadesAPP.OpenApp
 
             // replace old refresh token with a new one (rotate token)
             var newRefreshToken = rotateRefreshToken(refresh.SingleOrDefault(), ipAddress);
+            
             usuario.RefreshTokens.Add(newRefreshToken);
 
             //remove old refresh tokens from user
-           // removeOldRefreshTokens(usuario);
+            removeOldRefreshTokens(usuario);
 
-            // save changes to db
-            await _IUsuario.Update(usuario);
-
-            // generate new jwt
-            var jwtToken = _jwtUtils.GenerateJwtToken(usuario);
-
-                return new AuthenticateResponse(usuario, jwtToken, newRefreshToken.Token);
+             //save changes to db
+             await _IUsuario.Update(usuario);
+             await _IRefreshToken.Update(refresh.SingleOrDefault());
+             // generate new jwt
+             var jwtToken = TokenService.GenerateToken(usuario);
+              return new AuthenticateResponse(usuario, jwtToken, newRefreshToken.Token);
             }
             catch (Exception ex)
             {
@@ -243,9 +243,10 @@ namespace ApplicationPrioridadesAPP.OpenApp
         }
         private RefreshToken rotateRefreshToken(RefreshToken refreshToken, string ipAddress)
         {
+         
             var newRefreshToken = _jwtUtils.GenerateRefreshToken(ipAddress);
             revokeRefreshToken(refreshToken, ipAddress, "Replaced by new token", newRefreshToken.Token);
-            _IRefreshToken.Update(refreshToken);
+           
             return newRefreshToken;
         }
 

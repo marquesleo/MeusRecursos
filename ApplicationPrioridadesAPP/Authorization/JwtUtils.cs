@@ -15,7 +15,7 @@ namespace ApplicationPrioridadesAPP.Authorization
 {
     public interface IJwtUtils
     {
-        public string GenerateJwtToken(Usuario user);
+        //public string GenerateJwtToken(Usuario user);
         public string ValidateJwtToken(string token);
         public RefreshToken GenerateRefreshToken(string ipAddress);
     }
@@ -33,7 +33,7 @@ namespace ApplicationPrioridadesAPP.Authorization
             _usuario = usuario;
         }
 
-        public string GenerateJwtToken(Usuario user)
+        /*public string GenerateJwtToken(Usuario user)
         {
             // generate token that is valid for 15 minutes
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -46,7 +46,7 @@ namespace ApplicationPrioridadesAPP.Authorization
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
-        }
+        }*/
 
         public string ValidateJwtToken(string token)
         {
