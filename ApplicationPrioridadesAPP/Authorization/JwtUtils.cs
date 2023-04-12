@@ -28,7 +28,7 @@ namespace ApplicationPrioridadesAPP.Authorization
         public JwtUtils(IOptions<AppSettings> appSettings, 
              IUsuario usuario)
         {
-            _Iusuario = usuario;
+           
             _appSettings = appSettings.Value;
             _usuario = usuario;
         }

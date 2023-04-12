@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using Domain.Prioridades.Entities;
 using Domain.Prioridades.ViewModels;
 using Microsoft.AspNetCore.Http;
-
 using MiniValidation;
 
 namespace MinhasPrioridades.Controllers.V1
@@ -46,7 +45,9 @@ namespace MinhasPrioridades.Controllers.V1
 
            if (refreshTokenView != null && !string.IsNullOrEmpty(refreshTokenView.refreshtoken))
             {
-                var response = await _InterfaceUsuarioApp.RefreshToken(refreshTokenView.refreshtoken, ipAddress());
+                var response = await _InterfaceUsuarioApp.RefreshToken(refreshTokenView.accesstoken,
+                                                                       refreshTokenView.refreshtoken,
+                                                                       ipAddress());
 
                 if (response == null)
                     return Unauthorized(new { message = "Invalid token" });
