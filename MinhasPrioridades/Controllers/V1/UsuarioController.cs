@@ -4,12 +4,12 @@ using Notification;
 using AutoMapper;
 using ApplicationPrioridadesAPP.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Domain.Prioridades.Services;
 using System;
 using System.Collections.Generic;
 using Domain.Prioridades.Entities;
 using Domain.Prioridades.ViewModels;
-
+using Microsoft.AspNetCore.Http;
+using MiniValidation;
 
 namespace MinhasPrioridades.Controllers.V1
 {
@@ -21,53 +21,113 @@ namespace MinhasPrioridades.Controllers.V1
     {
         private readonly IMapper _mapper;
         private readonly InterfaceUsuarioApp _InterfaceUsuarioApp;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+       
         public UsuarioController(InterfaceUsuarioApp interfaceUsuarioApp,
                                      IMapper mapper,
-                                     INotificador notificador) : base(notificador)
+                                     INotificador notificador,
+                                     IHttpContextAccessor httpContextAccessor) : base(notificador)
         {
             _InterfaceUsuarioApp = interfaceUsuarioApp;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
+           
+        }
+
+        [AllowAnonymous]
+        [Route("refresh-token")]
+        [HttpPost()]
+        public async Task<IActionResult> RefreshToken(RefreshTokenView refreshTokenView)
+        {
+
+            if (!MiniValidator.TryValidate(refreshTokenView, out var errors))
+                return BadRequest(Results.ValidationProblem(errors));
+
+           if (refreshTokenView != null && !string.IsNullOrEmpty(refreshTokenView.refreshtoken))
+            {
+                var response = await _InterfaceUsuarioApp.RefreshToken(refreshTokenView.accesstoken,
+                                                                       refreshTokenView.refreshtoken,
+                                                                       ipAddress());
+
+                if (response == null)
+                    return Unauthorized(new { message = "Invalid token" });
+
+               
+
+                return Ok(response);
+            }
+            else
+                return Unauthorized(new { message = "Invalid token" });
+        }
+
+        [HttpPost("revoke-token")]
+        public async Task<IActionResult> RevokeToken([FromBody] RevokeTokenRequest model)
+        {
+            // accept token from request body or cookie
+            var token = model.Token ?? Request.Cookies["refreshToken"];
+
+            if (string.IsNullOrEmpty(token))
+                return BadRequest(new { message = "Token is required" });
+
+            var response = await _InterfaceUsuarioApp.RevokeToken(token, ipAddress());
+
+            if (!response)
+                return NotFound(new { message = "Token not found" });
+
+            return Ok(new { message = "Token revoked" });
         }
 
 
+        [HttpGet("{id}/refresh-tokens")]
+
+        public async Task<IActionResult> GetRefreshTokens(Guid id)
+        {
+            var user = await _InterfaceUsuarioApp.GetEntityById(id);
+            if (user == null) return NotFound();
+
+            return Ok(user.RefreshTokens);
+        }
+
+        // helper methods
+
+
+        private string ipAddress()
+        {
+            if (Request.Headers.ContainsKey("X-Forwarded-For"))
+                return Request.Headers["X-Forwarded-For"];
+            else
+                return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        }
         [HttpPost]
         [Route("autenticar")]
         [AllowAnonymous]
         public async Task<ActionResult<dynamic>> Authenticate([FromBody] LoginViewModel loginViewModel)
         {
-          
-          try{
-        
-        
-         if (ModelState.IsValid)
+            try
             {
+                if (ModelState.IsValid)
+                {
+                    var usuario = await _InterfaceUsuarioApp.ObterUsuario(loginViewModel.Username,
+                    loginViewModel.Password);
+                    if (usuario == null || usuario.IsEmptyObject())
+                        return BadRequest(new { message = "Usuário ou senha inválidos" });
 
-                var usuario = await _InterfaceUsuarioApp.ObterUsuario(loginViewModel.Username,
-                                                                      loginViewModel.Password);
+                    var response = _InterfaceUsuarioApp.Authenticate(usuario, ipAddress());
+                    
+                    return Ok(response);
 
-                if (usuario == null || usuario.IsEmptyObject())
-                     return BadRequest(new { message = "Usuário ou senha inválidos" });
+                 
 
-                var token = TokenService.GenerateToken(usuario);
-               
-                return Ok( new {
-                    user = new
-                    {
-                        Id = usuario.Id,
-                        Email = usuario.Email,
-                        Usename = usuario.Username
-                     },
-                    token = token
-                });
+                }
+                else
+                    return BadRequest();
 
             }
-            else
-                return BadRequest();
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
 
-          }catch(Exception ex){
-            return StatusCode(500,ex.Message);
-          }
-          
 
         }
 
@@ -107,13 +167,14 @@ namespace MinhasPrioridades.Controllers.V1
 
                 if (ModelState.IsValid)
                 {
-                    if (! _InterfaceUsuarioApp.IsUsuarioExiste(loginViewModel.Username))
-                   { 
+                    if (!_InterfaceUsuarioApp.IsUsuarioExiste(loginViewModel.Username))
+                    {
                         await _InterfaceUsuarioApp.AddUsuario(loginViewModel);
                         return CreatedAtAction(nameof(GetById), new { id = loginViewModel.Id }, loginViewModel);
-                   }else
-                    return BadRequest(new { message = $"Usuário {loginViewModel.Username} já está cadastrado!" });
-                
+                    }
+                    else
+                        return BadRequest(new { message = $"Usuário {loginViewModel.Username} já está cadastrado!" });
+
                 }
                 return BadRequest();
 

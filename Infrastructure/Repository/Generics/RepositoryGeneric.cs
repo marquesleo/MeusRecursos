@@ -22,20 +22,38 @@ namespace Infrastructure.Repository.Generics
         }
         public async Task Add(T objeto)
         {
-            using(var data = new ContextBase(_optionsBuilder, myDB))
+            try
             {
-                await data.Set<T>().AddAsync(objeto);
-                await data.SaveChangesAsync();
+                using (var data = new ContextBase(_optionsBuilder, myDB))
+                {
+                    await data.Set<T>().AddAsync(objeto);
+                    await data.SaveChangesAsync();
+                }
             }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+         
         }
 
         public async Task Delete(T objeto)
         {
-            using (var data = new ContextBase(_optionsBuilder, myDB))
+            try
             {
-                data.Set<T>().Remove(objeto);
-                await data.SaveChangesAsync();
+                using (var data = new ContextBase(_optionsBuilder, myDB))
+                {
+                    await data.Set<T>().AddAsync(objeto);
+                    await data.SaveChangesAsync();
+                }
             }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+          
         }
 
         public async Task<List<T>> FindByCondition(Expression<Func<T, bool>> expression)
@@ -66,11 +84,20 @@ namespace Infrastructure.Repository.Generics
 
         public async Task Update(T objeto)
         {
-            using (var data = new ContextBase(_optionsBuilder, myDB))
+            try
             {
-                 data.Set<T>().Update(objeto);
-                await data.SaveChangesAsync();
+                using (var data = new ContextBase(_optionsBuilder, myDB))
+                {
+                    data.Set<T>().Update(objeto);
+                    await data.SaveChangesAsync();
+                }
             }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
         }
 
         #region Disposed https://docs.microsoft.com/pt-br/dotnet/standard/garbage-collection/implementing-dispose
