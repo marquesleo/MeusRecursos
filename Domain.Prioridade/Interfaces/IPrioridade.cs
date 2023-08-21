@@ -1,4 +1,5 @@
 ﻿using Contracts.Generics;
+using Domain.Prioridades.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,11 +9,13 @@ namespace Domain.Prioridades.Interface
 {
     public interface IPrioridade : IGeneric<Entities.Prioridade>
     { 
-         Task Up(Entities.Prioridade prioridade); 
+         Task Up(Prioridade prioridade); 
 
-         Task Down(Entities.Prioridade prioridade); 
+         Task Down(Prioridade prioridade); 
 
-         Task InserirPrioridade(Entities.Prioridade prioridade);   
+         Task InserirPrioridade(Prioridade prioridade);
+
+         Task SetOrder(Prioridade prioridade, enuOrdem ordem);
 
     }
 }

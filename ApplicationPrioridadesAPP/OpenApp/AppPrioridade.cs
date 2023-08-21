@@ -107,5 +107,10 @@ namespace ApplicationPrioridadesAPP.OpenApp
         {
             await _IServicePrioridade.Down(prioridade);
         }
+
+        public async Task SetOrder(Prioridade prioridade, enuOrdem ordem)
+        {
+            await _IServicePrioridade.SetOrder(prioridade,ordem);
+        }
     }
 }

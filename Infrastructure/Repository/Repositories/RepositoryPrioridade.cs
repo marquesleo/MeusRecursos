@@ -75,5 +75,24 @@ namespace Infrastructure.Repository.Repositories
             return lstParametro; 
         }
 
+        public async Task SetOrder(Prioridade prioridade, enuOrdem ordem)
+        {
+            try
+            {
+
+                var con = new NpgsqlConnection(base.myDB.getStringConn().conexao);
+                var sql = " CALL personal.sp_reorder(@id, @direction); ";
+                con.Open();
+                var cmd = new NpgsqlCommand(sql, con);
+                cmd.Parameters.Add(new NpgsqlParameter("@id", prioridade.Id));
+                cmd.Parameters.Add(new NpgsqlParameter("@direction", ordem.ToString()));
+                cmd.ExecuteNonQuery();
+                return;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

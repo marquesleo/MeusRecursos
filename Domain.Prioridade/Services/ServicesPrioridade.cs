@@ -30,6 +30,11 @@ namespace Domain.Prioridades.Services
             await _IPrioridade.Down(prioridade);
         }
 
+        public async Task SetOrder(Prioridade prioridade, enuOrdem ordem)
+        {
+            await _IPrioridade.SetOrder(prioridade,ordem);
+        }
+
         public async Task Up(Prioridade prioridade)
         {
             await _IPrioridade.Up(prioridade);

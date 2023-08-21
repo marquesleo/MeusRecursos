@@ -4,6 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Prioridades.Entities
 {
+
+    public enum enuOrdem
+    {
+        up,
+        down
+    }
+
     [Table("prioridade", Schema = "personal")]
     public class Prioridade:Base
     {
