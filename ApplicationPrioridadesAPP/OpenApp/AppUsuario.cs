@@ -91,6 +91,15 @@ namespace ApplicationPrioridadesAPP.OpenApp
                return true;
         }
 
+        public bool IsUsuarioComEmailExistente(string email)
+        {
+            var usuario = this.FindByCondition(p=> p.Email == email).Result;
+            if (usuario == null || !usuario.Any())
+                return false;
+            else
+                return true;
+        }
+
         public async Task<List<Usuario>> List()
         {
             return await _IUsuario.List();
@@ -280,5 +289,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
             token.RevokedByIp = ipAddress;
             token.ReplacedByToken = replacedByToken;
         }
+
+       
     }
 }

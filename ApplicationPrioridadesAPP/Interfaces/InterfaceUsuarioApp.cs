@@ -8,6 +8,7 @@ namespace ApplicationPrioridadesAPP.Interfaces
     {
         Task<Usuario> ObterUsuario(string login, string senha);
         bool IsUsuarioExiste(string login);
+        bool IsUsuarioComEmailExistente(string email);
         Task AddUsuario(LoginViewModel loginViewModel);
         Task UpdateUsuario(LoginViewModel loginViewModel);
         AuthenticateResponse Authenticate(Usuario usuario, string ipAddress);

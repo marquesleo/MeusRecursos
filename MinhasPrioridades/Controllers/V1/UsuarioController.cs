@@ -160,6 +160,7 @@ namespace MinhasPrioridades.Controllers.V1
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Add([FromBody] LoginViewModel loginViewModel)
         {
             try
@@ -167,13 +168,15 @@ namespace MinhasPrioridades.Controllers.V1
 
                 if (ModelState.IsValid)
                 {
-                    if (!_InterfaceUsuarioApp.IsUsuarioExiste(loginViewModel.Username))
-                    {
-                        await _InterfaceUsuarioApp.AddUsuario(loginViewModel);
-                        return CreatedAtAction(nameof(GetById), new { id = loginViewModel.Id }, loginViewModel);
-                    }
-                    else
+                    if (_InterfaceUsuarioApp.IsUsuarioExiste(loginViewModel.Username))
                         return BadRequest(new { message = $"Usuário {loginViewModel.Username} já está cadastrado!" });
+
+                    if (_InterfaceUsuarioApp.IsUsuarioComEmailExistente(loginViewModel.Email))
+                        return BadRequest(new { message = $"Usuário {loginViewModel.Email} está cadastrado!" });
+
+                     await _InterfaceUsuarioApp.AddUsuario(loginViewModel);
+                     return CreatedAtAction(nameof(GetById), new { id = loginViewModel.Id }, loginViewModel);
+                    
 
                 }
                 return BadRequest();
@@ -181,7 +184,8 @@ namespace MinhasPrioridades.Controllers.V1
             }
             catch (Exception ex)
             {
-                return BadRequest("Erro ao incluir usuario " + ex.Message);
+                return BadRequest(new { message = "Erro ao incluir usuario " + ex.Message });
+                
             }
 
         }
@@ -222,12 +226,13 @@ namespace MinhasPrioridades.Controllers.V1
                     return Ok();
                 }
                 else
-                    return BadRequest("Registro não encontrado ");
+                    return BadRequest(new { message = "Registro não encontrado" });
+               
             }
             catch (Exception ex)
             {
-
-                return BadRequest("Erro ao excluir usuario " + ex.Message);
+                return BadRequest(new { message = "Erro ao excluir usuario " + ex.Message });
+               
             }
         }
 
