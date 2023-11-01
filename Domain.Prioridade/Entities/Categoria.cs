@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Entities.Models;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Prioridades.Entities
 {
     [Table("categoria", Schema = "personal")]
-    public class Categoria
+    public class Categoria : Base
+    
 	{
 		public Categoria()
 		{
@@ -20,10 +22,7 @@ namespace Domain.Prioridades.Entities
        
         [ForeignKey("usuario")]
         public virtual Usuario Usuario { get; set; }
-
-        [Column("usuario", TypeName = "uuid")]
-        public Guid Usuario_Id { get; set; }
-
+               
         [Column("url_img_site", TypeName = "text")]
         public string UrlImageSite { get; set; }
 

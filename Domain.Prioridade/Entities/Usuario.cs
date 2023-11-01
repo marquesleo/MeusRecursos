@@ -26,6 +26,8 @@ namespace Domain.Prioridades.Entities
         [JsonIgnore]
         public Senha senha { get; set; }
 
+       
+
         public void Map(ViewModels.LoginViewModel loginViewModel)
         {
             Extension.UsuarioExtension.Map(this, loginViewModel);

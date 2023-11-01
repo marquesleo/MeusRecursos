@@ -47,10 +47,10 @@ namespace Infrastructure.Configuration
                   modelBuilder.Entity<Domain.Prioridades.Entities.Senha>()
                     .HasIndex(b => b.Usuario_Id)
                     .IsUnique(false);
+            //
+                    
 
-            modelBuilder.Entity<Domain.Prioridades.Entities.Categoria>()
-                    .HasIndex(b => b.Usuario_Id)
-                    .IsUnique(false);
+          
         }
         private string GetStringConectionConfig()
         {

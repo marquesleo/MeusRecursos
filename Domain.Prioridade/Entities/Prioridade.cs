@@ -29,6 +29,7 @@ namespace Domain.Prioridades.Entities
 
         [ForeignKey("usuario")]
         public virtual Usuario Usuario { get; set; }
+
         public void Map(ViewModels.PrioridadeViewModel prioridadeViewModel)
         {
             Extension.PrioridadeExtension.Map(this, prioridadeViewModel);
