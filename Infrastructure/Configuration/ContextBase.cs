@@ -24,6 +24,8 @@ namespace Infrastructure.Configuration
        public DbSet<Domain.Prioridades.Entities.Usuario> Usuarios { get; set; }
        public DbSet<Domain.Prioridades.Entities.Prioridade> Prioridades { get; set; }
        public DbSet<Domain.Prioridades.Entities.Senha> Senhas { get; set; }
+        public DbSet<Domain.Prioridades.Entities.Categoria> Categorias { get; set; }
+
 
         public DbSet<Domain.Prioridades.Entities.RefreshToken> RefreshTokens { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -43,6 +45,10 @@ namespace Infrastructure.Configuration
                 .HasForeignKey<Domain.Prioridades.Entities.Senha>(ad => ad.Usuario_Id);
 
                   modelBuilder.Entity<Domain.Prioridades.Entities.Senha>()
+                    .HasIndex(b => b.Usuario_Id)
+                    .IsUnique(false);
+
+            modelBuilder.Entity<Domain.Prioridades.Entities.Categoria>()
                     .HasIndex(b => b.Usuario_Id)
                     .IsUnique(false);
         }

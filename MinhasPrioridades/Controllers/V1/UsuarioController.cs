@@ -109,6 +109,8 @@ namespace MinhasPrioridades.Controllers.V1
                 {
                     var usuario = await _InterfaceUsuarioApp.ObterUsuario(loginViewModel.Username,
                     loginViewModel.Password);
+
+
                     if (usuario == null || usuario.IsEmptyObject())
                         return BadRequest(new { message = "Usuário ou senha inválidos" });
 
@@ -120,12 +122,13 @@ namespace MinhasPrioridades.Controllers.V1
 
                 }
                 else
-                    return BadRequest();
+                    return BadRequest(new { message = ModelState.ToString() });
 
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                return BadRequest(new { message = ex.Message });
+               
             }
 
 

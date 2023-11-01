@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Domain.Prioridades.ViewModels
 {
@@ -18,6 +19,8 @@ namespace Domain.Prioridades.ViewModels
 
         [Required(ErrorMessage = "O Campo {0} é obrigatório")]
          public string Password { get; set; }
+
+         [JsonIgnore]
          public DateTime DtAtualizacao { get; set; }
          public string UrlImageSite { get; set; }
          public string  Usuario { get; set; }

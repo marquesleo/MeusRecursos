@@ -18,6 +18,7 @@ using Microsoft.VisualBasic;
 using ApplicationPrioridadesAPP.Helpers;
 using Microsoft.Extensions.Options;
 using ApplicationPrioridadesAPP.Authorization;
+using static Domain.Prioridades.Services.TokenService;
 
 namespace ApplicationPrioridadesAPP.OpenApp
 {
@@ -127,7 +128,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
             await _IUsuario.Update(usuario);
         }
 
-        private string generateJwtToken(Usuario user)
+        private MeuToken generateJwtToken(Usuario user)
         {
            return TokenService.GenerateToken(user);
         }
@@ -186,7 +187,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
              await _IRefreshToken.Update(refresh.SingleOrDefault());
              // generate new jwt
              var jwtToken = TokenService.GenerateToken(usuario);
-              return new AuthenticateResponse(usuario, jwtToken, newRefreshToken.Token);
+              return new AuthenticateResponse(usuario, jwtToken.token, newRefreshToken.Token,jwtToken.expira);
             }
             catch (Exception ex)
             {
@@ -231,7 +232,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
 
 
                 _IRefreshToken.Add(refreshToken);
-                return new AuthenticateResponse(usuario, jwtToken, refreshToken.Token);
+                return new AuthenticateResponse(usuario, jwtToken.token, refreshToken.Token,jwtToken.expira);
             }
             catch (Exception ex)
             {

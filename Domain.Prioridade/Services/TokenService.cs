@@ -12,7 +12,13 @@ namespace Domain.Prioridades.Services
 {
     public static class TokenService
     {
-        public static string GenerateToken(Usuario usuario)
+
+        public class MeuToken
+        {
+            public string token { get; set; }
+            public DateTime expira { get; set; }
+        }
+        public static MeuToken GenerateToken(Usuario usuario)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Settings.Secret);
@@ -30,7 +36,10 @@ namespace Domain.Prioridades.Services
                 
             };
            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var meuToken = new MeuToken();
+            meuToken.token = tokenHandler.WriteToken(token);
+            meuToken.expira = tokenDescriptor.Expires.Value;
+            return meuToken;
         }
 
         public static string GenerateToken(ClaimsPrincipal claims)
