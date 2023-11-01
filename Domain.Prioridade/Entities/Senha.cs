@@ -36,7 +36,7 @@ namespace Domain.Prioridades.Entities
         [Column("nomeimagem",TypeName ="varchar(200)")]
         public string NomeImagem { get; set; }
 
-        //[ForeignKey("usuario")]
+        [ForeignKey("usuario_categoria")]
         public virtual Usuario Usuario { get; set; }
 
         [Column("usuario", TypeName = "uuid")]

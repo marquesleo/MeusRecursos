@@ -4,6 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Prioridades.Entities
 {
+
+    public enum enuOrdem
+    {
+        up,
+        down
+    }
+
     [Table("prioridade", Schema = "personal")]
     public class Prioridade:Base
     {
@@ -22,6 +29,7 @@ namespace Domain.Prioridades.Entities
 
         [ForeignKey("usuario")]
         public virtual Usuario Usuario { get; set; }
+
         public void Map(ViewModels.PrioridadeViewModel prioridadeViewModel)
         {
             Extension.PrioridadeExtension.Map(this, prioridadeViewModel);

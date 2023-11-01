@@ -9,5 +9,6 @@ namespace Domain.Prioridades.InterfaceService
         Task UpdatePrioridade(Prioridade prioridade);
         Task Up(Prioridade prioridade);
         Task Down(Prioridade prioridade);
+        Task SetOrder(Prioridade prioridade, enuOrdem ordem);
     }
 }

@@ -24,7 +24,11 @@ namespace Infrastructure.Configuration
        public DbSet<Domain.Prioridades.Entities.Usuario> Usuarios { get; set; }
        public DbSet<Domain.Prioridades.Entities.Prioridade> Prioridades { get; set; }
        public DbSet<Domain.Prioridades.Entities.Senha> Senhas { get; set; }
-       protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public DbSet<Domain.Prioridades.Entities.Categoria> Categorias { get; set; }
+
+
+        public DbSet<Domain.Prioridades.Entities.RefreshToken> RefreshTokens { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
@@ -43,6 +47,10 @@ namespace Infrastructure.Configuration
                   modelBuilder.Entity<Domain.Prioridades.Entities.Senha>()
                     .HasIndex(b => b.Usuario_Id)
                     .IsUnique(false);
+            //
+                    
+
+          
         }
         private string GetStringConectionConfig()
         {

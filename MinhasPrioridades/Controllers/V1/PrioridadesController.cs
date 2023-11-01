@@ -91,7 +91,7 @@ namespace MinhasPrioridades.Controllers.V1
 
                     var prioridade = new Prioridade();
                     prioridade.Map(prioridadeViewModel);
-                    await _InterfacePrioridadeApp.Up(prioridade);
+                    await _InterfacePrioridadeApp.SetOrder(prioridade, enuOrdem.up);
                     return Ok();
                 }
                 return BadRequest();
@@ -115,7 +115,7 @@ namespace MinhasPrioridades.Controllers.V1
 
                     var prioridade = new Prioridade();
                     prioridade.Map(prioridadeViewModel);
-                    await _InterfacePrioridadeApp.Down(prioridade);
+                    await _InterfacePrioridadeApp.SetOrder(prioridade, enuOrdem.down);
                     return Ok();
                 }
                 return BadRequest();
