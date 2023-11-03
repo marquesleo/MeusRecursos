@@ -36,7 +36,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
 
         public async Task AddCategoria(Categoria categoria)
         {
-            await CarregarUsuario(categoria);
+            //await CarregarUsuario(categoria);
             await _IServiceCategoria.AddCategoria(categoria);
         }
 

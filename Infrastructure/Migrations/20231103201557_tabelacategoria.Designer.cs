@@ -182,7 +182,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<Guid?>("usuario")
                         .HasColumnType("uuid")
-                        .HasColumnName("usuario1");
+                        .HasColumnName("usuario");
 
                     b.HasKey("Id");
 

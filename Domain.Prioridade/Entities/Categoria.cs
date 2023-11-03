@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Domain.Prioridades.Entities
 {
@@ -19,7 +20,7 @@ namespace Domain.Prioridades.Entities
         [Column("ativo")]
         public bool Ativo { get; set; }
 
-             
+        [JsonIgnore]  
         public virtual Usuario Usuario { get; set; } 
 
         [Column("usuario", TypeName = "uuid")]

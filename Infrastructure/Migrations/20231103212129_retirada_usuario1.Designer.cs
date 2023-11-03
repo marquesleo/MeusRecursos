@@ -3,15 +3,17 @@ using System;
 using Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    partial class ContextBaseModelSnapshot : ModelSnapshot
+    [Migration("20231103212129_retirada_usuario1")]
+    partial class retirada_usuario1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,6 +179,10 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Usuario_Site")
                         .HasColumnType("varchar(200)")
                         .HasColumnName("usuario_site");
+
+                    b.Property<Guid?>("usuario")
+                        .HasColumnType("uuid")
+                        .HasColumnName("usuario1");
 
                     b.HasKey("Id");
 
