@@ -71,7 +71,7 @@ namespace MinhasPrioridades.Controllers.V1
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { message = "Erro ao incluir senha ." +   ex.Message });
             }
 
         }
@@ -94,7 +94,7 @@ namespace MinhasPrioridades.Controllers.V1
             }
             catch (Exception ex)
             {
-                 return BadRequest(new { message = ex.Message });
+                return BadRequest(new { message = "Erro ao alterar senha ." + ex.Message });
             }
          
         }
@@ -114,7 +114,8 @@ namespace MinhasPrioridades.Controllers.V1
                     return Ok();
                 }
                 else
-                    return BadRequest("Registro não encontrado ");
+                    return BadRequest(new { message = "Registro nao encontrado ." });
+        
             }
             catch (Exception ex)
             {

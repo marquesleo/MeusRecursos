@@ -46,13 +46,13 @@ namespace MinhasPrioridades.Controllers.V1
             }
             catch (Exception ex)
             {
-                return BadRequest("Erro ao incluir Prioridade " + ex.Message);
+                return BadRequest(new { message = "Erro ao incluir registro " + ex.Message });
+ 
             }
 
         }
 
         [HttpGet()]
-        [Route("obtertodos")]
         public async Task<IActionResult> GetAll([FromQuery] string usuario_id)
         {
             try
@@ -63,8 +63,8 @@ namespace MinhasPrioridades.Controllers.V1
             }
             catch (Exception ex)
             {
-              
-                return BadRequest(ex.Message);
+
+                return BadRequest(new { message = "Erro ao retornar registros " + ex.Message });
             }
         }
 
@@ -77,9 +77,54 @@ namespace MinhasPrioridades.Controllers.V1
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = "Erro ao retornar registro " + ex.Message } );
             }
 
+        }
+
+
+        [HttpPut()]
+        public async Task<IActionResult> Update([FromBody] CategoriaViewModel categoriaViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    var categoria = _mapper.Map<Domain.Prioridades.Entities.Categoria>(categoriaViewModel);
+                    await this._InterfaceCategoriaApp.UpdateCategoria(categoria);
+                    return Ok();
+                }
+                return BadRequest();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Erro ao alterar categoria " + ex.Message });
+            }
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                Categoria categoria = await _InterfaceCategoriaApp.GetEntityById(id);
+                if (categoria != null)
+                {
+                    await this._InterfaceCategoriaApp.Delete(categoria);
+                    return Ok();
+                }
+                else
+                    return BadRequest(new { message = "Registro não encontrado"  });
+               
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Erro ao excluir categoria. " + ex.Message  });
+                
+            }
         }
 
     }
