@@ -33,7 +33,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
             try{
                 var senhaNova = new Senha();
                 senhaNova.Map(senha);
-                //await CarregarUsuario(senhaNova);
+               
                 await _IServiceSenha.AddSenha(senhaNova);
             } catch(Exception ex){
                   throw ex;  

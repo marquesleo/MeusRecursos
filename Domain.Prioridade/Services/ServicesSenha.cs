@@ -24,7 +24,7 @@ namespace Domain.Prioridades.Services
             if (!ExecutarValidacao(new ServiceValidation(), senha)) return;
             if (_ISenha.FindByCondition(  p => p.Descricao == senha.Descricao && p.Id != senha.Id).Result.Any())
             {
-                Notificar("Já existe uma prioridade cadastrada!");
+                Notificar("Já existe uma Senha cadastrada!");
                 return;
             }
              await _ISenha.Update(senha);

@@ -46,12 +46,13 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("url_img_site");
 
-                    b.Property<Guid?>("usuario")
-                        .HasColumnType("uuid");
+                    b.Property<Guid>("Usuario_Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("usuario");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("usuario");
+                    b.HasIndex("Usuario_Id");
 
                     b.ToTable("categoria", "personal");
                 });
@@ -177,8 +178,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("varchar(200)")
                         .HasColumnName("usuario_site");
 
-                    b.Property<Guid?>("usuario_categoria")
-                        .HasColumnType("uuid");
+                    b.Property<Guid?>("usuario")
+                        .HasColumnType("uuid")
+                        .HasColumnName("usuario1");
 
                     b.HasKey("Id");
 
@@ -214,8 +216,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Prioridades.Entities.Categoria", b =>
                 {
                     b.HasOne("Domain.Prioridades.Entities.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("usuario");
+                        .WithOne("categoria")
+                        .HasForeignKey("Domain.Prioridades.Entities.Categoria", "Usuario_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Usuario");
                 });
@@ -251,6 +255,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Prioridades.Entities.Usuario", b =>
                 {
+                    b.Navigation("categoria");
+
                     b.Navigation("RefreshTokens");
 
                     b.Navigation("senha");

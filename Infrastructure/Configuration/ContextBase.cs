@@ -48,9 +48,17 @@ namespace Infrastructure.Configuration
                     .HasIndex(b => b.Usuario_Id)
                     .IsUnique(false);
             //
-                    
 
-          
+            modelBuilder.Entity < Domain.Prioridades.Entities.Usuario>()
+            .HasOne<Domain.Prioridades.Entities.Categoria>(s => s.categoria)
+            .WithOne(ad => ad.Usuario)
+            .HasForeignKey<Domain.Prioridades.Entities.Categoria>(ad => ad.Usuario_Id);
+
+            modelBuilder.Entity<Domain.Prioridades.Entities.Categoria>()
+                   .HasIndex(b => b.Usuario_Id)
+                   .IsUnique(false);
+
+
         }
         private string GetStringConectionConfig()
         {

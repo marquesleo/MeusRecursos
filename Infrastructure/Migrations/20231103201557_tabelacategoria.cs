@@ -3,17 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
-    public partial class tablecategoria : Migration
+    public partial class tabelacategoria : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<Guid>(
-                name: "usuario_categoria",
-                schema: "personal",
-                table: "senha",
-                type: "uuid",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "categoria",
                 schema: "personal",
@@ -22,7 +15,7 @@ namespace Infrastructure.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     descricao = table.Column<string>(type: "varchar(200)", nullable: true),
                     ativo = table.Column<bool>(type: "boolean", nullable: false),
-                    usuario = table.Column<Guid>(type: "uuid", nullable: true),
+                    usuario = table.Column<Guid>(type: "uuid", nullable: false),
                     url_img_site = table.Column<string>(type: "text", nullable: true),
                     imagem = table.Column<byte[]>(type: "bytea", nullable: true),
                     nomeimagem = table.Column<string>(type: "varchar(200)", nullable: true)
@@ -36,7 +29,7 @@ namespace Infrastructure.Migrations
                         principalSchema: "personal",
                         principalTable: "usuario",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -51,11 +44,6 @@ namespace Infrastructure.Migrations
             migrationBuilder.DropTable(
                 name: "categoria",
                 schema: "personal");
-
-            migrationBuilder.DropColumn(
-                name: "usuario_categoria",
-                schema: "personal",
-                table: "senha");
         }
     }
 }

@@ -18,6 +18,7 @@ using Microsoft.OpenApi.Models;
 using Domain.Prioridades.Interfaces;
 using Microsoft.AspNetCore.Http;
 using ApplicationPrioridadesAPP.Authorization;
+using Domain.Prioridades.InterfaceServices;
 
 namespace MinhasPrioridades.Extensions
 {
@@ -57,6 +58,11 @@ namespace MinhasPrioridades.Extensions
                  options.LoginPath = "/login";
                  options.ExpireTimeSpan = TimeSpan.FromDays(7);
              });
+        }
+
+        public static void ConfigureAutoMapper(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(AplicationPrioridadesAPP.AutoMapper.CategoriaMapper));
         }
 
         public static void ConfigureSwagger(this IServiceCollection services)
@@ -101,12 +107,14 @@ namespace MinhasPrioridades.Extensions
                                                IConfiguration configuration)
         {
             services.AddSingleton<INotificador, Notificacador>();
-       
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddSingleton(typeof(Contracts.Generics.IGeneric<>), typeof(Infrastructure.Repository.Generics.RepositoryGeneric<>));
             services.AddSingleton<IPrioridade, Infrastructure.Repository.Repositories.RepositoryPrioridade>();
             services.AddSingleton<InterfacePrioridadeApp, ApplicationPrioridadesAPP.OpenApp.AppPrioridade>();
             services.AddSingleton<IServicePrioridade, ServicesPrioridade>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+           
             services.AddSingleton<ISenha, Infrastructure.Repository.Repositories.RepositoryMinhaSenha>();
             services.AddSingleton<IRefreshToken, Infrastructure.Repository.Repositories.RepositoryRefreshToken>();
             services.AddSingleton<InterfaceSenhaApp, ApplicationPrioridadesAPP.OpenApp.AppSenha>();
@@ -115,6 +123,11 @@ namespace MinhasPrioridades.Extensions
             services.AddSingleton<IUsuario, Infrastructure.Repository.Repositories.RepositoryUsuario>();
             services.AddSingleton<InterfaceUsuarioApp, ApplicationPrioridadesAPP.OpenApp.AppUsuario>();
             services.AddSingleton<IServiceUsuario, ServicesUsuario>();
+
+            services.AddSingleton<ICategoria, Infrastructure.Repository.Repositories.RepositoryCategoria>();
+            services.AddSingleton<InterfaceCategoriaApp, ApplicationPrioridadesAPP.OpenApp.AppCategoria>();
+            services.AddSingleton<IServiceCategoria, ServiceCategoria>();
+
             services.AddSingleton<IJwtUtils, JwtUtils>();
             services.AddDbContext<ContextBase>(p => p.UseNpgsql(GetStringConectionConfig(configuration)));
         }
