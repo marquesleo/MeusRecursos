@@ -17,7 +17,7 @@ namespace Domain.Prioridades.ViewModels
 
         public bool Ativo { get; set; }
 
-        public Guid UsuarioId  { get; set; }
+        public Guid Usuario_Id  { get; set; }
             
         public string UrlImageSite { get; set; }
                 

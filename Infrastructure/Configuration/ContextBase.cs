@@ -49,16 +49,14 @@ namespace Infrastructure.Configuration
                     .IsUnique(false);
             //
 
-            modelBuilder.Entity<Domain.Prioridades.Entities.Categoria>()
-             .HasOne<Domain.Prioridades.Entities.Usuario>(s => s.Usuario)
-             .WithOne(ad => ad.categoria)
-             .HasForeignKey<Domain.Prioridades.Entities.Categoria>(ad => ad.Usuario_Id);
+            modelBuilder.Entity < Domain.Prioridades.Entities.Usuario>()
+            .HasOne<Domain.Prioridades.Entities.Categoria>(s => s.categoria)
+            .WithOne(ad => ad.Usuario)
+            .HasForeignKey<Domain.Prioridades.Entities.Categoria>(ad => ad.Usuario_Id);
 
             modelBuilder.Entity<Domain.Prioridades.Entities.Categoria>()
-              .HasIndex(b => b.Usuario_Id)
-              .IsUnique(false);
-
-
+                   .HasIndex(b => b.Usuario_Id)
+                   .IsUnique(false);
 
 
         }

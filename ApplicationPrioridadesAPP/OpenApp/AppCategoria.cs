@@ -30,7 +30,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
 
         private async Task CarregarUsuario(Categoria categoria)
         {
-            categoria.Usuario = await _IUsuario.GetEntityById(categoria.UsuarioId);
+            categoria.Usuario = await _IUsuario.GetEntityById(categoria.Usuario_Id);
         }
 
 

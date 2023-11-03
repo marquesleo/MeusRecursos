@@ -19,13 +19,12 @@ namespace Domain.Prioridades.Entities
         [Column("ativo")]
         public bool Ativo { get; set; }
 
+             
+        public virtual Usuario Usuario { get; set; } 
 
-        [ForeignKey("usuario")]
-        public virtual Usuario Usuario { get; set; } = new Usuario();
-
-        public Guid UsuarioId { get; set; }
-
-
+        [Column("usuario", TypeName = "uuid")]
+        public Guid Usuario_Id { get; set; }
+        
         [Column("url_img_site", TypeName = "text")]
         public string UrlImageSite { get; set; }
 

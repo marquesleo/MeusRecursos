@@ -24,8 +24,8 @@ namespace AplicationPrioridadesAPP.AutoMapper
                          opt => opt.MapFrom(src => src.Id))
               .ForMember(dest => dest.NomeImagem,
                          opt => opt.MapFrom(src => src.NomeImagem))
-              .ForMember(dest => dest.UsuarioId,
-                         opt => opt.MapFrom(src => src.UsuarioId))
+              .ForMember(dest => dest.Usuario_Id,
+                         opt => opt.MapFrom(src => src.Usuario_Id))
 
                .ForMember(dest => dest.ImagemData,
                          opt => opt.MapFrom(src => Encoding.UTF8.GetString(src.Imagem)))
@@ -50,8 +50,8 @@ namespace AplicationPrioridadesAPP.AutoMapper
                     .ForMember(dest => dest.UrlImageSite,
                     opt => opt.MapFrom(src => src.UrlImageSite))
 
-                    .ForMember(dest => dest.UsuarioId,
-                    opt => opt.MapFrom(src => src.UsuarioId))
+                    .ForMember(dest => dest.Usuario_Id,
+                    opt => opt.MapFrom(src => src.Usuario_Id))
 
                     .ForMember(dest => dest.Imagem,
                     opt => opt.MapFrom(src => Convert.FromBase64String(src.ImagemData)));

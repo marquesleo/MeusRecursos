@@ -32,7 +32,7 @@ namespace Domain.Prioridades.Services
         {
             if (!ExecutarValidacao(new CategoriaValidation(), categoria)) return;
             if (_ICategoria.FindByCondition(p => p.Descricao == categoria.Descricao &&
-                                 p.UsuarioId == categoria.UsuarioId &&
+                                 p.Usuario_Id == categoria.Usuario_Id &&
                                  p.Id != categoria.Id).Result.Any())
             {
                 Notificar("Já existe uma categoria cadastrada!");
