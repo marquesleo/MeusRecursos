@@ -26,7 +26,10 @@ namespace Domain.Prioridades.Entities
         [JsonIgnore]
         public Senha senha { get; set; }
 
-       
+        [JsonIgnore]
+        public Categoria categoria { get; set; }
+
+
 
         public void Map(ViewModels.LoginViewModel loginViewModel)
         {

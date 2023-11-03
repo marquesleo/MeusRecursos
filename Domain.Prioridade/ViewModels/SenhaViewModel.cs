@@ -18,7 +18,7 @@ namespace Domain.Prioridades.ViewModels
         public bool Ativo { get; set; }
 
         [Required(ErrorMessage = "O Campo {0} é obrigatório")]
-         public string Password { get; set; }
+        public string Password { get; set; }
 
          [JsonIgnore]
          public DateTime DtAtualizacao { get; set; }

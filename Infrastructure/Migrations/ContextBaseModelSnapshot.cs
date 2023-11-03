@@ -19,42 +19,7 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.10");
 
-            modelBuilder.Entity("Domain.Prioridades.Entities.Categoria", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("boolean")
-                        .HasColumnName("ativo");
-
-                    b.Property<string>("Descricao")
-                        .HasColumnType("varchar(200)")
-                        .HasColumnName("descricao");
-
-                    b.Property<byte[]>("Imagem")
-                        .HasColumnType("bytea")
-                        .HasColumnName("imagem");
-
-                    b.Property<string>("NomeImagem")
-                        .HasColumnType("varchar(200)")
-                        .HasColumnName("nomeimagem");
-
-                    b.Property<string>("UrlImageSite")
-                        .HasColumnType("text")
-                        .HasColumnName("url_img_site");
-
-                    b.Property<Guid?>("usuario")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("usuario");
-
-                    b.ToTable("categoria", "personal");
-                });
+           
 
             modelBuilder.Entity("Domain.Prioridades.Entities.Prioridade", b =>
                 {
@@ -211,14 +176,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("usuario", "personal");
                 });
 
-            modelBuilder.Entity("Domain.Prioridades.Entities.Categoria", b =>
-                {
-                    b.HasOne("Domain.Prioridades.Entities.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("usuario");
-
-                    b.Navigation("Usuario");
-                });
+           
 
             modelBuilder.Entity("Domain.Prioridades.Entities.Prioridade", b =>
                 {

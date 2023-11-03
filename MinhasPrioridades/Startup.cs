@@ -52,6 +52,9 @@ namespace MinhasPrioridades
 
 
             services.AddAutoMapper(typeof(ApplicationPrioridadesAPP.AutoMapper.AutoMapperConfig));
+            services.ConfigureAutoMapper();
+
+
             services.AddControllers()
             .AddJsonOptions(options =>
                options.JsonSerializerOptions.PropertyNamingPolicy = null);
