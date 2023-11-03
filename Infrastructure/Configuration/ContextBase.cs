@@ -39,15 +39,27 @@ namespace Infrastructure.Configuration
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-             modelBuilder.Entity<Domain.Prioridades.Entities.Senha>()
-                .HasOne<Domain.Prioridades.Entities.Usuario>(s => s.Usuario)
-                .WithOne(ad => ad.senha )
-                .HasForeignKey<Domain.Prioridades.Entities.Senha>(ad => ad.Usuario_Id);
+             //modelBuilder.Entity<Domain.Prioridades.Entities.Senha>()
+             //   .HasOne<Domain.Prioridades.Entities.Usuario>(s => s.Usuario)
+             //   .WithOne(ad => ad.senha )
+             //   .HasForeignKey<Domain.Prioridades.Entities.Senha>(ad => ad.Usuario_Id);
 
-                  modelBuilder.Entity<Domain.Prioridades.Entities.Senha>()
-                    .HasIndex(b => b.Usuario_Id)
-                    .IsUnique(false);
-            //
+             //     modelBuilder.Entity<Domain.Prioridades.Entities.Senha>()
+             //       .HasIndex(b => b.Usuario_Id)
+             //       .IsUnique(false);
+
+
+            modelBuilder.Entity<Domain.Prioridades.Entities.Usuario>()
+         .HasOne<Domain.Prioridades.Entities.Senha>(s => s.senha)
+         .WithOne(ad => ad.Usuario)
+         .HasForeignKey<Domain.Prioridades.Entities.Senha>(ad => ad.Usuario_Id);
+
+            modelBuilder.Entity<Domain.Prioridades.Entities.Senha>()
+                   .HasIndex(b => b.Usuario_Id)
+                   .IsUnique(false);
+
+
+            //categoria - > usuario
 
             modelBuilder.Entity < Domain.Prioridades.Entities.Usuario>()
             .HasOne<Domain.Prioridades.Entities.Categoria>(s => s.categoria)
