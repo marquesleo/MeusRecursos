@@ -44,7 +44,7 @@ namespace Infrastructure.Repository.Generics
             {
                 using (var data = new ContextBase(_optionsBuilder, myDB))
                 {
-                    await data.Set<T>().AddAsync(objeto);
+                     data.Set<T>().Remove(objeto);
                     await data.SaveChangesAsync();
                 }
             }
