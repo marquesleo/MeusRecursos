@@ -43,12 +43,9 @@ namespace Domain.Consulta.Entities
         public bool JaViuSatisfacao { get; set; }
 
         [Column("psicologa_id", TypeName = "uuid")]
-      
-        public Guid Psicologa_Id { get; set; }
+         public Guid Psicologa_Id { get; set; }
 
         [Column("paciente_id", TypeName = "uuid")]
-
-      
         public Guid Paciente_Id { get; set; }
 
         public virtual Psicologa Psicologa { get; set; }

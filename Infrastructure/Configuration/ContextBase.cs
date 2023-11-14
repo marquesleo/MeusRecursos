@@ -20,9 +20,15 @@ namespace Infrastructure.Configuration
         //dotnet ef database --project YourProject.Data --startup-project YourProject.UI update
         //dotnet ef migrations --project .\Infrastructure  --startup-project .\MinhasPrioridades add EmailColumn
         //dotnet ef database --project.\Infrastructure --startup-project.\MinhasPrioridades update
+        //dotnet ef database update SenhaTable
        public DbSet<Domain.Prioridades.Entities.Usuario> Usuarios { get; set; }
        public DbSet<Domain.Prioridades.Entities.Prioridade> Prioridades { get; set; }
-       protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+       public DbSet<Domain.Prioridades.Entities.Senha> Senhas { get; set; }
+        public DbSet<Domain.Prioridades.Entities.Categoria> Categorias { get; set; }
+
+
+        public DbSet<Domain.Prioridades.Entities.RefreshToken> RefreshTokens { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
@@ -31,7 +37,41 @@ namespace Infrastructure.Configuration
             }
             base.OnConfiguring(optionsBuilder);
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+             //modelBuilder.Entity<Domain.Prioridades.Entities.Senha>()
+             //   .HasOne<Domain.Prioridades.Entities.Usuario>(s => s.Usuario)
+             //   .WithOne(ad => ad.senha )
+             //   .HasForeignKey<Domain.Prioridades.Entities.Senha>(ad => ad.Usuario_Id);
 
+             //     modelBuilder.Entity<Domain.Prioridades.Entities.Senha>()
+             //       .HasIndex(b => b.Usuario_Id)
+             //       .IsUnique(false);
+
+
+            modelBuilder.Entity<Domain.Prioridades.Entities.Usuario>()
+         .HasOne<Domain.Prioridades.Entities.Senha>(s => s.senha)
+         .WithOne(ad => ad.Usuario)
+         .HasForeignKey<Domain.Prioridades.Entities.Senha>(ad => ad.Usuario_Id);
+
+            modelBuilder.Entity<Domain.Prioridades.Entities.Senha>()
+                   .HasIndex(b => b.Usuario_Id)
+                   .IsUnique(false);
+
+
+            //categoria - > usuario
+
+            modelBuilder.Entity < Domain.Prioridades.Entities.Usuario>()
+            .HasOne<Domain.Prioridades.Entities.Categoria>(s => s.categoria)
+            .WithOne(ad => ad.Usuario)
+            .HasForeignKey<Domain.Prioridades.Entities.Categoria>(ad => ad.Usuario_Id);
+
+            modelBuilder.Entity<Domain.Prioridades.Entities.Categoria>()
+                   .HasIndex(b => b.Usuario_Id)
+                   .IsUnique(false);
+
+
+        }
         private string GetStringConectionConfig()
         {
             return myDB.getStringConn().conexao;

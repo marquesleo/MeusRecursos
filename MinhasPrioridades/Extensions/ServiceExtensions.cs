@@ -15,6 +15,10 @@ using System.Reflection;
 using System.IO;
 using System;
 using Microsoft.OpenApi.Models;
+using Domain.Prioridades.Interfaces;
+using Microsoft.AspNetCore.Http;
+using ApplicationPrioridadesAPP.Authorization;
+using Domain.Prioridades.InterfaceServices;
 
 namespace MinhasPrioridades.Extensions
 {
@@ -35,18 +39,30 @@ namespace MinhasPrioridades.Extensions
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-           .AddJwtBearer(x =>
-           {
-               x.RequireHttpsMetadata = false;
-               x.SaveToken = true;
-               x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-               {
-                   ValidateIssuerSigningKey = true,
-                   IssuerSigningKey = new SymmetricSecurityKey(key),
-                   ValidateIssuer = false,
-                   ValidateAudience = false
-               };
-           });
+             .AddJwtBearer(x =>
+             {
+                 x.RequireHttpsMetadata = false;
+                 x.SaveToken = true;
+                 x.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuerSigningKey = true,
+                     IssuerSigningKey = new SymmetricSecurityKey(key),
+                     ValidateIssuer = false,
+                     ValidateAudience = false,
+                     ValidateLifetime = true,
+                     ClockSkew = TimeSpan.Zero,
+                 };
+             })
+             .AddCookie("Cookies", options =>
+             {
+                 options.LoginPath = "/login";
+                 options.ExpireTimeSpan = TimeSpan.FromDays(7);
+             });
+        }
+
+        public static void ConfigureAutoMapper(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(AplicationPrioridadesAPP.AutoMapper.CategoriaMapper));
         }
 
         public static void ConfigureSwagger(this IServiceCollection services)
@@ -91,16 +107,28 @@ namespace MinhasPrioridades.Extensions
                                                IConfiguration configuration)
         {
             services.AddSingleton<INotificador, Notificacador>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSingleton(typeof(Contracts.Generics.IGeneric<>), typeof(Infrastructure.Repository.Generics.RepositoryGeneric<>));
             services.AddSingleton<IPrioridade, Infrastructure.Repository.Repositories.RepositoryPrioridade>();
             services.AddSingleton<InterfacePrioridadeApp, ApplicationPrioridadesAPP.OpenApp.AppPrioridade>();
             services.AddSingleton<IServicePrioridade, ServicesPrioridade>();
+
+           
+            services.AddSingleton<ISenha, Infrastructure.Repository.Repositories.RepositoryMinhaSenha>();
+            services.AddSingleton<IRefreshToken, Infrastructure.Repository.Repositories.RepositoryRefreshToken>();
+            services.AddSingleton<InterfaceSenhaApp, ApplicationPrioridadesAPP.OpenApp.AppSenha>();
+            services.AddSingleton<IServiceSenha, ServicesSenha>();
            
             services.AddSingleton<IUsuario, Infrastructure.Repository.Repositories.RepositoryUsuario>();
             services.AddSingleton<InterfaceUsuarioApp, ApplicationPrioridadesAPP.OpenApp.AppUsuario>();
             services.AddSingleton<IServiceUsuario, ServicesUsuario>();
 
+            services.AddSingleton<ICategoria, Infrastructure.Repository.Repositories.RepositoryCategoria>();
+            services.AddSingleton<InterfaceCategoriaApp, ApplicationPrioridadesAPP.OpenApp.AppCategoria>();
+            services.AddSingleton<IServiceCategoria, ServiceCategoria>();
+
+            services.AddSingleton<IJwtUtils, JwtUtils>();
             services.AddDbContext<ContextBase>(p => p.UseNpgsql(GetStringConectionConfig(configuration)));
         }
 

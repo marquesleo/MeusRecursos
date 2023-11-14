@@ -15,28 +15,70 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.13")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .UseIdentityByDefaultColumns()
+                .HasAnnotation("Relational:MaxIdentifierLength", 63)
+                .HasAnnotation("ProductVersion", "5.0.10");
+
+            modelBuilder.Entity("Domain.Prioridades.Entities.Categoria", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean")
+                        .HasColumnName("ativo");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("descricao");
+
+                    b.Property<byte[]>("Imagem")
+                        .HasColumnType("bytea")
+                        .HasColumnName("imagem");
+
+                    b.Property<string>("NomeImagem")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("nomeimagem");
+
+                    b.Property<string>("UrlImageSite")
+                        .HasColumnType("text")
+                        .HasColumnName("url_img_site");
+
+                    b.Property<Guid>("Usuario_Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("usuario");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Usuario_Id");
+
+                    b.ToTable("categoria", "personal");
+                });
 
             modelBuilder.Entity("Domain.Prioridades.Entities.Prioridade", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<bool>("Ativo")
-                        .HasColumnName("ativo")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("ativo");
 
                     b.Property<string>("Descricao")
-                        .HasColumnName("descricao")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("descricao");
+
+                    b.Property<bool>("Feito")
+                        .HasColumnType("boolean")
+                        .HasColumnName("feito");
 
                     b.Property<int>("Valor")
-                        .HasColumnName("valor")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("valor");
 
                     b.Property<Guid?>("usuario")
                         .HasColumnType("uuid");
@@ -45,31 +87,137 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("usuario");
 
-                    b.ToTable("prioridade","personal");
+                    b.ToTable("prioridade", "personal");
+                });
+
+            modelBuilder.Entity("Domain.Prioridades.Entities.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedByIp")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ReplacedByToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("Revoked")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("RevokedByIp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("refreshtoken", "personal");
+                });
+
+            modelBuilder.Entity("Domain.Prioridades.Entities.Senha", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("boolean")
+                        .HasColumnName("ativo");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("descricao");
+
+                    b.Property<DateTime>("DtAtualizacao")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("data_atualizacao");
+
+                    b.Property<byte[]>("Imagem")
+                        .HasColumnType("bytea")
+                        .HasColumnName("imagem");
+
+                    b.Property<string>("NomeImagem")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("nomeimagem");
+
+                    b.Property<string>("Observacao")
+                        .HasColumnType("text")
+                        .HasColumnName("observacao");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("password");
+
+                    b.Property<string>("Site")
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("site");
+
+                    b.Property<string>("UrlImageSite")
+                        .HasColumnType("text")
+                        .HasColumnName("url_img_site");
+
+                    b.Property<Guid>("Usuario_Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("usuario");
+
+                    b.Property<string>("Usuario_Site")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("usuario_site");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Usuario_Id");
+
+                    b.ToTable("senha", "personal");
                 });
 
             modelBuilder.Entity("Domain.Prioridades.Entities.Usuario", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("Email")
-                        .HasColumnName("email")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("email");
 
                     b.Property<string>("Password")
-                        .HasColumnName("password")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("password");
 
                     b.Property<string>("Username")
-                        .HasColumnName("username")
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("username");
 
                     b.HasKey("Id");
 
-                    b.ToTable("usuario","personal");
+                    b.ToTable("usuario", "personal");
+                });
+
+            modelBuilder.Entity("Domain.Prioridades.Entities.Categoria", b =>
+                {
+                    b.HasOne("Domain.Prioridades.Entities.Usuario", "Usuario")
+                        .WithOne("categoria")
+                        .HasForeignKey("Domain.Prioridades.Entities.Categoria", "Usuario_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Domain.Prioridades.Entities.Prioridade", b =>
@@ -77,6 +225,37 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Prioridades.Entities.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("usuario");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Domain.Prioridades.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("Domain.Prioridades.Entities.Usuario", null)
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Prioridades.Entities.Senha", b =>
+                {
+                    b.HasOne("Domain.Prioridades.Entities.Usuario", "Usuario")
+                        .WithOne("senha")
+                        .HasForeignKey("Domain.Prioridades.Entities.Senha", "Usuario_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Domain.Prioridades.Entities.Usuario", b =>
+                {
+                    b.Navigation("categoria");
+
+                    b.Navigation("RefreshTokens");
+
+                    b.Navigation("senha");
                 });
 #pragma warning restore 612, 618
         }

@@ -14,7 +14,7 @@ namespace Domain.Prioridades.Services
         private readonly IUsuario _IUsuario;
 
         public ServicesUsuario(IUsuario IUsuario,
-                                  INotificador notificador) : base(notificador)
+                               INotificador notificador) : base(notificador)
         {
             this._IUsuario = IUsuario;
         }

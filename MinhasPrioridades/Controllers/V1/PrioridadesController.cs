@@ -11,8 +11,10 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MinhasPrioridades.Controllers.V1
 {
-    [Route("api/[controller]")]
-    [ApiController]
+     [Route("api/v{version:apiVersion}/propriedades")]
+     [ApiController]
+     [ApiVersion("1.0")]
+     [Authorize]
     public class PrioridadesController : BaseController
     {
         private readonly IMapper _mapper;
@@ -22,6 +24,7 @@ namespace MinhasPrioridades.Controllers.V1
                                      INotificador notificador) : base(notificador)
         {
             _InterfacePrioridadeApp = InterfacePrioridadeApp;
+         
             _mapper = mapper;
         }
 
@@ -40,11 +43,11 @@ namespace MinhasPrioridades.Controllers.V1
         }
 
         [HttpGet]
-       public async Task<IActionResult> GetAll()
+       public async Task<IActionResult> GetAll([FromQuery]string usuario_id,[FromQuery] bool? feito=null)
         {
             try
             {
-               return Ok(_mapper.Map<IEnumerable<PrioridadeViewModel>>(await _InterfacePrioridadeApp.List()));
+               return Ok(await _InterfacePrioridadeApp.ObterPrioridade(usuario_id,feito));
             }
             catch (Exception ex)
             {
@@ -61,7 +64,9 @@ namespace MinhasPrioridades.Controllers.V1
                 if (ModelState.IsValid)
                 {
 
-                    var prioridade = _mapper.Map<Prioridade>(prioridadeViewModel);
+                    var prioridade = new Prioridade();
+                    prioridade.Map(prioridadeViewModel);
+                 
                     await _InterfacePrioridadeApp.AddPrioridade(prioridade);
                     return CreatedAtAction(nameof(GetById), new { id = prioridade.Id }, prioridade);
                 }
@@ -75,6 +80,54 @@ namespace MinhasPrioridades.Controllers.V1
 
         }
 
+        [HttpPost("Up")]
+        public async Task<IActionResult> Up([FromBody] PrioridadeViewModel prioridadeViewModel)
+        {
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+
+                    var prioridade = new Prioridade();
+                    prioridade.Map(prioridadeViewModel);
+                    await _InterfacePrioridadeApp.SetOrder(prioridade, enuOrdem.up);
+                    return Ok();
+                }
+                return BadRequest();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Erro ao Up Prioridade " + ex.Message);
+            }
+
+        }
+
+         [HttpPost("Down")]
+        public async Task<IActionResult> Down([FromBody] PrioridadeViewModel prioridadeViewModel)
+        {
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+
+                    var prioridade = new Prioridade();
+                    prioridade.Map(prioridadeViewModel);
+                    await _InterfacePrioridadeApp.SetOrder(prioridade, enuOrdem.down);
+                    return Ok();
+                }
+                return BadRequest();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Erro ao Down Prioridade " + ex.Message);
+            }
+
+        }
+
 
         [HttpPut()]
        public async Task<IActionResult> Update([FromBody] PrioridadeViewModel prioridadeViewModel)
@@ -83,7 +136,8 @@ namespace MinhasPrioridades.Controllers.V1
             {
                 if (ModelState.IsValid)
                 {
-                    var prioridade = _mapper.Map<Prioridade>(prioridadeViewModel);
+                    var prioridade = new Prioridade();
+                    prioridade.Map(prioridadeViewModel);
                     await this._InterfacePrioridadeApp.UpdatePrioridade(prioridade);
                     return Ok();
                 }
