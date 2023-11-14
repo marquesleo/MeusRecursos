@@ -177,7 +177,11 @@ namespace Infrastructure.Migrations
                         .HasColumnName("usuario");
 
                     b.Property<string>("Usuario_Site")
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("varchar(200" +
+                        "" +
+                        "" +
+                        "" +
+                        ")")
                         .HasColumnName("usuario_site");
 
                     b.Property<Guid?>("usuario")
