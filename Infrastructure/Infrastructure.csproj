@@ -32,6 +32,10 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="Interface\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Interface\" />
+  </ItemGroup>
 </Project>

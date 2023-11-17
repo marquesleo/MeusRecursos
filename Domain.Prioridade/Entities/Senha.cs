@@ -46,6 +46,9 @@ namespace Domain.Prioridades.Entities
         [Column("usuario_site", TypeName = "varchar(200)")]
         public string Usuario_Site { get; set; }
 
+        [JsonIgnore]
+        public virtual ContadorDeSenha ContadorDeSenha { get; set; }
+
         public void Map(ViewModels.SenhaViewModel senhaViewModel)
         {
            Extension.SenhaExtension.Map(this, senhaViewModel);

@@ -25,7 +25,7 @@ namespace Infrastructure.Configuration
        public DbSet<Domain.Prioridades.Entities.Prioridade> Prioridades { get; set; }
        public DbSet<Domain.Prioridades.Entities.Senha> Senhas { get; set; }
         public DbSet<Domain.Prioridades.Entities.Categoria> Categorias { get; set; }
-
+        public DbSet<Domain.Prioridades.Entities.ContadorDeSenha> ContadorDeSenhas { get; set; }
 
         public DbSet<Domain.Prioridades.Entities.RefreshToken> RefreshTokens { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

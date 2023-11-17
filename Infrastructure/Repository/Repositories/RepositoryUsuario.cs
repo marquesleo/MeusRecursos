@@ -15,6 +15,7 @@ namespace Infrastructure.Repository.Repositories
 
             try
             {
+
                 var usuarios = await FindByCondition(p => p.Username.ToUpper().Equals(login.ToUpper()));
                 if (usuarios != null && usuarios.Any())
                 {

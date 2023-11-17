@@ -11,6 +11,7 @@ namespace ApplicationPrioridadesAPP.Interfaces
     {
         Task AddSenha(SenhaViewModel senha);
         Task UpdateSenha(SenhaViewModel senha);
+        Task<bool> CriptografarTudo();
         Task<List<SenhaViewModel>> ObterRegistros(string id_usuario);
 
         Task<SenhaViewModel> GetSenhaById(string id);

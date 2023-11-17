@@ -28,12 +28,14 @@ namespace ApplicationPrioridadesAPP.OpenApp
             this._IServiceSenha = IServiceSenha;
         }
 
+
+
         public async Task AddSenha(SenhaViewModel senha)
         {
             try{
                 var senhaNova = new Senha();
                 senhaNova.Map(senha);
-               
+                senhaNova.Password = Utils.Criptografia.CriptografarSenha(senhaNova.Password);
                 await _IServiceSenha.AddSenha(senhaNova);
             } catch(Exception ex){
                   throw ex;  
@@ -95,9 +97,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
 
         private SenhaViewModel SenhaEntityToSenhaViewModel(Senha senha)
         {
-
-            
-                        var senhaViewModel = new SenhaViewModel();
+                       var senhaViewModel = new SenhaViewModel();
                         senhaViewModel.Ativo = senha.Ativo;
                         senhaViewModel.Descricao = senha.Descricao;
                         senhaViewModel.Site = senha.Site;
@@ -105,7 +105,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
                         senhaViewModel.Observacao = senha.Observacao;
                         senhaViewModel.Usuario =  senha.Usuario_Id.ToString();
                         senhaViewModel.DtAtualizacao = senha.DtAtualizacao;
-                        senhaViewModel.Password = senha.Password;
+                        senhaViewModel.Password = Utils.Criptografia.Decriptografar(senha.Password);
                         senhaViewModel.UrlImageSite = senha.UrlImageSite;
                         senhaViewModel.Usuario_Site = senha.Usuario_Site;
                         if (senha.Imagem != null && senha.Imagem.Length > 0)
@@ -165,7 +165,8 @@ namespace ApplicationPrioridadesAPP.OpenApp
                 senhaNova.Map(senha);
                  await CarregarUsuario(senhaNova);
                  senhaNova.DtAtualizacao = DateTime.Now;
-                 await _IServiceSenha.UpdateSenha(senhaNova);
+                 senhaNova.Password = Utils.Criptografia.CriptografarSenha(senhaNova.Password);
+                await _IServiceSenha.UpdateSenha(senhaNova);
             }
             catch (Exception)
             {
@@ -175,6 +176,30 @@ namespace ApplicationPrioridadesAPP.OpenApp
            
         }
 
-        
+        public async Task<bool> CriptografarTudo()
+        {
+            try
+            {
+                var senhas  = await this.List();
+
+                await _ISenha.BeginTransaction();
+                foreach (var item in senhas)
+                {
+                    item.Password = Utils.Criptografia.CriptografarSenha(item.Password);
+                    await _ISenha.Update(item);
+                }
+                await _ISenha.Commit();
+
+
+
+            }catch(Exception ex)
+            {
+                await _ISenha.Rollback();
+                throw ex;
+                return false;
+            }
+
+            return true;
+        }
     }
 }

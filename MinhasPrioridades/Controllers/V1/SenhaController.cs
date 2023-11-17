@@ -124,6 +124,28 @@ namespace MinhasPrioridades.Controllers.V1
             }
         }
 
-         
+
+
+        [HttpGet]
+        [Route("criptografartudo")]
+        public async Task<IActionResult> CriptografarTudo()
+        {
+            try
+            {
+
+               
+                   var foiCriptografado =  await  _InterfaceSenhaApp.CriptografarTudo();
+                return Ok(foiCriptografado);
+                
+                
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Erro ao criptografar tudo ." + ex.Message });
+            }
+
+        }
+
     }
 }
