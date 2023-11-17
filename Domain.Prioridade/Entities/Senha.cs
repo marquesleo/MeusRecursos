@@ -49,6 +49,7 @@ namespace Domain.Prioridades.Entities
         [JsonIgnore]
         public virtual ContadorDeSenha ContadorDeSenha { get; set; }
 
+
         public void Map(ViewModels.SenhaViewModel senhaViewModel)
         {
            Extension.SenhaExtension.Map(this, senhaViewModel);

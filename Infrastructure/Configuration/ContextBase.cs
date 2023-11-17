@@ -71,6 +71,17 @@ namespace Infrastructure.Configuration
                    .IsUnique(false);
 
 
+
+            //senha -> Contador
+            modelBuilder.Entity<Domain.Prioridades.Entities.Senha>()
+           .HasOne<Domain.Prioridades.Entities.ContadorDeSenha>(s => s.ContadorDeSenha)
+           .WithOne(ad => ad.Senha)
+           .HasForeignKey<Domain.Prioridades.Entities.ContadorDeSenha>(ad => ad.SenhaId);
+            
+            modelBuilder.Entity<Domain.Prioridades.Entities.ContadorDeSenha>()
+                   .HasIndex(b => b.SenhaId)
+                   .IsUnique(false);
+
         }
         private string GetStringConectionConfig()
         {
