@@ -18,6 +18,8 @@ namespace Domain.Prioridades.Entities
         public Guid SenhaId { get; set; }
         [Column("contador")]
         public int Contador { get; set; }
+        [Column("DataDeAcesso")]
+        public DateTime DataDeAcesso { get; set; }
 	}
 }
 
