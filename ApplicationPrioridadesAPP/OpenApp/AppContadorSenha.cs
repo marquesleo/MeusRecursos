@@ -43,9 +43,17 @@ namespace ApplicationPrioridadesAPP.OpenApp
             return await _IContadorSenha.FindByCondition(expression);
         }
 
-        public async Task<ContadorDeSenha> GetContadorSenhaById(Guid id)
+        public async Task<ContadorDeSenha> GetContadorSenhaById(Guid id,DateTime dtAcesso)
         {
-            return await _IContadorSenha.GetEntityById(id);
+            var lst = await FindByCondition(p => p.Id == id &&
+                                         p.DataDeAcesso.Month == dtAcesso.Month &&
+                                         p.DataDeAcesso.Year == dtAcesso.Year);
+
+            if (lst != null && lst.Any())
+                return lst?.FirstOrDefault();
+            else
+                return null;
+
         }
 
         public async Task<ContadorDeSenha> GetEntityById(Guid id)

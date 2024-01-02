@@ -35,18 +35,21 @@ namespace MinhasPrioridades.Controllers.V1
                 if (ModelState.IsValid)
                 {
                    
-                    var contadorSenha = await _InterfaceContadorSenhaApp.GetContadorSenhaById(contadorSenhaViewModel.SenhaId);
+                    var contadorSenha = await _InterfaceContadorSenhaApp.GetContadorSenhaById(contadorSenhaViewModel.SenhaId,
+                                                                                              contadorSenhaViewModel.dtAcesso);
                     if (contadorSenha == null || contadorSenha.SenhaId == Guid.Empty)
                     {
                         var contador = new ContadorDeSenha();
                         contador.SenhaId = contadorSenhaViewModel.SenhaId;
                         contador.Contador = 1;
+                        contador.DataDeAcesso = DateTime.Now;
                         await _InterfaceContadorSenhaApp.AddContador(contadorSenha);
                         return Ok();
                     }
                     else
                     {
                         contadorSenha.Contador += 1;
+
                         await _InterfaceContadorSenhaApp.UpdateSenha(contadorSenha);
                         return Ok();
                     }

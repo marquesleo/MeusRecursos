@@ -11,6 +11,6 @@ namespace ApplicationPrioridadesAPP.Interfaces.Generics
     {
         Task AddContador(ContadorDeSenha senha);
         Task UpdateSenha(ContadorDeSenha senha);
-        Task<ContadorDeSenha> GetContadorSenhaById(Guid id);
+        Task<ContadorDeSenha> GetContadorSenhaById(Guid id, DateTime dtAcesso);
     }
 }
