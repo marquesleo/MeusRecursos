@@ -36,7 +36,7 @@ namespace MinhasPrioridades.Controllers.V1
 
                 if (ModelState.IsValid)
                 {
-                 var  categoria = _mapper.Map<Domain.Prioridades.Entities.Categoria>(categoriaViewModel);
+                 var  categoria = _mapper.Map<Categoria>(categoriaViewModel);
                  await _InterfaceCategoriaApp.AddCategoria(categoria);
 
                  return CreatedAtAction(nameof(GetById), new { id = categoria.Id }, categoria);

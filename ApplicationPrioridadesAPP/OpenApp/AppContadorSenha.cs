@@ -43,14 +43,26 @@ namespace ApplicationPrioridadesAPP.OpenApp
             return await _IContadorSenha.FindByCondition(expression);
         }
 
+        
+
         public async Task<ContadorDeSenha> GetContadorSenhaById(Guid id,DateTime dtAcesso)
         {
-            var lst = await FindByCondition(p => p.Id == id &&
-                                         p.DataDeAcesso.Month == dtAcesso.Month &&
-                                         p.DataDeAcesso.Year == dtAcesso.Year);
+            var lst = await FindByCondition(p => p.SenhaId == id &&
+                                         p.DataDeAcesso.Date.Month == dtAcesso.Date.Month &&
+                                         p.DataDeAcesso.Date.Year == dtAcesso.Date.Year);
 
             if (lst != null && lst.Any())
                 return lst?.FirstOrDefault();
+            else
+                return null;
+
+        }
+        public async Task<List<ContadorDeSenha>> GetContadorSenhaById(Guid id)
+        {
+            var lst = await FindByCondition(p => p.SenhaId == id);
+
+            if (lst != null && lst.Any())
+                return lst;
             else
                 return null;
 

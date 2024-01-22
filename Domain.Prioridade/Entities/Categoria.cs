@@ -35,6 +35,8 @@ namespace Domain.Prioridades.Entities
         [Column("nomeimagem", TypeName = "varchar(200)")]
         public string NomeImagem { get; set; }
 
+
+
     }
 }
 
