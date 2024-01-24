@@ -4,12 +4,9 @@ using ConsultaServer.Controllers.Filtros;
 using Domain.Consulta.Entities;
 using Domain.Consulta.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Notification;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ConsultaServer.Controllers.V1

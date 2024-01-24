@@ -201,5 +201,32 @@ namespace ApplicationPrioridadesAPP.OpenApp
 
             return true;
         }
+
+        public async Task<List<SenhaViewModel>> ObterRegistros(string id_usuario, string descricao)
+        {
+            var lstSenhas = await _ISenha.FindByCondition(p => p.Usuario.Id == Guid.Parse(id_usuario) &&
+                                                          p.Descricao.Contains(descricao));
+            var lstSenhaViewModel = new List<SenhaViewModel>();
+            try
+            {
+                if (lstSenhas != null && lstSenhas.Any())
+                    if (lstSenhas != null && lstSenhas.Any())
+                    {
+                        foreach (var obj in lstSenhas)
+                        {
+                            var senhaViewModel = SenhaEntityToSenhaViewModel(obj);
+                            lstSenhaViewModel.Add(senhaViewModel);
+                        }
+
+                    }
+            }
+
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return lstSenhaViewModel;
+        }
     }
 }
