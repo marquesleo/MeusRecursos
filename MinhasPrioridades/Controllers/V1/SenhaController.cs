@@ -54,6 +54,20 @@ namespace MinhasPrioridades.Controllers.V1
             }
         }
 
+        [HttpGet]
+        [Route("ObterRegistrosPorUsuarioEDescricao")]
+        public async Task<IActionResult> GetAllPorDescricaoEUsuario([FromQuery] string usuario_id, [FromQuery] string descricao )
+        {
+            try
+            {
+                return Ok(await _InterfaceSenhaApp.ObterRegistros(usuario_id,descricao));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] SenhaViewModel senhaViewModel)
@@ -124,6 +138,28 @@ namespace MinhasPrioridades.Controllers.V1
             }
         }
 
-         
+
+
+        [HttpGet]
+        [Route("criptografartudo")]
+        public async Task<IActionResult> CriptografarTudo()
+        {
+            try
+            {
+
+               
+                   var foiCriptografado =  await  _InterfaceSenhaApp.CriptografarTudo();
+                return Ok(foiCriptografado);
+                
+                
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Erro ao criptografar tudo ." + ex.Message });
+            }
+
+        }
+
     }
 }

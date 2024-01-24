@@ -25,7 +25,7 @@ namespace Infrastructure.Configuration
        public DbSet<Domain.Prioridades.Entities.Prioridade> Prioridades { get; set; }
        public DbSet<Domain.Prioridades.Entities.Senha> Senhas { get; set; }
         public DbSet<Domain.Prioridades.Entities.Categoria> Categorias { get; set; }
-
+        public DbSet<Domain.Prioridades.Entities.ContadorDeSenha> ContadorDeSenhas { get; set; }
 
         public DbSet<Domain.Prioridades.Entities.RefreshToken> RefreshTokens { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -70,6 +70,17 @@ namespace Infrastructure.Configuration
                    .HasIndex(b => b.Usuario_Id)
                    .IsUnique(false);
 
+
+
+            //senha -> Contador
+            modelBuilder.Entity<Domain.Prioridades.Entities.Senha>()
+           .HasOne<Domain.Prioridades.Entities.ContadorDeSenha>(s => s.ContadorDeSenha)
+           .WithOne(ad => ad.Senha)
+           .HasForeignKey<Domain.Prioridades.Entities.ContadorDeSenha>(ad => ad.SenhaId);
+            
+            modelBuilder.Entity<Domain.Prioridades.Entities.ContadorDeSenha>()
+                   .HasIndex(b => b.SenhaId)
+                   .IsUnique(false);
 
         }
         private string GetStringConectionConfig()

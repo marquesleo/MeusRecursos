@@ -15,6 +15,10 @@ namespace Contracts.Generics
         Task<T> GetEntityById(Guid id);
         Task<List<T>> List();
         Task<List<T>> FindByCondition(Expression<Func<T, bool>> expression);
+        Task BeginTransaction();
+        Task Commit();
+        Task Rollback();
+
 
     }
 }

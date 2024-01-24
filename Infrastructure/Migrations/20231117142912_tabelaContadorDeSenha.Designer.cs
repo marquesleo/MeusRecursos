@@ -3,15 +3,17 @@ using System;
 using Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    partial class ContextBaseModelSnapshot : ModelSnapshot
+    [Migration("20231117142912_tabelaContadorDeSenha")]
+    partial class tabelaContadorDeSenha
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,17 +70,14 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("contador");
 
-                    b.Property<DateTime>("DataDeAcesso")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("DataDeAcesso");
-
                     b.Property<Guid>("SenhaId")
                         .HasColumnType("uuid")
                         .HasColumnName("senha");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SenhaId");
+                    b.HasIndex("SenhaId")
+                        .IsUnique();
 
                     b.ToTable("contadorsenha", "personal");
                 });

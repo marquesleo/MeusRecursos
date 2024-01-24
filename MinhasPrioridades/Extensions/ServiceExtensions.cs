@@ -19,6 +19,7 @@ using Domain.Prioridades.Interfaces;
 using Microsoft.AspNetCore.Http;
 using ApplicationPrioridadesAPP.Authorization;
 using Domain.Prioridades.InterfaceServices;
+using ApplicationPrioridadesAPP.Interfaces.Generics;
 
 namespace MinhasPrioridades.Extensions
 {
@@ -63,6 +64,7 @@ namespace MinhasPrioridades.Extensions
         public static void ConfigureAutoMapper(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(AplicationPrioridadesAPP.AutoMapper.CategoriaMapper));
+            services.AddAutoMapper(typeof(AplicationPrioridadesAPP.AutoMapper.ContadorDeSenhaMapper));
         }
 
         public static void ConfigureSwagger(this IServiceCollection services)
@@ -127,6 +129,11 @@ namespace MinhasPrioridades.Extensions
             services.AddSingleton<ICategoria, Infrastructure.Repository.Repositories.RepositoryCategoria>();
             services.AddSingleton<InterfaceCategoriaApp, ApplicationPrioridadesAPP.OpenApp.AppCategoria>();
             services.AddSingleton<IServiceCategoria, ServiceCategoria>();
+
+
+            services.AddSingleton<IContadorSenha, Infrastructure.Repository.Repositories.RepositoryContadorSenha>();
+            services.AddSingleton<InterfaceContadorSenhaApp, ApplicationPrioridadesAPP.OpenApp.AppContadorSenha>();
+            services.AddSingleton<IServiceContadorSenha, ServiceContadorSenha>();
 
             services.AddSingleton<IJwtUtils, JwtUtils>();
             services.AddDbContext<ContextBase>(p => p.UseNpgsql(GetStringConectionConfig(configuration)));

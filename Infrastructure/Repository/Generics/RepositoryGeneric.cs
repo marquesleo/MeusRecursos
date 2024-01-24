@@ -1,6 +1,8 @@
 ﻿using Contracts.Generics;
+using DInfrastructure.Repository.Interface;
 using Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Win32.SafeHandles;
 using Npgsql;
 using System;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repository.Generics
 {
-    public class RepositoryGeneric<T> : IGeneric<T>, IDisposable where T : class
+    public class RepositoryGeneric<T> : IGeneric<T>,  IDisposable where T : class
     {
         protected MyDB myDB;
         private readonly DbContextOptions<ContextBase> _optionsBuilder;
@@ -20,12 +22,36 @@ namespace Infrastructure.Repository.Generics
             this.myDB = myDB;
             _optionsBuilder = new DbContextOptions<ContextBase>();
         }
+
+        private IDbContextTransaction _transacao;
+        public async Task BeginTransaction()
+        {
+            var data = new ContextBase(_optionsBuilder, myDB);
+            _transacao = await data.Database.BeginTransactionAsync();
+        }
+
+        public async Task Commit()
+        {
+            if (_transacao != null)
+            {
+                await _transacao.CommitAsync();
+                _transacao = null;
+            }
+        }
+
+        public async Task Rollback()
+        {
+            if (_transacao != null)
+                await _transacao.RollbackAsync();
+        }
+
         public async Task Add(T objeto)
         {
             try
             {
                 using (var data = new ContextBase(_optionsBuilder, myDB))
                 {
+                   
                     await data.Set<T>().AddAsync(objeto);
                     await data.SaveChangesAsync();
                 }
@@ -88,6 +114,7 @@ namespace Infrastructure.Repository.Generics
             {
                 using (var data = new ContextBase(_optionsBuilder, myDB))
                 {
+                    
                     data.Set<T>().Update(objeto);
                     await data.SaveChangesAsync();
                 }
@@ -132,7 +159,9 @@ namespace Infrastructure.Repository.Generics
             disposed = true;
         }
 
-           
+       
+
+
 
         #endregion
 

@@ -120,8 +120,23 @@ namespace Infrastructure.Consulta.Repository.Generics
         {
             return base.ToString();
         }
-          
-                       
+
+        public Task BeginTransaction()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Commit()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Rollback()
+        {
+            throw new NotImplementedException();
+        }
+
+
         #endregion
 
     }

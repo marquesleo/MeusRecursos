@@ -2,9 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.Prioridades.Entities;
-using Domain.Prioridades.Interface;
 using Domain.Prioridades.Interfaces;
-using Domain.Prioridades.InterfaceService;
 using Domain.Prioridades.InterfaceServices;
 using Domain.Prioridades.Validations;
 using Domain.Services;
