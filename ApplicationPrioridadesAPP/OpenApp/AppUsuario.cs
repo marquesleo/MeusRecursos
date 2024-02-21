@@ -276,11 +276,11 @@ namespace ApplicationPrioridadesAPP.OpenApp
             // recursively traverse the refresh token chain and ensure all descendants are revoked
             if (!string.IsNullOrEmpty(refreshToken.ReplacedByToken))
             {
-                var childToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken.ReplacedByToken);
+              /*  var childToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken.ReplacedByToken);
                 if (childToken.IsActive)
                     revokeRefreshToken(childToken, ipAddress, reason);
                 else
-                    revokeDescendantRefreshTokens(childToken, user, ipAddress, reason);
+                    revokeDescendantRefreshTokens(childToken, user, ipAddress, reason);*/
             }
         }
 
