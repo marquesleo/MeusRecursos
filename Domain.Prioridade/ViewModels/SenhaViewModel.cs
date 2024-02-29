@@ -29,6 +29,8 @@ namespace Domain.Prioridades.ViewModels
          public string Observacao {get;set;}
          
          public string ImagemData {get;set;}
-         public string NomeDaImagem {get;set;}        
+         public string NomeDaImagem {get;set;}    
+        
+        public string Categoria { get; set; }
     }
 }

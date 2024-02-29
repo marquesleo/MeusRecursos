@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -35,7 +36,8 @@ namespace Domain.Prioridades.Entities
         [Column("nomeimagem", TypeName = "varchar(200)")]
         public string NomeImagem { get; set; }
 
-
+        [JsonIgnore]
+        public virtual List<Senha> Senhas { get; set; }
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Prioridades.Entities;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Infrastructure.Configuration
@@ -81,6 +82,20 @@ namespace Infrastructure.Configuration
             modelBuilder.Entity<Domain.Prioridades.Entities.ContadorDeSenha>()
                    .HasIndex(b => b.SenhaId)
                    .IsUnique(false);
+
+
+
+            modelBuilder.Entity<Senha>()
+          .HasOne(b => b.Categoria)
+          .WithMany(a => a.Senhas)
+          .HasForeignKey(b => b.Categoria_Id)
+            .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<Domain.Prioridades.Entities.Senha>()
+                   .HasIndex(b => b.Categoria_Id)
+                   .IsUnique(false);
+
 
         }
         private string GetStringConectionConfig()
