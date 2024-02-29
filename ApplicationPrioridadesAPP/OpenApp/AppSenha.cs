@@ -108,6 +108,8 @@ namespace ApplicationPrioridadesAPP.OpenApp
                         senhaViewModel.Password = Utils.Criptografia.Decriptografar(senha.Password);
                         senhaViewModel.UrlImageSite = senha.UrlImageSite;
                         senhaViewModel.Usuario_Site = senha.Usuario_Site;
+                        if (senha.Categoria_Id != null && senha.Categoria_Id.HasValue)
+                        senhaViewModel.Categoria =  senha.Categoria_Id.Value.ToString();
                         if (senha.Imagem != null && senha.Imagem.Length > 0)
                         {
                           string base64String = Convert.ToBase64String(senha.Imagem, 0, senha.Imagem.Length);

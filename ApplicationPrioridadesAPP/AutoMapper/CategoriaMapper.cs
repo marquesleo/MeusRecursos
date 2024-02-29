@@ -5,11 +5,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Prioridades.Entities;
+using Domain.Prioridades.Interface;
+using Domain.Prioridades.ViewModels;
 
 namespace AplicationPrioridadesAPP.AutoMapper
 {
 	public class CategoriaMapper:Profile
-	{
+    {
+       private string getImagembase64String(byte[] imagem)
+        {
+              if (imagem != null && imagem.Length > 0)
+                {
+                    string base64String = Convert.ToBase64String(imagem, 0, imagem.Length);
+                    return "data:image/png;base64," + base64String;
+                }
+            return null;
+        }
+       
 		public CategoriaMapper()
 		{
             try
@@ -28,7 +40,7 @@ namespace AplicationPrioridadesAPP.AutoMapper
                          opt => opt.MapFrom(src => src.Usuario_Id))
 
                .ForMember(dest => dest.ImagemData,
-                         opt => opt.MapFrom(src => Encoding.UTF8.GetString(src.Imagem)))
+                         opt => opt.MapFrom(src => getImagembase64String(src.Imagem)))
 
               .ForMember(dest => dest.UrlImageSite,
                  opt => opt.MapFrom(src => src.UrlImageSite));

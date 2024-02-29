@@ -1,5 +1,6 @@
 using Entities.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -40,11 +41,21 @@ namespace Domain.Prioridades.Entities
         [JsonIgnore]
         public virtual Usuario Usuario { get; set; }
 
+        [JsonIgnore]
+        public virtual Categoria? Categoria { get; set; }
+
+      
+
+
         [Column("usuario", TypeName = "uuid")]
         public Guid Usuario_Id { get; set; }
 
         [Column("usuario_site", TypeName = "varchar(200)")]
         public string Usuario_Site { get; set; }
+
+        [Column("categoria", TypeName = "uuid")]
+        public Guid? Categoria_Id { get; set; }
+
 
         [JsonIgnore]
         public virtual ContadorDeSenha ContadorDeSenha { get; set; }

@@ -5,6 +5,7 @@ using ApplicationPrioridadesAPP.Authorization;
 using ApplicationPrioridadesAPP.Interfaces;
 using AutoMapper;
 using Domain.Prioridades.Entities;
+using Domain.Prioridades.Interface;
 using Domain.Prioridades.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Notification;
@@ -22,7 +23,7 @@ namespace MinhasPrioridades.Controllers.V1
         private readonly InterfaceCategoriaApp _InterfaceCategoriaApp;
         public CategoriaController(IMapper mapper,
                                    InterfaceCategoriaApp InterfaceCategoriaApp,
-                                    INotificador notificador) : base(notificador)
+                                   INotificador notificador) : base(notificador)
         {
             this._InterfaceCategoriaApp = InterfaceCategoriaApp;
             this._mapper = mapper;
@@ -59,7 +60,7 @@ namespace MinhasPrioridades.Controllers.V1
             {
                 var categorias = await _InterfaceCategoriaApp.ObterCategoria(usuario_id);
 
-                return Ok(_mapper.Map<List<Domain.Prioridades.ViewModels.CategoriaViewModel>>(categorias));
+                return Ok(_mapper.Map<List<CategoriaViewModel>>(categorias));
             }
             catch (Exception ex)
             {
@@ -73,7 +74,7 @@ namespace MinhasPrioridades.Controllers.V1
         {
             try
             {
-                return Ok(await _InterfaceCategoriaApp.GetEntityById(id));
+                return Ok(_mapper.Map<CategoriaViewModel>(await _InterfaceCategoriaApp.GetEntityById(id)));
             }
             catch (Exception ex)
             {
@@ -82,16 +83,23 @@ namespace MinhasPrioridades.Controllers.V1
 
         }
 
-
-        [HttpPut()]
-        public async Task<IActionResult> Update([FromBody] CategoriaViewModel categoriaViewModel)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] CategoriaViewModel categoriaViewModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (!string.IsNullOrEmpty(id.ToString()))
+                    {
+                        var dbCategoria =  await _InterfaceCategoriaApp.GetEntityById(id);
+                        if (dbCategoria == null)
+                            return BadRequest(new { message = "registro não encontrado!" });
+                    }
 
-                    var categoria = _mapper.Map<Domain.Prioridades.Entities.Categoria>(categoriaViewModel);
+                    categoriaViewModel.ImagemData = categoriaViewModel.ImagemData.Substring(categoriaViewModel.ImagemData.LastIndexOf(',') + 1);
+
+                    var categoria = _mapper.Map<Categoria>(categoriaViewModel);
                     await this._InterfaceCategoriaApp.UpdateCategoria(categoria);
                     return Ok();
                 }

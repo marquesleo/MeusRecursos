@@ -22,6 +22,8 @@ namespace Domain.Prioridades.Entities.Extension
     
             dbSenha.NomeImagem = senhaViewModel.NomeDaImagem;
             dbSenha.Usuario_Id = Guid.Parse(senhaViewModel.Usuario);
+            if (!string.IsNullOrEmpty(senhaViewModel.Categoria.ToString()))
+            dbSenha.Categoria_Id = Guid.Parse(senhaViewModel.Categoria);
       
         }
     }
