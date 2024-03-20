@@ -6,6 +6,7 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccLocalPath>SAK</SccLocalPath>
     <UserSecretsId>ffc14e1a-fd69-4ac0-b169-a2f235585bb8</UserSecretsId>
+	  <TargetLatestRuntimePatch>false</TargetLatestRuntimePatch>
   </PropertyGroup>
 
   <PropertyGroup>

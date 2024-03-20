@@ -62,7 +62,15 @@ namespace MinhasPrioridades.Controllers.V1
         {
             try
             {
-                return Ok(await _InterfaceSenhaApp.ObterRegistros(usuario_id,descricao));
+
+                if (string.IsNullOrEmpty(descricao))
+                    descricao = string.Empty;
+
+                var lista = await _InterfaceSenhaApp.ObterRegistros(usuario_id, descricao);
+
+                
+
+                return Ok(lista);
             }
             catch (Exception ex)
             {
