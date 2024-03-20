@@ -54,6 +54,8 @@ namespace MinhasPrioridades.Controllers.V1
             }
         }
 
+       
+
         [HttpGet]
         [Route("ObterRegistrosPorUsuarioEDescricao")]
         public async Task<IActionResult> GetAllPorDescricaoEUsuario([FromQuery] string usuario_id, [FromQuery] string descricao )

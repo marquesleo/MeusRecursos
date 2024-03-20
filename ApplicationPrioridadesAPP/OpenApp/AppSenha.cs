@@ -207,7 +207,9 @@ namespace ApplicationPrioridadesAPP.OpenApp
         public async Task<List<SenhaViewModel>> ObterRegistros(string id_usuario, string descricao)
         {
             var lstSenhas = await _ISenha.FindByCondition(p => p.Usuario.Id == Guid.Parse(id_usuario) &&
-                                                          p.Descricao.ToLower().Contains(descricao.ToLower()));
+                                                         (p.Descricao.ToLower().Contains(descricao.ToLower()) || 
+                                                          p.Observacao.ToLower().Contains(descricao.ToLower()) || 
+                                                          p.Site.ToLower().Contains(descricao.ToLower())));
             var lstSenhaViewModel = new List<SenhaViewModel>();
             try
             {
