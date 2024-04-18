@@ -13,9 +13,8 @@ using MiniValidation;
 
 namespace MinhasPrioridades.Controllers.V1
 {
-    [Route("api/v{version:apiVersion}/usuario")]
+    [Route("api/v1/usuario")]
     [ApiController]
-    [ApiVersion("1.0")]
     [Authorize]
     public class UsuarioController : BaseController
     {

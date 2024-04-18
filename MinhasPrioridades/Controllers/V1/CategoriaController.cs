@@ -12,9 +12,8 @@ using Notification;
 
 namespace MinhasPrioridades.Controllers.V1
 {
-    [Route("api/v{version:apiVersion}/categoria")]
+    [Route("api/v1/categoria")]
     [ApiController]
-    [ApiVersion("1.0")]
     [Authorize]
     public class CategoriaController : BaseController
     {
@@ -40,7 +39,11 @@ namespace MinhasPrioridades.Controllers.V1
                  var  categoria = _mapper.Map<Categoria>(categoriaViewModel);
                  await _InterfaceCategoriaApp.AddCategoria(categoria);
 
-                 return CreatedAtAction(nameof(GetById), new { id = categoria.Id }, categoria);
+                    if (OperacacaoValida())
+                        return CreatedAtAction(nameof(GetById), new { id = categoria.Id }, categoria);
+                    else
+                        return BadRequest(base.Notificar());
+
                 }
                 return BadRequest();
 

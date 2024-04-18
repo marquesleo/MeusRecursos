@@ -10,9 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MinhasPrioridades.Controllers.V1
 {
-     [Route("api/v{version:apiVersion}/Senha")]
+     [Route("api/v1/Senha")]
      [ApiController]
-     [ApiVersion("1.0")]
      [Authorize]
     public class SenhaController : BaseController {
 

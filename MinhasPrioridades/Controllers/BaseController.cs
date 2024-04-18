@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Notification;
+using System.Collections.Generic;
 namespace MinhasPrioridades.Controllers
 {
     public abstract class BaseController : Controller
@@ -14,6 +15,12 @@ namespace MinhasPrioridades.Controllers
         protected bool OperacacaoValida()
         {
             return !_notificador.TemNotificacao();
+        }
+
+        protected List<Notificacao> Notificar()
+        {
+          return _notificador.ObterNotificacoes();
+         
         }
     }
 }

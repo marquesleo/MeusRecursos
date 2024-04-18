@@ -11,9 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MinhasPrioridades.Controllers.V1
 {
-     [Route("api/v{version:apiVersion}/propriedades")]
+     [Route("api/v1/propriedades")]
      [ApiController]
-     [ApiVersion("1.0")]
+   
      [Authorize]
     public class PrioridadesController : BaseController
     {

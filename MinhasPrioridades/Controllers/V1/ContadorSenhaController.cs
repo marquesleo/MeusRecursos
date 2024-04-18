@@ -13,9 +13,8 @@ using System.Threading.Tasks;
 
 namespace MinhasPrioridades.Controllers.V1
 {
-    [Route("api/v{version:apiVersion}/contadorsenha")]
+    [Route("api/v1/contadorsenha")]
     [ApiController]
-    [ApiVersion("1.0")]
     [Authorize]
     public class ContadorSenhaController : BaseController
     {
