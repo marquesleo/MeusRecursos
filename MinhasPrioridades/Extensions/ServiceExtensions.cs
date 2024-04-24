@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Http;
 using ApplicationPrioridadesAPP.Authorization;
 using Domain.Prioridades.InterfaceServices;
 using ApplicationPrioridadesAPP.Interfaces.Generics;
+using ApplicationPrioridadesAPP.OpenApp.Categoria;
+using MediatR;
 
 namespace MinhasPrioridades.Extensions
 {
@@ -108,6 +110,8 @@ namespace MinhasPrioridades.Extensions
         public static void ConfigureDependences(this IServiceCollection services,
                                                IConfiguration configuration)
         {
+
+         
             services.AddSingleton<INotificador, Notificacador>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -127,7 +131,7 @@ namespace MinhasPrioridades.Extensions
             services.AddSingleton<IServiceUsuario, ServicesUsuario>();
 
             services.AddSingleton<ICategoria, Infrastructure.Repository.Repositories.RepositoryCategoria>();
-            services.AddSingleton<InterfaceCategoriaApp, ApplicationPrioridadesAPP.OpenApp.AppCategoria>();
+            services.AddSingleton<InterfaceCategoriaApp, AppCategoria>();
             services.AddSingleton<IServiceCategoria, ServiceCategoria>();
 
 
@@ -137,6 +141,10 @@ namespace MinhasPrioridades.Extensions
 
             services.AddSingleton<IJwtUtils, JwtUtils>();
             services.AddDbContext<ContextBase>(p => p.UseNpgsql(GetStringConectionConfig(configuration)));
+
+          //  services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+
+
         }
 
         private static string GetStringConectionConfig(IConfiguration configuration)
