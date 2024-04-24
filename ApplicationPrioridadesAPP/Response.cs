@@ -8,6 +8,9 @@ namespace ApplicationPrioridadesAPP
         INVALID_ID_PERSON_ID = 3,
         MISSING_REQUIRED_INFORMATION = 4,
 
+        CATEGORIA_DUPLICATE = 5,
+        CATEGORIA_NOT_FOUND = 6
+
     }
     public abstract class Response
     {

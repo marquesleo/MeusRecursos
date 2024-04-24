@@ -9,6 +9,8 @@ using System;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using ApplicationPrioridadesAPP.OpenApp.Categoria.Command;
+using ApplicationPrioridadesAPP;
+using ApplicationPrioridadesAPP.OpenApp.Categoria.Queries;
 
 namespace MinhasPrioridades.Controllers.V2
 {
@@ -45,7 +47,7 @@ namespace MinhasPrioridades.Controllers.V2
                     if (res.Success)
                     {
                         return Created("", res.Data);
-                    }else
+                    }else 
                     {
                         return BadRequest(res);
                     }
@@ -56,5 +58,25 @@ namespace MinhasPrioridades.Controllers.V2
             return BadRequest(500);
 
         }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+
+            var query = new GetCategoriaQuery
+            {
+                Id = id
+            };
+            var res = await _mediator.Send(query);
+
+            if (res.Success)
+                return Created("", res.Data);
+            else if (res.ErrorCode == ErrorCodes.CATEGORIA_NOT_FOUND)
+                return NotFound(res);
+            else
+                return BadRequest(res);
+        }
     }
+    
 }

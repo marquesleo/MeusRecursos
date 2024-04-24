@@ -10,7 +10,6 @@ using System.Text;
 using Domain.Prioridades.InterfaceService;
 using Domain.Prioridades.Services;
 using Notification;
-using AutoMapper;
 using System.Reflection;
 using System.IO;
 using System;
@@ -65,6 +64,7 @@ namespace MinhasPrioridades.Extensions
 
         public static void ConfigureAutoMapper(this IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(ApplicationPrioridadesAPP.AutoMapper.AutoMapperConfig));
             services.AddAutoMapper(typeof(AplicationPrioridadesAPP.AutoMapper.CategoriaMapper));
             services.AddAutoMapper(typeof(AplicationPrioridadesAPP.AutoMapper.ContadorDeSenhaMapper));
         }
@@ -142,7 +142,8 @@ namespace MinhasPrioridades.Extensions
             services.AddSingleton<IJwtUtils, JwtUtils>();
             services.AddDbContext<ContextBase>(p => p.UseNpgsql(GetStringConectionConfig(configuration)));
 
-          //  services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(typeof(AppCategoria));
 
 
         }

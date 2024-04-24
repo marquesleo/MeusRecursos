@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using ApplicationPrioridadesAPP.Interfaces;
 using Domain.Prioridades.Interfaces;
 using Domain.Prioridades.InterfaceServices;
+using System.Linq;
+using ApplicationPrioridadesAPP.OpenApp.Categoria.Exceptions;
 
 
 namespace ApplicationPrioridadesAPP.OpenApp.Categoria
@@ -33,9 +35,21 @@ namespace ApplicationPrioridadesAPP.OpenApp.Categoria
 
         public async Task AddCategoria(Domain.Prioridades.Entities.Categoria categoria)
         {
-            //await CarregarUsuario(categoria);
-            await _IServiceCategoria.AddCategoria(categoria);
+             await ValidarCategoria(categoria);
+             await _IServiceCategoria.AddCategoria(categoria);
+
         }
+
+        private async Task ValidarCategoria(Domain.Prioridades.Entities.Categoria categoria)
+        {
+            var dbCategoria = await FindByCondition(p=> p.Descricao.ToLower() == categoria.Descricao.ToLower() && p.Usuario_Id == categoria.Usuario_Id); 
+            if (dbCategoria != null && dbCategoria.Any())
+            { 
+                throw new CategoriaDuplicateException();
+            }
+        }
+
+
 
         public async Task Delete(Domain.Prioridades.Entities.Categoria objeto)
         {

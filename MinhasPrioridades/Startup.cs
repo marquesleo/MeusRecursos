@@ -35,9 +35,9 @@ namespace MinhasPrioridades
             services.Init(Configuration);
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.ConfigureDependences(Configuration);
-            //services.AddControllersWithViews()
-            //  .AddJsonOptions(options =>
-            //  options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            services.AddControllersWithViews()
+              .AddJsonOptions(options =>
+              options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 
             services.Configure<CookiePolicyOptions>(options =>
@@ -54,7 +54,7 @@ namespace MinhasPrioridades
             });
 
 
-            services.AddAutoMapper(typeof(ApplicationPrioridadesAPP.AutoMapper.AutoMapperConfig));
+          
             services.ConfigureAutoMapper();
 
 

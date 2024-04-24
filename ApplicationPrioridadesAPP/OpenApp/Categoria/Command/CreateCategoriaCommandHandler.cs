@@ -1,5 +1,6 @@
 ﻿
 using ApplicationPrioridadesAPP.Interfaces;
+using ApplicationPrioridadesAPP.OpenApp.Categoria.Exceptions;
 using AutoMapper;
 using MediatR;
 using System;
@@ -26,6 +27,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Categoria.Command
             try
             {
                 var categoria = _mapper.Map<Domain.Prioridades.Entities.Categoria>(request.CategoriaViewModel);
+                              
                 await _InterfaceCategoriaApp.AddCategoria(categoria);
 
 
@@ -34,6 +36,16 @@ namespace ApplicationPrioridadesAPP.OpenApp.Categoria.Command
                     Data = _mapper.Map<Domain.Prioridades.ViewModels.CategoriaViewModel>(categoria),
                     Success = true
                 };
+
+            }catch(CategoriaDuplicateException ex)
+            {
+                return new CategoriaResponse
+                {
+                    Success = false,
+                    ErrorCode = ErrorCodes.CATEGORIA_DUPLICATE,
+                    Message = ErrorCodes.CATEGORIA_DUPLICATE.ToString()
+                };
+
             }
             catch (Exception ex)
             {
