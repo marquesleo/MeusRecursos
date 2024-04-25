@@ -116,31 +116,35 @@ namespace MinhasPrioridades.Extensions
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSingleton(typeof(Contracts.Generics.IGeneric<>), typeof(Infrastructure.Repository.Generics.RepositoryGeneric<>));
-            services.AddSingleton<IPrioridade, Infrastructure.Repository.Repositories.RepositoryPrioridade>();
-            services.AddSingleton<InterfacePrioridadeApp, ApplicationPrioridadesAPP.OpenApp.AppPrioridade>();
-            services.AddSingleton<IServicePrioridade, ServicesPrioridade>();
+         
+            
+            services.AddScoped<IPrioridade, Infrastructure.Repository.Repositories.RepositoryPrioridade>();
+            services.AddScoped<InterfacePrioridadeApp, ApplicationPrioridadesAPP.OpenApp.AppPrioridade>();
+            services.AddScoped<IServicePrioridade, ServicesPrioridade>();
+                       
+            services.AddScoped<ISenha, Infrastructure.Repository.Repositories.RepositoryMinhaSenha>();
+            services.AddScoped<InterfaceSenhaApp, ApplicationPrioridadesAPP.OpenApp.AppSenha>();
+            services.AddScoped<IServiceSenha, ServicesSenha>();
 
-           
-            services.AddSingleton<ISenha, Infrastructure.Repository.Repositories.RepositoryMinhaSenha>();
             services.AddSingleton<IRefreshToken, Infrastructure.Repository.Repositories.RepositoryRefreshToken>();
-            services.AddSingleton<InterfaceSenhaApp, ApplicationPrioridadesAPP.OpenApp.AppSenha>();
-            services.AddSingleton<IServiceSenha, ServicesSenha>();
-           
             services.AddSingleton<IUsuario, Infrastructure.Repository.Repositories.RepositoryUsuario>();
             services.AddSingleton<InterfaceUsuarioApp, ApplicationPrioridadesAPP.OpenApp.AppUsuario>();
             services.AddSingleton<IServiceUsuario, ServicesUsuario>();
 
-            services.AddSingleton<ICategoria, Infrastructure.Repository.Repositories.RepositoryCategoria>();
-            services.AddSingleton<InterfaceCategoriaApp, AppCategoria>();
-            services.AddSingleton<IServiceCategoria, ServiceCategoria>();
+            services.AddScoped<ICategoria, Infrastructure.Repository.Repositories.RepositoryCategoria>();
+            services.AddScoped<InterfaceCategoriaApp, AppCategoria>();
+            services.AddScoped<IServiceCategoria, ServiceCategoria>();
 
 
-            services.AddSingleton<IContadorSenha, Infrastructure.Repository.Repositories.RepositoryContadorSenha>();
-            services.AddSingleton<InterfaceContadorSenhaApp, ApplicationPrioridadesAPP.OpenApp.AppContadorSenha>();
-            services.AddSingleton<IServiceContadorSenha, ServiceContadorSenha>();
+            services.AddScoped<IContadorSenha, Infrastructure.Repository.Repositories.RepositoryContadorSenha>();
+            services.AddScoped<InterfaceContadorSenhaApp, ApplicationPrioridadesAPP.OpenApp.AppContadorSenha>();
+            services.AddScoped<IServiceContadorSenha, ServiceContadorSenha>();
 
             services.AddSingleton<IJwtUtils, JwtUtils>();
             services.AddDbContext<ContextBase>(p => p.UseNpgsql(GetStringConectionConfig(configuration)));
+
+
+            services.AddScoped<NotificationContext>();
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddMediatR(typeof(AppCategoria));

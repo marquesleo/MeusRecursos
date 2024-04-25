@@ -1,4 +1,5 @@
-﻿using Entities.Models;
+﻿using Domain.Prioridades.Validations;
+using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,7 +13,12 @@ namespace Domain.Prioridades.Entities
 	{
 		public Categoria()
 		{
+           // Validate(this, new CategoriaValidation());
 		}
+
+
+        public override bool Invalid { get { return !Validate(this, new CategoriaValidation()); } } 
+        
 
         [Column("descricao", TypeName = "varchar(200)")]
         public string Descricao { get; set; }

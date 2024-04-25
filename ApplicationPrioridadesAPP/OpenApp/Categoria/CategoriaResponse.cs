@@ -10,5 +10,8 @@ namespace ApplicationPrioridadesAPP.OpenApp.Categoria
     public class CategoriaResponse : Response
     {
         public CategoriaViewModel Data { get; set; }
+        public List<CategoriaViewModel> Lista { get; set; }
     }
+
+  
 }

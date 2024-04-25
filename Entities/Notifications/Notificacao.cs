@@ -6,10 +6,14 @@ namespace Entities.Notifications
 {
     public class Notificacao
     {
-        public Notificacao(string mensagem)
+
+        public string Key { get; private set; }
+        public string Mensagem { get; }
+        public Notificacao(string key,string mensagem)
         {
             Mensagem = mensagem;
+            this.Key = key;
         }
-        public string Mensagem { get; }
+     
     }
 }

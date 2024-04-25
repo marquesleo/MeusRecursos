@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MinhasPrioridades.Extensions;
+using MinhasPrioridades.Filters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Text.Json.Serialization;
@@ -53,8 +54,9 @@ namespace MinhasPrioridades
                     CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
             });
 
+            services.AddMvc(options => options.Filters.Add<NotificationFilter>());
 
-          
+
             services.ConfigureAutoMapper();
 
 

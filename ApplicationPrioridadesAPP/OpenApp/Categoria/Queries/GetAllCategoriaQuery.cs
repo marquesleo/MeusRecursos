@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace ApplicationPrioridadesAPP.OpenApp.Categoria.Queries
 {
-    public class GetCategoriaQuery : IRequest<CategoriaResponse>
+    public class GetAllCategoriaQuery : IRequest<CategoriaResponse>
     {
-        public Guid Id { get; set; }
-        
+        public Guid Id_Usuario { get; set; }
     }
 }

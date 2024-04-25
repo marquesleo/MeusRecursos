@@ -24,7 +24,7 @@ namespace Domain.Services
 
         protected void Notificar(string mensagem)
         {
-            _notificador.Handle(new Notificacao(mensagem));
+            _notificador.Handle(new Notificacao(mensagem,mensagem));
         }
 
         protected bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE> where TE : Entities.Models.Base

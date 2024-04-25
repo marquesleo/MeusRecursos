@@ -3,6 +3,7 @@ using ApplicationPrioridadesAPP.Interfaces;
 using ApplicationPrioridadesAPP.OpenApp.Categoria.Exceptions;
 using AutoMapper;
 using MediatR;
+using Notification;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,11 +15,17 @@ namespace ApplicationPrioridadesAPP.OpenApp.Categoria.Command
 
         private readonly IMapper _mapper;
         private readonly InterfaceCategoriaApp _InterfaceCategoriaApp;
+        private readonly NotificationContext _notificationContext;
+
+     
+
         public CreateCategoriaCommandHandler(IMapper mapper,
-                                             InterfaceCategoriaApp InterfaceCategoriaApp) 
+                                             InterfaceCategoriaApp InterfaceCategoriaApp,
+                                             NotificationContext notificationContext) 
         {
             this._InterfaceCategoriaApp = InterfaceCategoriaApp;
             this._mapper = mapper;
+            this._notificationContext = notificationContext;
         }
 
 
@@ -27,15 +34,27 @@ namespace ApplicationPrioridadesAPP.OpenApp.Categoria.Command
             try
             {
                 var categoria = _mapper.Map<Domain.Prioridades.Entities.Categoria>(request.CategoriaViewModel);
-                              
-                await _InterfaceCategoriaApp.AddCategoria(categoria);
 
-
-                return new CategoriaResponse
+                if (categoria != null && categoria.Invalid)
                 {
-                    Data = _mapper.Map<Domain.Prioridades.ViewModels.CategoriaViewModel>(categoria),
-                    Success = true
-                };
+                    _notificationContext.AddNotifications(categoria.ValidationResult);
+                    return new CategoriaResponse
+                    {
+                        Success = false,
+                        ErrorCode = ErrorCodes.MISSING_REQUIRED_INFORMATION,
+                        Message = _notificationContext.GetErros()
+                    };
+                }
+                else
+                {
+                    await _InterfaceCategoriaApp.AddCategoria(categoria);
+
+                    return new CategoriaResponse
+                    {
+                        Data = _mapper.Map<Domain.Prioridades.ViewModels.CategoriaViewModel>(categoria),
+                        Success = true
+                    };
+                }
 
             }catch(CategoriaDuplicateException ex)
             {
