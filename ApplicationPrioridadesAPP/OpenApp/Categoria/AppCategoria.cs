@@ -42,7 +42,9 @@ namespace ApplicationPrioridadesAPP.OpenApp.Categoria
 
         private async Task ValidarCategoria(Domain.Prioridades.Entities.Categoria categoria)
         {
-            var dbCategoria = await FindByCondition(p=> p.Descricao.ToLower() == categoria.Descricao.ToLower() && p.Usuario_Id == categoria.Usuario_Id); 
+            var dbCategoria = await FindByCondition(p=> p.Descricao.ToLower() == categoria.Descricao.ToLower() && p.Usuario_Id == categoria.Usuario_Id 
+            && (categoria.IdValido() && p.Id != categoria.Id)); 
+
             if (dbCategoria != null && dbCategoria.Any())
             { 
                 throw new CategoriaDuplicateException();

@@ -11,6 +11,15 @@ namespace Entities.Models
 
     public class Base : IEntity
     {
+
+
+        public bool IdValido()
+        {
+            Guid guiValido;
+           return Guid.TryParse(Id.ToString(), out guiValido);
+
+        }
+
         [Column("id")]
         public Guid Id { get ; set; }
         [NotMapped]

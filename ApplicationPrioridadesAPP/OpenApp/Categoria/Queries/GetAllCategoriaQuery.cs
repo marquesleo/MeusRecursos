@@ -11,4 +11,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Categoria.Queries
     {
         public Guid Id_Usuario { get; set; }
     }
+
+
+
 }
