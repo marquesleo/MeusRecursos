@@ -47,7 +47,7 @@ namespace Notification
             var erros = new System.Text.StringBuilder();
             foreach (var item in Notifications)
             {
-                erros.Append(item.Mensagem);
+                erros.AppendLine(item.Mensagem);
             }
             return erros.ToString();
         }

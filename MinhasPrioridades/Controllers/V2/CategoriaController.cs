@@ -134,6 +134,29 @@ namespace MinhasPrioridades.Controllers.V2
             }
 
         }
+
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+
+            var command = new DeleteCategoriaCommand
+            {
+                Id = id
+            };
+            var res = await _mediator.Send(command);
+
+            if (res.Success)
+            {
+                return Ok(res.Success);
+            }
+            else
+            {
+                return BadRequest(res);
+            }
+
+        }
     }
 
 }

@@ -27,16 +27,10 @@ namespace ApplicationPrioritiesTests
             _mapper = configuration.CreateMapper();
         }
 
-
-    
-
-    public CreateCategoriaCommandHandler GetCommandMock(Mock<InterfaceCategoriaApp> app, Mock<NotificationContext> notificationContext)
+        public CreateCategoriaCommandHandler GetCommandMock(Mock<InterfaceCategoriaApp> app, Mock<NotificationContext> notificationContext)
         {
-          
-
             var _app = app ?? new Mock<InterfaceCategoriaApp>();
             var _notificationContext = notificationContext ?? new Mock<NotificationContext>();
-
 
             var commandHandler = new CreateCategoriaCommandHandler(_mapper, _app.Object, _notificationContext.Object);
             return commandHandler;
@@ -44,14 +38,17 @@ namespace ApplicationPrioritiesTests
 
 
 
-        [Fact]
-        public async Task QuandoCriaUmaCategoriaValida_RetornaACategoria()
+
+        [Theory]
+        [InlineData("3944ec0a-173f-4606-8d65-d7ce4ce4f479")]
+        public async Task QuandoCriaUmaCategoriaValida_RetornaACategoria(string usuario_id)
         {
             var categoriaDTO = new CategoriaViewModel
             {
                 Ativo = true,
                 Descricao = "TESTE",
-                Id = Guid.NewGuid()
+                Id = Guid.NewGuid(),
+                Usuario_Id = Guid.Parse(usuario_id)
 
             };
 
@@ -65,7 +62,7 @@ namespace ApplicationPrioritiesTests
                 Id = categoriaDTO.Id,
                 Descricao = "TESTE",
                 Ativo = true,
-
+                Usuario_Id = Guid.Parse(usuario_id)
             };
 
             var appCategoria = new Mock<InterfaceCategoriaApp>();
@@ -74,11 +71,11 @@ namespace ApplicationPrioritiesTests
                 .Returns(Task.FromResult(fakeCategoria));
 
             var handler = GetCommandMock(appCategoria, null);
-            var resp =  await handler.Handle(cmd, CancellationToken.None);
+            var resp = await handler.Handle(cmd, CancellationToken.None);
 
             Assert.NotNull(resp);
             Assert.True(resp.Success);
-            Assert.Equal(resp.Data.Id,fakeCategoria.Id);
+            Assert.Equal(resp.Data.Id, fakeCategoria.Id);
 
         }
 
@@ -109,7 +106,7 @@ namespace ApplicationPrioritiesTests
             };
 
             var appCategoria = new Mock<InterfaceCategoriaApp>();
-                            
+
             appCategoria.Setup(x => x.AddCategoria(It.IsAny<Categoria>()))
                 .Returns(Task.FromResult(fakeCategoria));
 
@@ -119,7 +116,7 @@ namespace ApplicationPrioritiesTests
             Assert.NotNull(resp);
             Assert.False(resp.Success);
             Assert.Equal(resp.ErrorCode, ApplicationPrioridadesAPP.ErrorCodes.MISSING_REQUIRED_INFORMATION);
-            
+
 
         }
 
@@ -154,7 +151,7 @@ namespace ApplicationPrioritiesTests
 
             appCategoria.Setup(x => x.AddCategoria(It.IsAny<Categoria>()))
                 .Callback(() => { throw new CategoriaDuplicateException(); });
-           
+
             var handler = GetCommandMock(appCategoria, null);
             var resp = await handler.Handle(cmd, CancellationToken.None);
 
