@@ -28,8 +28,16 @@
 
   <ItemGroup>
     <None Remove="Helpers\" />
+    <None Remove="OpenApp\Prioridade\" />
+    <None Remove="OpenApp\Prioridade\Command\" />
+    <None Remove="OpenApp\Prioridade\Queries\" />
+    <None Remove="OpenApp\Prioridade\Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
+    <Folder Include="OpenApp\Prioridade\" />
+    <Folder Include="OpenApp\Prioridade\Command\" />
+    <Folder Include="OpenApp\Prioridade\Queries\" />
+    <Folder Include="OpenApp\Prioridade\Exceptions\" />
   </ItemGroup>
 </Project>
