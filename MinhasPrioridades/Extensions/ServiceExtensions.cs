@@ -68,6 +68,7 @@ namespace MinhasPrioridades.Extensions
             services.AddAutoMapper(typeof(ApplicationPrioridadesAPP.AutoMapper.AutoMapperConfig));
             services.AddAutoMapper(typeof(AplicationPrioridadesAPP.AutoMapper.CategoriaMapper));
             services.AddAutoMapper(typeof(AplicationPrioridadesAPP.AutoMapper.ContadorDeSenhaMapper));
+            services.AddAutoMapper(typeof(AplicationPrioridadesAPP.AutoMapper.PrioridadeMapper));
         }
 
         public static void ConfigureSwagger(this IServiceCollection services)
@@ -120,7 +121,7 @@ namespace MinhasPrioridades.Extensions
          
             
             services.AddScoped<IPrioridade, Infrastructure.Repository.Repositories.RepositoryPrioridade>();
-            services.AddScoped<InterfacePrioridadeApp, ApplicationPrioridadesAPP.OpenApp.AppPrioridade>();
+            services.AddScoped<InterfacePrioridadeApp, AppPrioridade>();
             services.AddScoped<IServicePrioridade, ServicesPrioridade>();
                        
             services.AddScoped<ISenha, Infrastructure.Repository.Repositories.RepositoryMinhaSenha>();

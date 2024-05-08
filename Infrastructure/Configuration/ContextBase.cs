@@ -61,6 +61,19 @@ namespace Infrastructure.Configuration
                    .IsUnique(false);
 
 
+
+            modelBuilder.Entity<Domain.Prioridades.Entities.Usuario>()
+          .HasOne<Domain.Prioridades.Entities.Prioridade>(s => s.prioridade)
+          .WithOne(ad => ad.Usuario)
+          .HasForeignKey<Domain.Prioridades.Entities.Prioridade>(ad => ad.Usuario_Id)
+          .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Domain.Prioridades.Entities.Prioridade>()
+                   .HasIndex(b => b.Usuario_Id)
+                   .IsUnique(false);
+
+
+
             //categoria - > usuario
 
             modelBuilder.Entity < Domain.Prioridades.Entities.Usuario>()

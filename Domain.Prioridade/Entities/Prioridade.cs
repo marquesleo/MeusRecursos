@@ -1,6 +1,8 @@
 ﻿using Entities.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Domain.Prioridades.Entities
 {
@@ -26,9 +28,11 @@ namespace Domain.Prioridades.Entities
         [Column("feito")]
         public bool Feito { get; set; }
 
-
-        [ForeignKey("usuario")]
+        [JsonIgnore]
         public virtual Usuario Usuario { get; set; }
+
+        [Column("usuario", TypeName = "uuid")]
+        public Guid Usuario_Id { get; set; }
 
         public void Map(ViewModels.PrioridadeViewModel prioridadeViewModel)
         {

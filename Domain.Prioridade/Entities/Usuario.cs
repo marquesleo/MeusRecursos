@@ -29,6 +29,10 @@ namespace Domain.Prioridades.Entities
         [JsonIgnore]
         public Categoria categoria { get; set; }
 
+        [JsonIgnore]
+        public Prioridade prioridade { get; set; }
+
+
 
 
         public void Map(ViewModels.LoginViewModel loginViewModel)

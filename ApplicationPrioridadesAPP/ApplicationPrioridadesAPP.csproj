@@ -35,9 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
-    <Folder Include="OpenApp\Prioridade\" />
     <Folder Include="OpenApp\Prioridade\Command\" />
-    <Folder Include="OpenApp\Prioridade\Queries\" />
     <Folder Include="OpenApp\Prioridade\Exceptions\" />
   </ItemGroup>
 </Project>

@@ -3,7 +3,7 @@ using AutoMapper;
 using Domain.Prioridades.Entities;
 using Domain.Prioridades.ViewModels;
 
-namespace ApplicationPrioridadesAPP.AutoMapper
+namespace AplicationPrioridadesAPP.AutoMapper
 {
 	public class PrioridadeMapper : Profile
     {
@@ -23,6 +23,9 @@ namespace ApplicationPrioridadesAPP.AutoMapper
               .ForMember(dest => dest.Feito,
                          opt => opt.MapFrom(src => src.Feito))
 
+               .ForMember(dest => dest.Usuario,
+                         opt => opt.MapFrom(src => src.Usuario_Id))
+
               .ForMember(dest => dest.Valor,
                 opt => opt.MapFrom(src => src.Valor));
 
@@ -39,6 +42,9 @@ namespace ApplicationPrioridadesAPP.AutoMapper
 
                     .ForMember(dest => dest.Valor,
                     opt => opt.MapFrom(src => src.Valor))
+
+                    .ForMember(dest => dest.Usuario_Id,
+                    opt => opt.MapFrom(src => src.Usuario))
 
                     .ForMember(dest => dest.Feito,
                     opt => opt.MapFrom(src => src.Feito));
