@@ -27,8 +27,6 @@ namespace ApplicationPrioridadesAPP.AutoMapper
                 opt => opt.MapFrom(src => src.Valor));
 
             
-
-
               CreateMap<PrioridadeViewModel, Prioridade>()
                     .ForMember(dest => dest.Id,
                     opt => opt.MapFrom(src => src.Id))

@@ -8,21 +8,19 @@ using Microsoft.Extensions.Logging;
 using ApplicationPrioridadesAPP.OpenApp.Categoria.Command;
 using ApplicationPrioridadesAPP;
 using ApplicationPrioridadesAPP.OpenApp.Categoria.Queries;
-using ApplicationPrioridadesAPP.Interfaces;
-using System.Collections.Generic;
-using Domain.Prioridades.Entities;
+
 
 namespace MinhasPrioridades.Controllers.V2
 {
     [Route("api/v2/categoria")]
     [ApiController]
     [Authorize]
-    public class CategoriaController : ControllerBase
+    public class CategoriasController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ILogger<CategoriaController> _logger;
-        public CategoriaController(IMediator mediator,
-                                   ILogger<CategoriaController> logger)
+        private readonly ILogger<CategoriasController> _logger;
+        public CategoriasController(IMediator mediator,
+                                   ILogger<CategoriasController> logger)
         {
 
             _logger = logger;

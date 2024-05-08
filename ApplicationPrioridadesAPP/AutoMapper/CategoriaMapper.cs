@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Domain.Prioridades.Entities;
-using Domain.Prioridades.Interface;
 using Domain.Prioridades.ViewModels;
 
 namespace AplicationPrioridadesAPP.AutoMapper
@@ -26,7 +21,7 @@ namespace AplicationPrioridadesAPP.AutoMapper
 		{
             try
             {
-                CreateMap<Categoria, Domain.Prioridades.ViewModels.CategoriaViewModel>()
+                CreateMap<Categoria, CategoriaViewModel>()
               .ForMember(dest => dest.Descricao,
                          opt => opt.MapFrom(src => src.Descricao))
               .ForMember(dest => dest.Ativo,

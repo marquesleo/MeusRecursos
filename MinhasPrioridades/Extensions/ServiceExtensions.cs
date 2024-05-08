@@ -20,6 +20,7 @@ using ApplicationPrioridadesAPP.Authorization;
 using Domain.Prioridades.InterfaceServices;
 using ApplicationPrioridadesAPP.Interfaces.Generics;
 using ApplicationPrioridadesAPP.OpenApp.Categoria;
+using ApplicationPrioridadesAPP.OpenApp.Prioridade;
 using MediatR;
 
 namespace MinhasPrioridades.Extensions
@@ -148,6 +149,8 @@ namespace MinhasPrioridades.Extensions
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddMediatR(typeof(AppCategoria));
+            services.AddMediatR(typeof(AppPrioridade));
+
 
 
         }

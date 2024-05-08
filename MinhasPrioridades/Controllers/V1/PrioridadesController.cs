@@ -2,7 +2,6 @@
 using System;
 using System.Threading.Tasks;
 using Notification;
-using System.Collections.Generic;
 using Domain.Prioridades.Entities;
 using AutoMapper;
 using ApplicationPrioridadesAPP.Interfaces;
