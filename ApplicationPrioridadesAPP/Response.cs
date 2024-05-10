@@ -9,7 +9,9 @@ namespace ApplicationPrioridadesAPP
         MISSING_REQUIRED_INFORMATION = 4,
 
         CATEGORIA_DUPLICATE = 5,
-        CATEGORIA_NOT_FOUND = 6
+        CATEGORIA_NOT_FOUND = 6,
+
+        PRIORIDADE_NOT_FOUND = 7
 
     }
     public abstract class Response

@@ -1,32 +1,31 @@
-﻿using MediatR;
-using System.Threading.Tasks;
-using System.Threading;
-using ApplicationPrioridadesAPP.Interfaces;
+﻿using ApplicationPrioridadesAPP.Interfaces;
 using AutoMapper;
-using Notification;
-using ApplicationPrioridadesAPP.OpenApp.Categoria;
+using MediatR;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Queries
 {
-    public class GetPrioridadeQueryHandler : IRequestHandler<GetPrioridadeQuery, PrioridadeResponse>
+    public class GetPrioridadeFiltrosQueryHandler : IRequestHandler<GetPrioridadeFiltrosQuery, PrioridadeResponse>
     {
         private readonly IMapper _mapper;
         private readonly InterfacePrioridadeApp _interfacePrioridadeApp;
-       
-        public GetPrioridadeQueryHandler(IMapper mapper,
+
+        public GetPrioridadeFiltrosQueryHandler(IMapper mapper,
                                              InterfacePrioridadeApp InterfacePrioridadeApp
                                            )
         {
             this._interfacePrioridadeApp = InterfacePrioridadeApp;
             this._mapper = mapper;
-          
-        }
-      
-        public async Task<PrioridadeResponse> Handle(GetPrioridadeQuery request, CancellationToken cancellationToken)
-        {
-            var prioridade = await _interfacePrioridadeApp.GetEntityById(request.Id);
 
-            if (prioridade == null || prioridade.Descricao == string.Empty)
+        }
+        public async Task<PrioridadeResponse> Handle(GetPrioridadeFiltrosQuery request, CancellationToken cancellationToken)
+        {
+            var prioridades = await _interfacePrioridadeApp.ObterPrioridade(request.Usuario_Id, request.Feito);
+
+            if (prioridades == null || !prioridades.Any())
             {
                 return new PrioridadeResponse
                 {
@@ -36,9 +35,10 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Queries
                 };
 
             }
+
             return new PrioridadeResponse
             {
-                Data = _mapper.Map<Domain.Prioridades.ViewModels.PrioridadeViewModel>(prioridade),
+                Lista = _mapper.Map<List<Domain.Prioridades.ViewModels.PrioridadeViewModel>>(prioridades),
                 Success = true
             };
         }

@@ -70,7 +70,7 @@ namespace MinhasPrioridades.Controllers.V2
             var res = await _mediator.Send(query);
 
             if (res.Success)
-                return Created("", res.Data);
+                return Ok(res.Data);
             else if (res.ErrorCode == ErrorCodes.CATEGORIA_NOT_FOUND)
                 return NotFound(res);
             else
@@ -91,7 +91,7 @@ namespace MinhasPrioridades.Controllers.V2
 
                 var res = await _mediator.Send(query);
                 if (res.Success)
-                    return Created("", res.Lista);
+                    return Ok(res.Lista);
                 else if (res.ErrorCode == ErrorCodes.CATEGORIA_NOT_FOUND)
                     return NotFound(res);
                 else
