@@ -31,7 +31,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade
         }   
         
        private async Task CarregarUsuario(Domain.Prioridades.Entities.Prioridade prioridade){
-         prioridade.Usuario = await _IUsuario.GetEntityById(prioridade.Usuario.Id);
+         prioridade.Usuario = await _IUsuario.GetEntityById(prioridade.Usuario_Id);
        }
        
 
@@ -64,7 +64,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade
                             prioridadeViewModel.Feito = obj.Feito;
                             prioridadeViewModel.Id = obj.Id;
                             prioridadeViewModel.Valor = obj.Valor;
-                            prioridadeViewModel.Usuario =id_usuario;
+                            prioridadeViewModel.Usuario =Guid.Parse(id_usuario);
                             lstNovasPrioridades.Add(prioridadeViewModel);
                         } 
 

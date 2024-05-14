@@ -1,17 +1,9 @@
 ﻿using ApplicationPrioridadesAPP.Interfaces;
-using ApplicationPrioridadesAPP.OpenApp.Categoria.Command;
 using ApplicationPrioridadesAPP.OpenApp.Categoria.Queries;
 using AutoMapper;
-using Domain.Prioridades.Entities;
-using Domain.Prioridades.Interfaces;
 using Domain.Prioridades.ViewModels;
 using Moq;
-using Notification;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ApplicationPrioritiesTests
 {
@@ -34,7 +26,7 @@ namespace ApplicationPrioritiesTests
         public GetAllCategoriaQueryHandler GetQyeryMock(Mock<InterfaceCategoriaApp> app)
         {
             var _app = app ?? new Mock<InterfaceCategoriaApp>();
-            
+
             var commandHandler = new GetAllCategoriaQueryHandler(_mapper, _app.Object);
             return commandHandler;
         }
@@ -51,7 +43,7 @@ namespace ApplicationPrioritiesTests
                 Id_Usuario = Guid.Parse(usuario_id)
             };
 
-            List<Categoria> fakelstCategoria = new List<Categoria>();
+            List<Domain.Prioridades.Entities.Categoria> fakelstCategoria = new List<Domain.Prioridades.Entities.Categoria>();
 
             fakelstCategoria = GetCategorias(usuario_id);
 
@@ -67,7 +59,7 @@ namespace ApplicationPrioritiesTests
             Assert.NotNull(resp);
             Assert.True(resp.Success);
             Assert.Equal(resp.Lista.Count, lstMapper.Count);
-          
+
         }
 
 
@@ -82,8 +74,8 @@ namespace ApplicationPrioritiesTests
                 Id_Usuario = Guid.Parse(usuario_id)
             };
 
-            List<Categoria> fakelstCategoria = new List<Categoria>();
-    
+            List<Domain.Prioridades.Entities.Categoria> fakelstCategoria = new List<Domain.Prioridades.Entities.Categoria>();
+
             appCategoria.Setup(x => x.ObterCategoria(usuario_id))
                 .Returns(Task.FromResult(fakelstCategoria));
 
@@ -94,15 +86,15 @@ namespace ApplicationPrioritiesTests
 
             Assert.NotNull(resp);
             Assert.False(resp.Success);
-            Assert.Equal(resp.ErrorCode,ApplicationPrioridadesAPP.ErrorCodes.CATEGORIA_NOT_FOUND);
+            Assert.Equal(resp.ErrorCode, ApplicationPrioridadesAPP.ErrorCodes.CATEGORIA_NOT_FOUND);
 
         }
 
 
-        private List<Categoria> GetCategorias(string id_usuario)
+        private List<Domain.Prioridades.Entities.Categoria> GetCategorias(string id_usuario)
         {
-            var retorno = new List<Categoria>();
-            var categoria = new Categoria()
+            var retorno = new List<Domain.Prioridades.Entities.Categoria>();
+            var categoria = new Domain.Prioridades.Entities.Categoria()
             {
                 Id = Guid.NewGuid(),
                 Descricao = "TESTE01",
@@ -110,7 +102,7 @@ namespace ApplicationPrioritiesTests
                 Ativo = true
             };
             retorno.Add(categoria);
-            categoria = new Categoria()
+            categoria = new Domain.Prioridades.Entities.Categoria()
             {
                 Id = Guid.NewGuid(),
                 Descricao = "TESTE02",
@@ -118,7 +110,7 @@ namespace ApplicationPrioritiesTests
                 Ativo = true
             };
             retorno.Add(categoria);
-            categoria = new Categoria()
+            categoria = new Domain.Prioridades.Entities.Categoria()
             {
                 Id = Guid.NewGuid(),
                 Descricao = "TESTE03",

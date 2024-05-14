@@ -11,10 +11,11 @@ namespace ApplicationPrioridadesAPP.AutoMapper
         {
             try
             {
-                CreateMap<Prioridade, PrioridadeViewModel>().ReverseMap();
+                CreateMap<Categoria, CategoriaViewModel>().ReverseMap();
                 CreateMap<Usuario, LoginViewModel>().ReverseMap();
                 CreateMap<Senha, SenhaViewModel>().ReverseMap();
-                CreateMap<Prioridade, PrioridadeViewModel>().ReverseMap();
+               // CreateMap <Prioridade, PrioridadeViewModel>().ReverseMap();
+             
             }
             catch (System.Exception ex)
             {

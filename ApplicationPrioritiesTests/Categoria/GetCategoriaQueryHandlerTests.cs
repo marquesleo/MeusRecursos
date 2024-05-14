@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationPrioritiesTests
+namespace ApplicationPrioritiesTests.Categoria
 {
     public class GetCategoriaQueryHandlerTests
     {
@@ -43,12 +43,11 @@ namespace ApplicationPrioritiesTests
                 Id = guid
             };
 
-            var fakeCategoria = new Categoria
+            var fakeCategoria = new Domain.Prioridades.Entities.Categoria
             {
                 Id = guid,
                 Descricao = "TESTE",
                 Ativo = true,
-
             };
 
             appCategoria.Setup(x => x.GetEntityById(guid))
@@ -67,7 +66,7 @@ namespace ApplicationPrioritiesTests
         [InlineData("000b1a3d-6669-4356-8c74-c561c95aebc4")]
         public async Task QuandoBuscoCategoriaPorID_NaoRetornaCategoria(string id)
         {
-             
+
             var guid = Guid.Parse(id);
 
             var appCategoria = new Mock<InterfaceCategoriaApp>();
@@ -77,8 +76,8 @@ namespace ApplicationPrioritiesTests
                 Id = guid
             };
 
-            Categoria fakeCategoria = null;
-         
+            Domain.Prioridades.Entities.Categoria fakeCategoria = null;
+
             appCategoria.Setup(x => x.GetEntityById(guid))
                 .Returns(Task.FromResult(fakeCategoria));
 
@@ -98,7 +97,7 @@ namespace ApplicationPrioritiesTests
 
 
             var _app = app ?? new Mock<InterfaceCategoriaApp>();
-           
+
             var commandHandler = new GetCategoriaQueryHandler(_mapper, _app.Object);
             return commandHandler;
         }

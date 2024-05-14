@@ -1,17 +1,11 @@
 ﻿using ApplicationPrioridadesAPP.Interfaces;
 using ApplicationPrioridadesAPP.OpenApp.Categoria.Command;
 using AutoMapper;
-using Domain.Prioridades.Entities;
 using Domain.Prioridades.ViewModels;
 using Moq;
 using Notification;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ApplicationPrioritiesTests
+namespace ApplicationPrioritiesTests.Categoria
 {
     public class DeleteCategoriaCommandHandlerTests
     {
@@ -33,7 +27,7 @@ namespace ApplicationPrioritiesTests
         public DeleteCategoriaCommandHandler GetCommandMock(Mock<InterfaceCategoriaApp> app, Mock<NotificationContext> notificationContext)
         {
             var _app = app ?? new Mock<InterfaceCategoriaApp>();
-         
+
             var commandHandler = new DeleteCategoriaCommandHandler(_mapper, _app.Object);
             return commandHandler;
         }
@@ -47,17 +41,17 @@ namespace ApplicationPrioritiesTests
             {
                 Ativo = true,
                 Descricao = "TESTE",
-                Id =  Guid.Parse(id),
+                Id = Guid.Parse(id),
                 Usuario_Id = Guid.Parse(usuario_id)
 
             };
 
             var cmd = new DeleteCategoriaCommand
             {
-                 Id = categoriaDTO.Id
+                Id = categoriaDTO.Id
             };
 
-            var fakeCategoria = new Categoria
+            var fakeCategoria = new Domain.Prioridades.Entities.Categoria
             {
                 Id = categoriaDTO.Id,
                 Descricao = "TESTE",
@@ -75,7 +69,7 @@ namespace ApplicationPrioritiesTests
 
             Assert.NotNull(resp);
             Assert.True(resp.Success);
-         
+
         }
 
         [Theory]
@@ -96,7 +90,7 @@ namespace ApplicationPrioritiesTests
                 Id = categoriaDTO.Id
             };
 
-            Categoria fakeCategoria = null;
+            Domain.Prioridades.Entities.Categoria fakeCategoria = null;
 
             var appCategoria = new Mock<InterfaceCategoriaApp>();
 
@@ -107,7 +101,7 @@ namespace ApplicationPrioritiesTests
             var resp = await handler.Handle(cmd, CancellationToken.None);
 
             Assert.NotNull(resp);
-            Assert.False (resp.Success);
+            Assert.False(resp.Success);
             Assert.Equal(resp.ErrorCode, ApplicationPrioridadesAPP.ErrorCodes.CATEGORIA_NOT_FOUND);
 
         }

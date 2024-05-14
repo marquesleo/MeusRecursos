@@ -16,7 +16,7 @@ namespace Domain.Prioridades.ViewModels
         public int Valor { get; set; }
         public bool Ativo { get; set; }
         public bool Feito {get;set;}
-        public string  Usuario { get; set; }
+        public Guid  Usuario { get; set; }
         
     }
 }

@@ -29,6 +29,7 @@ namespace Domain.Prioridades.Entities
         public bool Feito { get; set; }
 
         [JsonIgnore]
+        [NotMapped]
         public virtual Usuario Usuario { get; set; }
 
         [Column("usuario", TypeName = "uuid")]

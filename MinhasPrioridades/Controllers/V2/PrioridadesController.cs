@@ -8,9 +8,6 @@ using Domain.Prioridades.ViewModels;
 using ApplicationPrioridadesAPP.OpenApp.Prioridade.Command;
 using ApplicationPrioridadesAPP;
 using ApplicationPrioridadesAPP.OpenApp.Prioridade.Queries;
-using ApplicationPrioridadesAPP.Interfaces;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace MinhasPrioridades.Controllers.V2
 {
@@ -78,7 +75,7 @@ namespace MinhasPrioridades.Controllers.V2
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] string usuario_id, [FromQuery] bool? feito = null)
+        public async Task<IActionResult> GetAll([FromQuery] string usuario_id, [FromQuery] bool? feito = false)
         {
             var query = new GetPrioridadeFiltrosQuery
             {
@@ -88,7 +85,7 @@ namespace MinhasPrioridades.Controllers.V2
             var res = await _mediator.Send(query);
 
             if (res.Success)
-                return Ok(res.Data);
+                return Ok(res.Lista);
             else if (res.ErrorCode == ErrorCodes.PRIORIDADE_NOT_FOUND)
                 return NotFound(res);
             else
@@ -96,7 +93,96 @@ namespace MinhasPrioridades.Controllers.V2
 
         }
 
+
+
+        [HttpPost("Up")]
+        public async Task<IActionResult> Up([FromBody] PrioridadeViewModel prioridadeViewModel)
+        {
+           
+                var command = new UpPrioridadeCommand
+                {
+                    PrioridadeViewModel = prioridadeViewModel
+                };
+
+
+                var res = await _mediator.Send(command);
+
+                if (res.Success)
+                {
+                    return Ok(res.Data);
+                }
+                else
+                {
+                    return BadRequest(res);
+                }
+          
+        }
+
+        [HttpPost("Down")]
+        public async Task<IActionResult> Down([FromBody] PrioridadeViewModel prioridadeViewModel)
+        {
+           
+                var command = new DownPrioridadeCommand
+                {
+                    PrioridadeViewModel = prioridadeViewModel
+                };
+                var res = await _mediator.Send(command);
+
+                if (res.Success)
+                {
+                    return Ok(res.Data);
+                }
+                else
+                {
+                    return BadRequest(res);
+                }
+         }
+
+
+        [HttpPut()]
+        public async Task<IActionResult> Update([FromBody] PrioridadeViewModel prioridadeViewModel)
+        {
+          
+                var command = new UpdatePrioridadeCommand
+                {
+                    PrioridadeViewModel = prioridadeViewModel
+                };
+            
+                var res = await _mediator.Send(command);
+
+                if (res.Success)
+                {
+                    return Ok(res.Data);
+                }
+                else
+                {
+                    return BadRequest(res);
+                }
+         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var command = new DeletePrioridadeCommand
+            {
+                 Id = id
+            };
+
+            var res = await _mediator.Send(command);
+
+            if (res.Success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(res);
+            }
+
+        }
     }
+
 }
+
 
 

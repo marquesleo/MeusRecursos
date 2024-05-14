@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationPrioritiesTests
+namespace ApplicationPrioritiesTests.Categoria
 {
     public class UpdateCommandHandlerTests
     {
@@ -64,7 +64,7 @@ namespace ApplicationPrioritiesTests
                 Id = categoriaDTO.Id
             };
 
-            var fakeCategoria = new Categoria
+            var fakeCategoria = new Domain.Prioridades.Entities.Categoria
             {
                 Id = categoriaDTO.Id,
                 Descricao = "TESTE2",
@@ -76,7 +76,7 @@ namespace ApplicationPrioritiesTests
 
             appCategoria.Setup(x => x.GetEntityById(categoriaDTO.Id)).Returns(Task.FromResult(fakeCategoria));
 
-            appCategoria.Setup(x => x.UpdateCategoria(It.IsAny<Categoria>()))
+            appCategoria.Setup(x => x.UpdateCategoria(It.IsAny<Domain.Prioridades.Entities.Categoria>()))
                 .Returns(Task.FromResult(fakeCategoria));
 
             var handler = GetCommandMock(appCategoria, null);
@@ -106,18 +106,18 @@ namespace ApplicationPrioritiesTests
                 Id = categoriaDTO.Id
             };
 
-            Categoria fakeCategoria = null;
-          
+            Domain.Prioridades.Entities.Categoria  fakeCategoria = null; 
+
             var appCategoria = new Mock<InterfaceCategoriaApp>();
 
             appCategoria.Setup(x => x.GetEntityById(categoriaDTO.Id)).Returns(Task.FromResult(fakeCategoria));
-                      
+
             var handler = GetCommandMock(appCategoria, null);
             var resp = await handler.Handle(cmd, CancellationToken.None);
 
             Assert.NotNull(resp);
             Assert.False(resp.Success);
-            Assert.Equal(resp.ErrorCode,ApplicationPrioridadesAPP.ErrorCodes.CATEGORIA_NOT_FOUND);
+            Assert.Equal(resp.ErrorCode, ApplicationPrioridadesAPP.ErrorCodes.CATEGORIA_NOT_FOUND);
 
         }
 
@@ -139,7 +139,7 @@ namespace ApplicationPrioritiesTests
                 Id = categoriaDTO.Id
             };
 
-            var fakeCategoria = new Categoria
+            var fakeCategoria = new Domain.Prioridades.Entities.Categoria
             {
                 Id = categoriaDTO.Id,
                 Descricao = "TESTE2",
@@ -150,7 +150,7 @@ namespace ApplicationPrioritiesTests
             var appCategoria = new Mock<InterfaceCategoriaApp>();
 
             appCategoria.Setup(x => x.GetEntityById(categoriaDTO.Id)).Returns(Task.FromResult(fakeCategoria));
-            appCategoria.Setup(x => x.UpdateCategoria(It.IsAny<Categoria>()))
+            appCategoria.Setup(x => x.UpdateCategoria(It.IsAny<Domain.Prioridades.Entities.Categoria>()))
                .Callback(() => { throw new CategoriaDuplicateException(); });
 
             var handler = GetCommandMock(appCategoria, null);
@@ -179,7 +179,7 @@ namespace ApplicationPrioritiesTests
                 Id = categoriaDTO.Id
             };
 
-            var fakeCategoria = new Categoria
+            var fakeCategoria = new Domain.Prioridades.Entities.Categoria
             {
                 Id = categoriaDTO.Id,
                 Descricao = "TESTE2",
@@ -190,7 +190,7 @@ namespace ApplicationPrioritiesTests
             var appCategoria = new Mock<InterfaceCategoriaApp>();
 
             appCategoria.Setup(x => x.GetEntityById(categoriaDTO.Id)).Returns(Task.FromResult(fakeCategoria));
-            appCategoria.Setup(x => x.UpdateCategoria(It.IsAny<Categoria>()))
+            appCategoria.Setup(x => x.UpdateCategoria(It.IsAny<Domain.Prioridades.Entities.Categoria>()))
               .Returns(Task.FromResult(fakeCategoria));
 
             var handler = GetCommandMock(appCategoria, null);

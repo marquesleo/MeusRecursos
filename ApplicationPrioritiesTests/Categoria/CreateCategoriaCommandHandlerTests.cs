@@ -2,14 +2,13 @@
 using ApplicationPrioridadesAPP.OpenApp.Categoria.Command;
 using ApplicationPrioridadesAPP.OpenApp.Categoria.Exceptions;
 using AutoMapper;
-using Domain.Prioridades.Entities;
 using Domain.Prioridades.ViewModels;
 using Moq;
 using Notification;
-using static System.Net.Mime.MediaTypeNames;
 
 
-namespace ApplicationPrioritiesTests
+
+namespace ApplicationPrioritiesTests.Categoria
 {
     public class CreateCategoriaCommandHandlerTests
     {
@@ -57,7 +56,7 @@ namespace ApplicationPrioritiesTests
                 CategoriaViewModel = categoriaDTO
             };
 
-            var fakeCategoria = new Categoria
+            var fakeCategoria = new Domain.Prioridades.Entities.Categoria
             {
                 Id = categoriaDTO.Id,
                 Descricao = "TESTE",
@@ -67,7 +66,7 @@ namespace ApplicationPrioritiesTests
 
             var appCategoria = new Mock<InterfaceCategoriaApp>();
 
-            appCategoria.Setup(x => x.AddCategoria(It.IsAny<Categoria>()))
+            appCategoria.Setup(x => x.AddCategoria(It.IsAny<Domain.Prioridades.Entities.Categoria> ()))
                 .Returns(Task.FromResult(fakeCategoria));
 
             var handler = GetCommandMock(appCategoria, null);
@@ -97,7 +96,7 @@ namespace ApplicationPrioritiesTests
                 CategoriaViewModel = categoriaDTO
             };
 
-            var fakeCategoria = new Categoria
+            var fakeCategoria = new Domain.Prioridades.Entities.Categoria
             {
                 Id = categoriaDTO.Id,
                 Descricao = string.Empty,
@@ -107,7 +106,7 @@ namespace ApplicationPrioritiesTests
 
             var appCategoria = new Mock<InterfaceCategoriaApp>();
 
-            appCategoria.Setup(x => x.AddCategoria(It.IsAny<Categoria>()))
+            appCategoria.Setup(x => x.AddCategoria(It.IsAny<Domain.Prioridades.Entities.Categoria>()))
                 .Returns(Task.FromResult(fakeCategoria));
 
             var handler = GetCommandMock(appCategoria, null);
@@ -139,7 +138,7 @@ namespace ApplicationPrioritiesTests
                 CategoriaViewModel = categoriaDTO
             };
 
-            var fakeCategoria = new Categoria
+            var fakeCategoria = new Domain.Prioridades.Entities.Categoria
             {
                 Id = categoriaDTO.Id,
                 Descricao = "TESTE",
@@ -149,7 +148,7 @@ namespace ApplicationPrioritiesTests
 
             var appCategoria = new Mock<InterfaceCategoriaApp>();
 
-            appCategoria.Setup(x => x.AddCategoria(It.IsAny<Categoria>()))
+            appCategoria.Setup(x => x.AddCategoria(It.IsAny<Domain.Prioridades.Entities.Categoria>()))
                 .Callback(() => { throw new CategoriaDuplicateException(); });
 
             var handler = GetCommandMock(appCategoria, null);

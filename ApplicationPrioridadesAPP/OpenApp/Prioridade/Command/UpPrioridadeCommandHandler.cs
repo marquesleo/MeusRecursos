@@ -1,23 +1,21 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using ApplicationPrioridadesAPP.Interfaces;
+﻿using ApplicationPrioridadesAPP.Interfaces;
 using AutoMapper;
 using MediatR;
 using Notification;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
 {
-	public class CreatePrioridadeCommandHandler  : IRequestHandler<CreatePrioridadeCommand, PrioridadeResponse>
-	{
+    public class UpPrioridadeCommandHandler : IRequestHandler<UpPrioridadeCommand, PrioridadeResponse>
+    {
 
         private readonly IMapper _mapper;
         private readonly InterfacePrioridadeApp _interfacePrioridadeApp;
         private readonly NotificationContext _notificationContext;
 
-
-
-        public CreatePrioridadeCommandHandler(IMapper mapper,
+        public UpPrioridadeCommandHandler(IMapper mapper,
                                              InterfacePrioridadeApp InterfacePrioridadeApp,
                                              NotificationContext notificationContext)
         {
@@ -25,9 +23,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
             this._mapper = mapper;
             this._notificationContext = notificationContext;
         }
-
-
-        public async Task<PrioridadeResponse> Handle(CreatePrioridadeCommand request, CancellationToken cancellationToken)
+        public async Task<PrioridadeResponse> Handle(UpPrioridadeCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -44,7 +40,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
                 }
                 else
                 {
-                    await _interfacePrioridadeApp.AddPrioridade(prioridade);
+                    await _interfacePrioridadeApp.Up(prioridade);
 
                     return new PrioridadeResponse
                     {

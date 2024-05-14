@@ -23,8 +23,8 @@ namespace AplicationPrioridadesAPP.AutoMapper
               .ForMember(dest => dest.Feito,
                          opt => opt.MapFrom(src => src.Feito))
 
-               .ForMember(dest => dest.Usuario,
-                         opt => opt.MapFrom(src => src.Usuario_Id))
+              .ForMember(dest => dest.Usuario,
+                    opt => opt.MapFrom(src => src.Usuario_Id))
 
               .ForMember(dest => dest.Valor,
                 opt => opt.MapFrom(src => src.Valor));
@@ -47,9 +47,9 @@ namespace AplicationPrioridadesAPP.AutoMapper
                     opt => opt.MapFrom(src => src.Usuario))
 
                     .ForMember(dest => dest.Feito,
-                    opt => opt.MapFrom(src => src.Feito));
+                    opt => opt.MapFrom(src => src.Feito))
                                   
-
+                   .ForMember(dest => dest.Usuario, opt => opt.Ignore());
             }
             catch (Exception ex)
             {
