@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Queries
 {
-    public class GetPrioridadeFiltrosQuery : IRequest<PrioridadeResponse>
+    public class GetPrioridadeFiltrosQuery : IRequest<SenhaResponse>
     {
        public string Usuario_Id { get; set; } 
        public bool? Feito { get; set; }

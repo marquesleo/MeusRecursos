@@ -4,7 +4,7 @@ using System;
 
 namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
 {
-    public class DeletePrioridadeCommand : IRequest<PrioridadeResponse>
+    public class DeletePrioridadeCommand : IRequest<SenhaResponse>
     {
         public Guid Id { get; set; }
     }

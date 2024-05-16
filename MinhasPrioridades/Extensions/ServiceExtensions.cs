@@ -22,6 +22,7 @@ using ApplicationPrioridadesAPP.Interfaces.Generics;
 using ApplicationPrioridadesAPP.OpenApp.Categoria;
 using ApplicationPrioridadesAPP.OpenApp.Prioridade;
 using MediatR;
+using ApplicationPrioridadesAPP.OpenApp.Senha;
 
 namespace MinhasPrioridades.Extensions
 {
@@ -125,7 +126,7 @@ namespace MinhasPrioridades.Extensions
             services.AddScoped<IServicePrioridade, ServicesPrioridade>();
                        
             services.AddScoped<ISenha, Infrastructure.Repository.Repositories.RepositoryMinhaSenha>();
-            services.AddScoped<InterfaceSenhaApp, ApplicationPrioridadesAPP.OpenApp.AppSenha>();
+            services.AddScoped<InterfaceSenhaApp, AppSenha>();
             services.AddScoped<IServiceSenha, ServicesSenha>();
 
             services.AddSingleton<IRefreshToken, Infrastructure.Repository.Repositories.RepositoryRefreshToken>();

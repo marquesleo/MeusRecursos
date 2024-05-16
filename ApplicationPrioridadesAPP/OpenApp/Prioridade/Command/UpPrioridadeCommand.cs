@@ -3,7 +3,7 @@ using MediatR;
 
 namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
 {
-    public class UpPrioridadeCommand : IRequest<PrioridadeResponse>
+    public class UpPrioridadeCommand : IRequest<SenhaResponse>
     {
         public PrioridadeViewModel PrioridadeViewModel { get; set; }
     }

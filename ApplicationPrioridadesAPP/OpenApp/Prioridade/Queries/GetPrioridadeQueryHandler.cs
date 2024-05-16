@@ -8,7 +8,7 @@ using ApplicationPrioridadesAPP.OpenApp.Categoria;
 
 namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Queries
 {
-    public class GetPrioridadeQueryHandler : IRequestHandler<GetPrioridadeQuery, PrioridadeResponse>
+    public class GetPrioridadeQueryHandler : IRequestHandler<GetPrioridadeQuery, SenhaResponse>
     {
         private readonly IMapper _mapper;
         private readonly InterfacePrioridadeApp _interfacePrioridadeApp;
@@ -22,13 +22,13 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Queries
           
         }
       
-        public async Task<PrioridadeResponse> Handle(GetPrioridadeQuery request, CancellationToken cancellationToken)
+        public async Task<SenhaResponse> Handle(GetPrioridadeQuery request, CancellationToken cancellationToken)
         {
             var prioridade = await _interfacePrioridadeApp.GetEntityById(request.Id);
 
             if (prioridade == null || prioridade.Descricao == string.Empty)
             {
-                return new PrioridadeResponse
+                return new SenhaResponse
                 {
                     Success = false,
                     ErrorCode = ErrorCodes.PRIORIDADE_NOT_FOUND,
@@ -36,7 +36,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Queries
                 };
 
             }
-            return new PrioridadeResponse
+            return new SenhaResponse
             {
                 Data = _mapper.Map<Domain.Prioridades.ViewModels.PrioridadeViewModel>(prioridade),
                 Success = true

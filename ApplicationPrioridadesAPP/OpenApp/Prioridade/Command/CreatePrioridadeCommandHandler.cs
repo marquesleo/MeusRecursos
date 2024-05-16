@@ -8,7 +8,7 @@ using Notification;
 
 namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
 {
-	public class CreatePrioridadeCommandHandler  : IRequestHandler<CreatePrioridadeCommand, PrioridadeResponse>
+	public class CreatePrioridadeCommandHandler  : IRequestHandler<CreatePrioridadeCommand, SenhaResponse>
 	{
 
         private readonly IMapper _mapper;
@@ -27,7 +27,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
         }
 
 
-        public async Task<PrioridadeResponse> Handle(CreatePrioridadeCommand request, CancellationToken cancellationToken)
+        public async Task<SenhaResponse> Handle(CreatePrioridadeCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
                 if (prioridade != null && prioridade.Invalid)
                 {
                     _notificationContext.AddNotifications(prioridade.ValidationResult);
-                    return new PrioridadeResponse
+                    return new SenhaResponse
                     {
                         Success = false,
                         ErrorCode = ErrorCodes.MISSING_REQUIRED_INFORMATION,
@@ -46,7 +46,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
                 {
                     await _interfacePrioridadeApp.AddPrioridade(prioridade);
 
-                    return new PrioridadeResponse
+                    return new SenhaResponse
                     {
                         Data = _mapper.Map<Domain.Prioridades.ViewModels.PrioridadeViewModel>(prioridade),
                         Success = true
@@ -55,7 +55,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
             }
             catch (Exception ex)
             {
-                return new PrioridadeResponse
+                return new SenhaResponse
                 {
                     ErrorCode = ErrorCodes.COULDNOT_STORE_DATA,
                     Success = false,
