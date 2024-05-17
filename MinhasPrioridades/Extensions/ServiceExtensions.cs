@@ -70,6 +70,7 @@ namespace MinhasPrioridades.Extensions
             services.AddAutoMapper(typeof(AplicationPrioridadesAPP.AutoMapper.CategoriaMapper));
             services.AddAutoMapper(typeof(AplicationPrioridadesAPP.AutoMapper.ContadorDeSenhaMapper));
             services.AddAutoMapper(typeof(AplicationPrioridadesAPP.AutoMapper.PrioridadeMapper));
+            services.AddAutoMapper(typeof(AplicationPrioridadesAPP.AutoMapper.SenhaMapper));
         }
 
         public static void ConfigureSwagger(this IServiceCollection services)
@@ -152,6 +153,8 @@ namespace MinhasPrioridades.Extensions
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddMediatR(typeof(AppCategoria));
             services.AddMediatR(typeof(AppPrioridade));
+            services.AddMediatR(typeof(AppSenha));
+
 
 
 

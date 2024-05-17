@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
 {
-    public class DeletePrioridadeCommandHandler : IRequestHandler<DeletePrioridadeCommand, SenhaResponse>
+    public class DeletePrioridadeCommandHandler : IRequestHandler<DeletePrioridadeCommand, PrioridadeResponse>
     {
         private readonly IMapper _mapper;
         private readonly InterfacePrioridadeApp _interfacePrioridadeApp;
@@ -20,7 +20,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
             this._interfacePrioridadeApp = InterfacePrioridadeApp;
             this._mapper = mapper;
         }
-        public async Task<SenhaResponse> Handle(DeletePrioridadeCommand request, CancellationToken cancellationToken)
+        public async Task<PrioridadeResponse> Handle(DeletePrioridadeCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
 
                 if (dbCategoria == null || dbCategoria.Invalid)
                 {
-                    return new SenhaResponse
+                    return new PrioridadeResponse
                     {
                         Success = false,
                         ErrorCode = ErrorCodes.PRIORIDADE_NOT_FOUND
@@ -40,7 +40,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
                 {
                     await _interfacePrioridadeApp.Delete(dbCategoria);
 
-                    return new SenhaResponse
+                    return new PrioridadeResponse
                     {
                         Success = true
                     };
@@ -51,7 +51,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
             catch (Exception ex)
             {
 
-                return new SenhaResponse
+                return new PrioridadeResponse
                 {
                     ErrorCode = ErrorCodes.COULDNOT_STORE_DATA,
                     Success = false,

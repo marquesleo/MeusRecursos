@@ -11,7 +11,9 @@ namespace ApplicationPrioridadesAPP
         CATEGORIA_DUPLICATE = 5,
         CATEGORIA_NOT_FOUND = 6,
 
-        PRIORIDADE_NOT_FOUND = 7
+        PRIORIDADE_NOT_FOUND = 7,
+
+        SENHA_NOT_FOUND = 8
 
     }
     public abstract class Response

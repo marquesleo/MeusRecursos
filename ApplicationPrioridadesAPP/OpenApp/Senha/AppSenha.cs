@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ApplicationPrioridadesAPP.Interfaces;
+using Domain.Prioridades.Entities;
 using Domain.Prioridades.Interface;
 using Domain.Prioridades.InterfaceService;
 using Domain.Prioridades.ViewModels;
@@ -29,14 +30,14 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha
 
 
 
-        public async Task AddSenha(SenhaViewModel senha)
+        public async Task AddSenha(Domain.Prioridades.Entities.Senha senha)
         {
             try
             {
-                var senhaNova = new  Domain.Prioridades.Entities.Senha();
-                senhaNova.Map(senha);
-                senhaNova.Password = Utils.Criptografia.CriptografarSenha(senhaNova.Password);
-                await _IServiceSenha.AddSenha(senhaNova);
+
+
+                senha.Password = Utils.Criptografia.CriptografarSenha(senha.Password);
+                await _IServiceSenha.AddSenha(senha);
             }
             catch (Exception ex)
             {

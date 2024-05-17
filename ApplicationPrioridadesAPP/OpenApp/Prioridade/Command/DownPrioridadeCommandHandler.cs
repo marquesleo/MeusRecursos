@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
 {
-    public class DownPrioridadeCommandHandler : IRequestHandler<DownPrioridadeCommand, SenhaResponse>
+    public class DownPrioridadeCommandHandler : IRequestHandler<DownPrioridadeCommand, PrioridadeResponse>
     {
 
         private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
             this._mapper = mapper;
             this._notificationContext = notificationContext;
         }
-        public async Task<SenhaResponse> Handle(DownPrioridadeCommand request, CancellationToken cancellationToken)
+        public async Task<PrioridadeResponse> Handle(DownPrioridadeCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
                 if (prioridade != null && prioridade.Invalid)
                 {
                     _notificationContext.AddNotifications(prioridade.ValidationResult);
-                    return new SenhaResponse
+                    return new PrioridadeResponse
                     {
                         Success = false,
                         ErrorCode = ErrorCodes.MISSING_REQUIRED_INFORMATION,
@@ -42,7 +42,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
                 {
                     await _interfacePrioridadeApp.Down(prioridade);
 
-                    return new SenhaResponse
+                    return new PrioridadeResponse
                     {
                         Data = _mapper.Map<Domain.Prioridades.ViewModels.PrioridadeViewModel>(prioridade),
                         Success = true
@@ -51,7 +51,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
             }
             catch (Exception ex)
             {
-                return new SenhaResponse
+                return new PrioridadeResponse
                 {
                     ErrorCode = ErrorCodes.COULDNOT_STORE_DATA,
                     Success = false,
