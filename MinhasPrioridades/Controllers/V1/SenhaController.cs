@@ -86,7 +86,16 @@ namespace MinhasPrioridades.Controllers.V1
 
                 if (ModelState.IsValid)
                 {
-                    await _InterfaceSenhaApp.AddSenha(senhaViewModel);
+
+                    var senha = _mapper.Map<Senha>(senhaViewModel);
+
+
+                    await _InterfaceSenhaApp.AddSenha(senha);
+
+
+                    senhaViewModel = _mapper.Map<SenhaViewModel>(senha);
+
+
                     return CreatedAtAction(nameof(GetById), new { id = senhaViewModel.Id }, senhaViewModel);
                 }
                 return BadRequest();
@@ -108,8 +117,11 @@ namespace MinhasPrioridades.Controllers.V1
                 if (ModelState.IsValid)
                 {
                     senhaViewModel.Id = id;
+
+
+                    var senha = _mapper.Map<Senha>(senhaViewModel);
                    
-                    await this._InterfaceSenhaApp.UpdateSenha(senhaViewModel);
+                    await this._InterfaceSenhaApp.UpdateSenha(senha);
                     return Ok();
                 }
                 return BadRequest();

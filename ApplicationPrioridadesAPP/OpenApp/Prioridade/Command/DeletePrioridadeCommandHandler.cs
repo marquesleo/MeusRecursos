@@ -1,7 +1,5 @@
 ﻿
-
 using ApplicationPrioridadesAPP.Interfaces;
-using ApplicationPrioridadesAPP.OpenApp.Categoria;
 using AutoMapper;
 using MediatR;
 using System;
@@ -12,13 +10,12 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Command
 {
     public class DeletePrioridadeCommandHandler : IRequestHandler<DeletePrioridadeCommand, PrioridadeResponse>
     {
-        private readonly IMapper _mapper;
+        
         private readonly InterfacePrioridadeApp _interfacePrioridadeApp;
-        public DeletePrioridadeCommandHandler(IMapper mapper,
-                                             InterfacePrioridadeApp InterfacePrioridadeApp)
+        public DeletePrioridadeCommandHandler(InterfacePrioridadeApp InterfacePrioridadeApp)
         {
             this._interfacePrioridadeApp = InterfacePrioridadeApp;
-            this._mapper = mapper;
+           
         }
         public async Task<PrioridadeResponse> Handle(DeletePrioridadeCommand request, CancellationToken cancellationToken)
         {

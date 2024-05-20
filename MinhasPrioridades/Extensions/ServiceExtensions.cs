@@ -23,6 +23,7 @@ using ApplicationPrioridadesAPP.OpenApp.Categoria;
 using ApplicationPrioridadesAPP.OpenApp.Prioridade;
 using MediatR;
 using ApplicationPrioridadesAPP.OpenApp.Senha;
+using ApplicationPrioridadesAPP.OpenApp.ContadorDeSenha;
 
 namespace MinhasPrioridades.Extensions
 {
@@ -141,7 +142,7 @@ namespace MinhasPrioridades.Extensions
 
 
             services.AddScoped<IContadorSenha, Infrastructure.Repository.Repositories.RepositoryContadorSenha>();
-            services.AddScoped<InterfaceContadorSenhaApp, ApplicationPrioridadesAPP.OpenApp.AppContadorSenha>();
+            services.AddScoped<InterfaceContadorSenhaApp, AppContadorSenha>();
             services.AddScoped<IServiceContadorSenha, ServiceContadorSenha>();
 
             services.AddSingleton<IJwtUtils, JwtUtils>();

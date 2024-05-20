@@ -10,13 +10,13 @@ namespace ApplicationPrioridadesAPP.Interfaces
     public interface InterfaceSenhaApp : InterfaceGenericsApp<Senha>
     {
         Task AddSenha(Senha senha);
-        Task UpdateSenha(SenhaViewModel senha);
+        Task UpdateSenha(Senha senha);
         Task<bool> CriptografarTudo();
-        Task<List<SenhaViewModel>> ObterRegistros(string id_usuario);
+        Task<List<Senha>> ObterRegistros(string id_usuario);
 
         Task<List<SenhaViewModel>> ObterRegistros(string id_usuario,
                                                   string descricao);
-        Task<SenhaViewModel> GetSenhaById(string id);
+        Task<Senha> GetSenhaById(string id);
 
     }
 }

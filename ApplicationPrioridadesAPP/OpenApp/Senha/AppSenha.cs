@@ -71,13 +71,12 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha
 
         }
 
-        public async Task<SenhaViewModel> GetSenhaById(string id)
+        public async Task<Domain.Prioridades.Entities.Senha> GetSenhaById(string id)
         {
             try
             {
                 var senha = await GetEntityById(Guid.Parse(id));
-                var senhaViewModel = SenhaEntityToSenhaViewModel(senha);
-                return senhaViewModel;
+                return senha;
 
             }
             catch (Exception e)
@@ -131,30 +130,11 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha
             }
             return senhaViewModel;
         }
-        public async Task<List<SenhaViewModel>> ObterRegistros(string id_usuario)
+        public async Task<List<Domain.Prioridades.Entities.Senha>> ObterRegistros(string id_usuario)
         {
             var lstSenhas = await _ISenha.FindByCondition(p => p.Usuario.Id == Guid.Parse(id_usuario));
-            var lstSenhaViewModel = new List<SenhaViewModel>();
-            try
-            {
-                if (lstSenhas != null && lstSenhas.Any())
-                    if (lstSenhas != null && lstSenhas.Any())
-                    {
-                        foreach (var obj in lstSenhas)
-                        {
-                            var senhaViewModel = SenhaEntityToSenhaViewModel(obj);
-                            lstSenhaViewModel.Add(senhaViewModel);
-                        }
-
-                    }
-            }
-
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-            return lstSenhaViewModel;
+        
+            return lstSenhas;
         }
 
         private async Task CarregarUsuario(Domain.Prioridades.Entities.Senha senha)
@@ -173,16 +153,14 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha
 
         }
 
-        public async Task UpdateSenha(SenhaViewModel senha)
+        public async Task UpdateSenha(Domain.Prioridades.Entities.Senha senha)
         {
             try
             {
-                var senhaNova = new Domain.Prioridades.Entities.Senha();
-                senhaNova.Map(senha);
-                await CarregarUsuario(senhaNova);
-                senhaNova.DtAtualizacao = DateTime.Now;
-                senhaNova.Password = Utils.Criptografia.CriptografarSenha(senhaNova.Password);
-                await _IServiceSenha.UpdateSenha(senhaNova);
+                await CarregarUsuario(senha);
+                senha.DtAtualizacao = DateTime.Now;
+                senha.Password = Utils.Criptografia.CriptografarSenha(senha.Password);
+                await _IServiceSenha.UpdateSenha(senha);
             }
             catch (Exception)
             {

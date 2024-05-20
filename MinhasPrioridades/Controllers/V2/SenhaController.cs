@@ -10,6 +10,7 @@ using ApplicationPrioridadesAPP.Interfaces;
 using Domain.Prioridades.ViewModels;
 using ApplicationPrioridadesAPP.OpenApp.Prioridade.Command;
 using ApplicationPrioridadesAPP.OpenApp.Senha.Command;
+using Domain.Prioridades.Entities;
 
 namespace MinhasPrioridades.Controllers.V2
 {
@@ -84,25 +85,88 @@ namespace MinhasPrioridades.Controllers.V2
         public async Task<IActionResult> Update(Guid id,
                                                [FromBody] SenhaViewModel senhaViewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+
+                var command = new UpdateSenhaCommand
                 {
-                    senhaViewModel.Id = id;
+                    SenhaViewModel = senhaViewModel,
+                    Id = id
+                };
 
-                    await this._InterfaceSenhaApp.UpdateSenha(senhaViewModel);
-                    return Ok();
+
+                var res = await _mediator.Send(command);
+
+                if (res.Success)
+                {
+                    return Ok(res.Data);
                 }
-                return BadRequest();
-
+                else
+                {
+                    return BadRequest(res);
+                }
             }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = "Erro ao alterar senha ." + ex.Message });
-            }
+            _logger.LogError("Response with unknown ErrorCode Returned");
+            return BadRequest(500);
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] string usuario_id)
+        {
+
+            var query = new GetSenhaPorUsuarioQuery
+            {
+                UsuarioId = Guid.Parse(usuario_id)
+            };
+            var res = await _mediator.Send(query);
+
+            if (res.Success)
+                return Ok(res.Data);
+            else if (res.ErrorCode == ErrorCodes.SENHA_NOT_FOUND)
+                return NotFound(res);
+            else
+                return BadRequest(res);
+        }
+
+
+        [HttpGet]
+        [Route("ObterRegistrosPorUsuarioEDescricao")]
+        public async Task<IActionResult> GetAllPorDescricaoEUsuario([FromQuery] string usuario_id, [FromQuery] string descricao)
+        {
+            var query = new GetSenhaPorFiltros
+            {
+                UsuarioId = Guid.Parse(usuario_id),
+                Descricao = descricao
+            };
+            var res = await _mediator.Send(query);
+
+            if (res.Success)
+                return Ok(res.Data);
+            else if (res.ErrorCode == ErrorCodes.SENHA_NOT_FOUND)
+                return NotFound(res);
+            else
+                return BadRequest(res);
+        }
+
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var query = new DeleteSenhaCommand
+            {
+                 Id =   id,
+            };
+            var res = await _mediator.Send(query);
+
+            if (res.Success)
+                return Ok();
+            else if (res.ErrorCode == ErrorCodes.SENHA_NOT_FOUND)
+                return NotFound(res);
+            else
+                return BadRequest(res);
+        }
 
     }
 }

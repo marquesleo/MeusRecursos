@@ -11,5 +11,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha.Command
     public class UpdateSenhaCommand : IRequest<SenhaResponse>
     {
         public SenhaViewModel SenhaViewModel { get; set; }
+
+        public Guid Id { get; set; }    
     }
 }

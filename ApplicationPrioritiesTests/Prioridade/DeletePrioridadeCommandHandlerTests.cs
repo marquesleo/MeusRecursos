@@ -31,7 +31,7 @@ namespace ApplicationPrioritiesTests.Prioridade
         {
             var _app = app ?? new Mock<InterfacePrioridadeApp>();
 
-            var commandHandler = new DeletePrioridadeCommandHandler(_mapper, _app.Object);
+            var commandHandler = new DeletePrioridadeCommandHandler(_app.Object);
             return commandHandler;
         }
 

@@ -1,7 +1,9 @@
 ﻿
 
+using ApplicationPrioridadesAPP.AutoMapper;
 using AutoMapper;
 using Domain.Prioridades.Entities;
+using Domain.Prioridades.Interface;
 using Domain.Prioridades.ViewModels;
 using System;
 
@@ -45,6 +47,10 @@ namespace AplicationPrioridadesAPP.AutoMapper
 
               .ForMember(dest => dest.NomeDaImagem,
                opt => opt.MapFrom(src => src.NomeImagem))
+              
+              
+              .ForMember(dest => dest.Password,
+                 opt => opt.MapFrom(src => Utils.Criptografia.Decriptografar(src.Password)))
 
               .ForMember(dest => dest.UrlImageSite,
                opt => opt.MapFrom(src => src.UrlImageSite));
@@ -80,6 +86,9 @@ namespace AplicationPrioridadesAPP.AutoMapper
                 .ForMember(dest => dest.UrlImageSite,
                  opt => opt.MapFrom(src => src.UrlImageSite))
 
+                .ForMember(dest => dest.Password,
+                 opt => opt.MapFrom(src => Utils.Criptografia.CriptografarSenha(src.Password)))
+                
                 .ForMember(dest => dest.Imagem,
                 opt => opt.MapFrom(src => Convert.FromBase64String(src.ImagemData)));
 
@@ -91,6 +100,6 @@ namespace AplicationPrioridadesAPP.AutoMapper
             }
 
         }
-    {
+    
     }
 }
