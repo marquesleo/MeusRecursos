@@ -1,19 +1,18 @@
 ﻿using ApplicationPrioridadesAPP.Authorization;
-using ApplicationPrioridadesAPP.Interfaces.Generics;
-using AutoMapper;
 using Domain.Prioridades.Entities;
 using Domain.Prioridades.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Notification;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using ApplicationPrioridadesAPP;
+using ApplicationPrioridadesAPP.OpenApp.ContadorDeSenha.Queries;
+using ApplicationPrioridadesAPP.OpenApp.ContadorDeSenha.Command;
 
 namespace MinhasPrioridades.Controllers.V2
 {
-    [Route("api/v1/contadorsenha")]
+    [Route("api/v2/contadorsenha")]
     [ApiController]
     [Authorize]
     public class ContadorSenhaController : ControllerBase
@@ -33,16 +32,18 @@ namespace MinhasPrioridades.Controllers.V2
         [HttpGet("{idSenha}")]
         public async Task<IActionResult> GetById(Guid idSenha)
         {
-            try
+            var query = new GetContadorDeSenhaQuery
             {
-                var objeto = await _InterfaceContadorSenhaApp.GetContadorSenhaById(idSenha);
-                var contadorDeSenha = _mapper.Map<List<ContadorSenhaViewModel>>(objeto);
-                return Ok(contadorDeSenha);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                IdSenha = idSenha
+            };
+            var res = await _mediator.Send(query);
+
+            if (res.Success)
+                return Ok(res.Data);
+            else if (res.ErrorCode == ErrorCodes.CATEGORIA_NOT_FOUND)
+                return NotFound(res);
+            else
+                return BadRequest(res);
 
         }
 
@@ -51,43 +52,19 @@ namespace MinhasPrioridades.Controllers.V2
         [HttpPost]
         public async Task<IActionResult> Atualizar([FromBody] ContadorSenhaViewModel contadorSenhaViewModel)
         {
-            try
+            var command = new UpdateContadorCommand
             {
+                ContadorSenhaViewModel = contadorSenhaViewModel
+            };
+            var res = await _mediator.Send(command);
 
-                if (ModelState.IsValid)
-                {
-
-                    var contadorSenha = await _InterfaceContadorSenhaApp.GetContadorSenhaById(contadorSenhaViewModel.senhaId,
-                                                                                              contadorSenhaViewModel.dtAcesso);
-                    if (contadorSenha == null || contadorSenha.SenhaId == Guid.Empty)
-                    {
-                        var contador = new ContadorDeSenha();
-                        contador.SenhaId = contadorSenhaViewModel.senhaId;
-                        contador.Id = Guid.NewGuid();
-                        contador.Contador = 1;
-                        contador.DataDeAcesso = DateTime.Now;
-                        //contador.Senha = await _InterfaceSenhaApp.GetEntityById(contadorSenhaViewModel.SenhaId);
-                        await _InterfaceContadorSenhaApp.AddContador(contador);
-                        return Ok();
-                    }
-                    else
-                    {
-                        contadorSenha.Contador += 1;
-
-                        await _InterfaceContadorSenhaApp.UpdateSenha(contadorSenha);
-                        return Ok();
-                    }
-
-
-
-                }
-                return BadRequest();
-
+            if (res.Success)
+            {
+                return Ok(res.Success);
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest(new { message = "Erro ao atualizar contador " + ex.Message });
-
+                return BadRequest(res);
             }
 
         }

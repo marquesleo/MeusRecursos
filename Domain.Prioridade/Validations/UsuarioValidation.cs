@@ -12,6 +12,14 @@ namespace Domain.Prioridades.Validations
                .Length(2, 20).WithMessage("O campo {PropertyName} precisa ter entre {MinLength} e {MaxLength} caracteres");
 
 
+            RuleFor(c => c.Password)
+              .NotEmpty().WithMessage("O campo {PropertyName} precisa ser informado")
+              .Length(1, 20).WithMessage("O campo {PropertyName} precisa ter entre {MinLength} e {MaxLength} caracteres");
+
+
+
+
+
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Entities.Models;
+﻿using Domain.Prioridades.Validations;
+using Domain.Prioridades.ViewModels;
+using Entities.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -9,7 +11,10 @@ namespace Domain.Prioridades.Entities
     [Table("usuario", Schema = "personal")]
     public class Usuario : Base
     {
-        
+
+        public override bool Invalid { get { return !Validate(this, new UsuarioValidation()); } }
+
+
         [Column("username", TypeName = "varchar(50)")]
         public string Username { get; set; }
 
@@ -35,7 +40,7 @@ namespace Domain.Prioridades.Entities
 
 
 
-        public void Map(ViewModels.LoginViewModel loginViewModel)
+        public void Map(LoginViewModel loginViewModel)
         {
             Extension.UsuarioExtension.Map(this, loginViewModel);
         }

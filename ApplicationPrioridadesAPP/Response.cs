@@ -13,7 +13,13 @@ namespace ApplicationPrioridadesAPP
 
         PRIORIDADE_NOT_FOUND = 7,
 
-        SENHA_NOT_FOUND = 8
+        SENHA_NOT_FOUND = 8,
+
+        CONTADOR_SENHA_NOT_FOUND=9,
+
+        USUARIO_NOT_FOUND=10,
+        USUARIO_DUPLICATE = 11,
+        USUARIO_COM_EMAIL_EXISTENTE=12
 
     }
     public abstract class Response

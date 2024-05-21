@@ -1,6 +1,7 @@
 ﻿using ApplicationPrioridadesAPP.Interfaces;
 using ApplicationPrioridadesAPP.OpenApp.Categoria.Exceptions;
 using AutoMapper;
+using Domain.Prioridades.ViewModels;
 using MediatR;
 using Notification;
 using System;
@@ -44,6 +45,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Categoria.Command
                 }
                 else
                 {
+                   
                     var categoria = _mapper.Map<Domain.Prioridades.Entities.Categoria>(request.CategoriaViewModel);
 
                     if (categoria != null && categoria.Invalid)
@@ -58,6 +60,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Categoria.Command
                     }
                     else
                     {
+
                         await _InterfaceCategoriaApp.UpdateCategoria(categoria);
 
                         return new CategoriaResponse
