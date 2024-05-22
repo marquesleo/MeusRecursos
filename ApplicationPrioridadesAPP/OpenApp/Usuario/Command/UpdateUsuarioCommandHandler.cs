@@ -1,40 +1,52 @@
-﻿
-
-using ApplicationPrioridadesAPP.Interfaces;
+﻿using ApplicationPrioridadesAPP.Interfaces;
 using ApplicationPrioridadesAPP.OpenApp.Usuario.Exceptions;
 using ApplicationPrioridadesAPP.OpenApp.Usuario.Queries;
 using AutoMapper;
 using Domain.Prioridades.ViewModels;
 using MediatR;
 using Notification;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+
 namespace ApplicationPrioridadesAPP.OpenApp.Usuario.Command
 {
-    public class CreateUsuarioCommandHandler : IRequestHandler<CreateUsuarioCommand, UsuarioResponse>
+    public class UpdateUsuarioCommandHandler : IRequestHandler<UpdateUsuarioCommand, UsuarioResponse>
     {
-
-
         private readonly IMapper _mapper;
         private readonly InterfaceUsuarioApp _InterfaceUsuarioApp;
         private readonly NotificationContext _notificationContext;
 
 
 
-        public CreateUsuarioCommandHandler(IMapper mapper,
-                                           InterfaceUsuarioApp  interfaceUsuarioApp,
+        public UpdateUsuarioCommandHandler(IMapper mapper,
+                                           InterfaceUsuarioApp interfaceUsuarioApp,
                                            NotificationContext notificationContext)
         {
             this._InterfaceUsuarioApp = interfaceUsuarioApp;
             this._mapper = mapper;
             this._notificationContext = notificationContext;
         }
-        public async Task<UsuarioResponse> Handle(CreateUsuarioCommand request, CancellationToken cancellationToken)
+            
+        
+        public async Task<UsuarioResponse> Handle(UpdateUsuarioCommand request, CancellationToken cancellationToken)
         {
-
             try
             {
+
+                var dbUsuario = await _InterfaceUsuarioApp.ObterUsuario(request.Id);
+
+                if (dbUsuario == null || !dbUsuario.IdValido())
+                {
+                    return new UsuarioResponse
+                    {
+                        Success = false,
+                        ErrorCode = ErrorCodes.USUARIO_NOT_FOUND,
+                      
+                    };
+                }
+
                 var usuario = _mapper.Map<Domain.Prioridades.Entities.Usuario>(request.LoginViewModel);
                 if (usuario != null && usuario.Invalid)
 
@@ -49,7 +61,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Usuario.Command
                 }
                 else
                 {
-                    await _InterfaceUsuarioApp.AddUsuario(usuario);
+                    await _InterfaceUsuarioApp.UpdateUsuario(usuario);
                     return new UsuarioResponse
                     {
                         Success = true,
@@ -59,16 +71,16 @@ namespace ApplicationPrioridadesAPP.OpenApp.Usuario.Command
                 }
 
             }
-            catch(UsuarioDuplicadoException ex)
+            catch (UsuarioDuplicadoException ex)
             {
                 return new UsuarioResponse
                 {
                     ErrorCode = ErrorCodes.USUARIO_DUPLICATE,
                     Message = ErrorCodes.USUARIO_DUPLICATE.ToString(),
-                    Success  = false
+                    Success = false
                 };
             }
-            catch(UsuarioComEmailExistenteException ex)
+            catch (UsuarioComEmailExistenteException ex)
             {
                 return new UsuarioResponse
                 {
@@ -77,7 +89,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Usuario.Command
                     Success = false
                 };
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 
                 return new UsuarioResponse
@@ -87,7 +99,8 @@ namespace ApplicationPrioridadesAPP.OpenApp.Usuario.Command
                     Success = false
                 };
             }
-           
+
+        
         }
     }
 }

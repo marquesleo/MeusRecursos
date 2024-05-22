@@ -30,7 +30,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Usuario.Queries
             {
                 var usuario = await _InterfaceUsuarioApp.ObterUsuario(request.Login.Username,
                                                                  request.Login.Password);
-                if (usuario != null || usuario.Invalid)
+                if (usuario != null && usuario.Invalid)
 
                 {
                     _notificationContext.AddNotifications(usuario.ValidationResult);

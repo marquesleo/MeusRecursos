@@ -15,6 +15,8 @@ using ApplicationPrioridadesAPP.Helpers;
 using Microsoft.Extensions.Options;
 using ApplicationPrioridadesAPP.Authorization;
 using static Domain.Prioridades.Services.TokenService;
+using Entities.Models;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 
 namespace ApplicationPrioridadesAPP.OpenApp.Usuario
 {
@@ -37,6 +39,8 @@ namespace ApplicationPrioridadesAPP.OpenApp.Usuario
             _jwtUtils = jwtUtils;
         }
 
+
+        [Obsolete]
         public async Task AddUsuario(LoginViewModel loginViewModel)
         {
 
@@ -59,6 +63,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Usuario
             return await _IUsuario.FindByCondition(expression);
         }
 
+        [Obsolete]
         public async Task<Domain.Prioridades.Entities.Usuario> GetEntityById(Guid id)
         {
             var usuario = await _IUsuario.GetEntityById(id);
@@ -90,6 +95,34 @@ namespace ApplicationPrioridadesAPP.OpenApp.Usuario
                 return true;
         }
 
+
+        public async Task<bool> IsUsuarioExiste(Domain.Prioridades.Entities.Usuario usuario)
+        {
+            var dbUsuario = await ObterUsuario(usuario.Id);
+            if (dbUsuario != null && dbUsuario.Username.ToLower().Equals(usuario.Username.ToLower()) && !dbUsuario.Id.Equals(usuario.Id))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> IsUsuarioComEmailExistente(Domain.Prioridades.Entities.Usuario usuario)
+        {
+            var dbUsuario = await FindByCondition(p => p.Email == usuario.Email);
+
+            if (dbUsuario != null && dbUsuario.Any())
+            {
+                var usuarioUnico = dbUsuario.FirstOrDefault();
+
+                if (usuarioUnico != null && usuarioUnico.Email.ToLower().Equals(usuario.Email.ToLower()) && usuarioUnico.Id != usuario.Id)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public bool IsUsuarioComEmailExistente(string email)
         {
             var usuario = FindByCondition(p => p.Email == email).Result;
@@ -110,12 +143,16 @@ namespace ApplicationPrioridadesAPP.OpenApp.Usuario
             return Criptografar(usuario); ;
         }
 
+
+
         public async Task<Domain.Prioridades.Entities.Usuario> ObterUsuario(string login)
         {
             var usuario = await _IUsuario.ObterUsuario(login);
             return Criptografar(usuario); ;
         }
 
+
+        [Obsolete]
         public async Task UpdateUsuario(LoginViewModel loginViewModel)
         {
             var usuario = new Domain.Prioridades.Entities.Usuario();
@@ -291,10 +328,10 @@ namespace ApplicationPrioridadesAPP.OpenApp.Usuario
 
         public async Task AddUsuario(Domain.Prioridades.Entities.Usuario usuario)
         {
-            if (!this.IsUsuarioExiste(usuario.Username))
+            if (this.IsUsuarioExiste(usuario.Username))
                 throw new Exceptions.UsuarioDuplicadoException();
 
-            if (!this.IsUsuarioComEmailExistente(usuario.Email))
+            if (this.IsUsuarioComEmailExistente(usuario.Email))
                 throw new Exceptions.UsuarioComEmailExistenteException();
 
             await _IUsuario.Add(usuario);
@@ -303,7 +340,20 @@ namespace ApplicationPrioridadesAPP.OpenApp.Usuario
 
         public async Task UpdateUsuario(Domain.Prioridades.Entities.Usuario usuario)
         {
+           if (await this.IsUsuarioExiste(usuario))
+                throw new Exceptions.UsuarioDuplicadoException();
+
+
+            if (await this.IsUsuarioComEmailExistente(usuario))
+                throw new Exceptions.UsuarioComEmailExistenteException();
+
             await _IUsuario.Update(usuario);
+        }
+
+        public async Task<Domain.Prioridades.Entities.Usuario> ObterUsuario(Guid id)
+        {
+            var usuario = await _IUsuario.GetEntityById(id);
+            return usuario;
         }
     }
 }

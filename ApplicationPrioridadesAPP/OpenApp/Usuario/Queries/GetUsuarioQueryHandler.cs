@@ -25,7 +25,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Usuario.Queries
 
             try
             {
-                var usuario = await _InterfaceUsuarioApp.GetEntityById(request.Id);
+                var usuario = await _InterfaceUsuarioApp.ObterUsuario(request.Id);
 
                 if (usuario == null || usuario.Username == string.Empty)
                 {

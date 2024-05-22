@@ -11,9 +11,9 @@ namespace ApplicationPrioridadesAPP.AutoMapper
         {
             try
             {
-                CreateMap<Categoria, CategoriaViewModel>().ReverseMap();
-                CreateMap<Usuario, LoginViewModel>().ReverseMap();
-                CreateMap<Senha, SenhaViewModel>().ReverseMap();
+                //CreateMap<Categoria, CategoriaViewModel>().ReverseMap();
+                //CreateMap<Usuario, LoginViewModel>().ReverseMap();
+                //CreateMap<Senha, SenhaViewModel>().ReverseMap();
                // CreateMap <Prioridade, PrioridadeViewModel>().ReverseMap();
              
             }
