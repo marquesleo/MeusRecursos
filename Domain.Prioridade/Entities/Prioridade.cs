@@ -1,4 +1,5 @@
-﻿using Entities.Models;
+﻿using Domain.Prioridades.Validations;
+using Entities.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,8 +17,11 @@ namespace Domain.Prioridades.Entities
     [Table("prioridade", Schema = "personal")]
     public class Prioridade:Base
     {
-        [Column("descricao",TypeName ="varchar(200)")]
-        
+        [Column("descricao", TypeName = "varchar(200)")]
+
+
+        public override bool Invalid { get { return !Validate(this, new PrioridadeValidation()); } }
+
         public string Descricao { get; set; }
         [Column("valor")]
 

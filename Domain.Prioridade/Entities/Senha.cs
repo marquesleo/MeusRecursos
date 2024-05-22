@@ -1,3 +1,4 @@
+using Domain.Prioridades.Validations;
 using Entities.Models;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Domain.Prioridades.Entities
         [Column("descricao",TypeName ="varchar(200)")]
         public string Descricao { get; set; }
 
+        public override bool Invalid { get { return !Validate(this, new SenhaValidation()); } }
 
         [Column("observacao",TypeName ="text")]
         public string Observacao { get; set; }

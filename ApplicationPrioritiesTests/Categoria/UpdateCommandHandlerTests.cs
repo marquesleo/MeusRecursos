@@ -2,15 +2,9 @@
 using ApplicationPrioridadesAPP.OpenApp.Categoria.Command;
 using ApplicationPrioridadesAPP.OpenApp.Categoria.Exceptions;
 using AutoMapper;
-using Domain.Prioridades.Entities;
 using Domain.Prioridades.ViewModels;
 using Moq;
 using Notification;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationPrioritiesTests.Categoria
 {
