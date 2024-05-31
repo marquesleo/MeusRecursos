@@ -24,7 +24,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha.Command
 
                 var dbSenha = await _interfacSenhaApp.GetEntityById(request.Id);
 
-                if (dbSenha == null || dbSenha.Invalid)
+                if (dbSenha == null || !dbSenha.IdValido())
                 {
                     return new SenhaResponse
                     {

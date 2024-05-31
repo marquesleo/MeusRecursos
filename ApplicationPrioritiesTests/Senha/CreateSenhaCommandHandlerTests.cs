@@ -25,12 +25,12 @@ namespace ApplicationPrioritiesTests.Senha
             _mapper = configuration.CreateMapper();
         }
 
-        public CreateCommandSenhaHandler GetCommandMock(Mock<InterfaceSenhaApp> app, Mock<NotificationContext> notificationContext)
+        public CreateSenhaCommandHandler GetCommandMock(Mock<InterfaceSenhaApp> app, Mock<NotificationContext> notificationContext)
         {
             var _app = app ?? new Mock<InterfaceSenhaApp>();
             var _notificationContext = notificationContext ?? new Mock<NotificationContext>();
 
-            var commandHandler = new CreateCommandSenhaHandler(_mapper, _app.Object, _notificationContext.Object);
+            var commandHandler = new CreateSenhaCommandHandler(_mapper, _app.Object, _notificationContext.Object);
             return commandHandler;
         }
 

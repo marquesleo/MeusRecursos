@@ -8,13 +8,10 @@ using Notification;
 
 namespace ApplicationPrioritiesTests.Categoria
 {
-    public class UpdateCommandHandlerTests
+    public class UpdateCategoriaCommandHandlerTests
     {
-
-
-
         private readonly IMapper _mapper;
-        public UpdateCommandHandlerTests()
+        public UpdateCategoriaCommandHandlerTests()
         {
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -195,10 +192,6 @@ namespace ApplicationPrioritiesTests.Categoria
             Assert.Equal(resp.ErrorCode, ApplicationPrioridadesAPP.ErrorCodes.MISSING_REQUIRED_INFORMATION);
 
         }
-
-
-
-
 
     }
 }

@@ -1,18 +1,14 @@
 ﻿using ApplicationPrioridadesAPP.Interfaces;
-using ApplicationPrioridadesAPP.OpenApp.Prioridade;
 using AutoMapper;
 using MediatR;
 using Notification;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ApplicationPrioridadesAPP.OpenApp.Senha.Command
 {
-    public class CreateCommandSenhaHandler : IRequestHandler<CreateSenhaCommand, SenhaResponse>
+    public class CreateSenhaCommandHandler : IRequestHandler<CreateSenhaCommand, SenhaResponse>
     {
         private readonly IMapper _mapper;
         private readonly InterfaceSenhaApp _interfaceSenhaApp;
@@ -20,7 +16,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha.Command
 
 
 
-        public CreateCommandSenhaHandler(IMapper mapper,
+        public CreateSenhaCommandHandler(IMapper mapper,
                                              InterfaceSenhaApp InterfaceSenhaApp,
                                              NotificationContext notificationContext)
         {
