@@ -1,16 +1,15 @@
-﻿using ApplicationPrioridadesAPP.Interfaces;
+﻿using System;
+using ApplicationPrioridadesAPP.Interfaces;
 using ApplicationPrioridadesAPP.OpenApp.Senha.Queries;
 using AutoMapper;
 using Moq;
 
-
 namespace ApplicationPrioritiesTests.Senha
 {
-    public class GetSenhaPorUsuarioQueryHandlerTests
-    {
-
+	public class GetSenhaPorFiltrosQueryTests
+	{
         private readonly IMapper _mapper;
-        public GetSenhaPorUsuarioQueryHandlerTests()
+        public GetSenhaPorFiltrosQueryTests()
         {
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -25,13 +24,14 @@ namespace ApplicationPrioritiesTests.Senha
 
 
         [Theory]
-        [InlineData("000b1a3d-6669-4356-8c74-c561c95aebc4")]
-        public async Task QuandoBuscoUmaSenhaPorFiltroDeUsuario_RetornaSenhas(string usuarioId)
+        [InlineData("000b1a3d-6669-4356-8c74-c561c95aebc4","TESTE")]
+        public async Task QuandoBuscoUmaSenhaPorFiltros_RetornaSenhas(string usuarioId, string descricao)
         {
             var app = new Mock<InterfaceSenhaApp>();
 
-            var query = new GetSenhaPorUsuarioQuery
+            var query = new GetSenhaPorFiltros
             {
+                Descricao=  descricao,
                 UsuarioId = Guid.Parse(usuarioId)
             };
 
@@ -45,11 +45,11 @@ namespace ApplicationPrioritiesTests.Senha
                 Usuario_Site = "LEONARDO",
                 Password = Utils.Criptografia.CriptografarSenha("SENHATESTE"),
                 Site = "htt://www.globo.com",
-                Id= Guid.NewGuid(),
-                Categoria_Id =Guid.NewGuid(),
+                Id = Guid.NewGuid(),
+                Categoria_Id = Guid.NewGuid(),
                 Imagem = null,
                 Observacao = "teste"
-                    
+
             };
 
             lst.Add(fake);
@@ -69,7 +69,7 @@ namespace ApplicationPrioritiesTests.Senha
             };
             lst.Add(fake);
 
-            app.Setup(x => x.ObterRegistros(usuarioId))
+            app.Setup(x => x.ObterRegistrosPorFiltros(query.UsuarioId.ToString(),query.Descricao))
                 .Returns(Task.FromResult(lst));
 
             var handler = GetCommandMock(app);
@@ -82,19 +82,20 @@ namespace ApplicationPrioritiesTests.Senha
         }
 
         [Theory]
-        [InlineData("000b1a3d-6669-4356-8c74-c561c95aebc4")]
-        public async Task QuandoBuscoPorSenhaPorUsuario_NaoRetornaSenha(string usuarioId)
+        [InlineData("000b1a3d-6669-4356-8c74-c561c95aebc4", "TESTE")]
+        public async Task QuandoBuscoPorSenhaPorFiltros_NaoRetornaSenha(string usuarioId,string descricao)
         {
             var app = new Mock<InterfaceSenhaApp>();
 
-            var query = new GetSenhaPorUsuarioQuery
+            var query = new GetSenhaPorFiltros
             {
-                 UsuarioId = Guid.Parse(usuarioId)
+                UsuarioId = Guid.Parse(usuarioId),
+                 Descricao =descricao
             };
 
-            List<Domain.Prioridades.Entities.Senha>  lstSenha = null;
+            List<Domain.Prioridades.Entities.Senha> lstSenha = null;
 
-            app.Setup(x => x.ObterRegistros(usuarioId))
+            app.Setup(x => x.ObterRegistrosPorFiltros(query.UsuarioId.ToString(),query.Descricao))
                 .Returns(Task.FromResult(lstSenha));
 
             var handler = GetCommandMock(app);
@@ -106,15 +107,14 @@ namespace ApplicationPrioritiesTests.Senha
 
         }
 
-
-
-        public GetSenhaPorUsuarioQueryHandler GetCommandMock(Mock<InterfaceSenhaApp> app)
+        public GetSenhaPorFiltrosHandler GetCommandMock(Mock<InterfaceSenhaApp> app)
         {
             var _app = app ?? new Mock<InterfaceSenhaApp>();
 
-            var commandHandler = new GetSenhaPorUsuarioQueryHandler(_mapper, _app.Object);
+            var commandHandler = new GetSenhaPorFiltrosHandler(_mapper, _app.Object);
             return commandHandler;
         }
 
     }
 }
+

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ApplicationPrioridadesAPP.Interfaces;
-using Domain.Prioridades.Entities;
 using Domain.Prioridades.Interface;
 using Domain.Prioridades.InterfaceService;
 using Domain.Prioridades.ViewModels;
@@ -190,8 +189,8 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha
             catch (Exception ex)
             {
                 await _ISenha.Rollback();
-                throw ex;
-                return false;
+                throw;
+                
             }
 
             return true;
@@ -224,6 +223,17 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha
                 throw ex;
             }
             return lstSenhaViewModel;
+        }
+
+        public async Task<List<Domain.Prioridades.Entities.Senha>> ObterRegistrosPorFiltros(string id_usuario, string descricao)
+        {
+            var lstSenhas = await _ISenha.FindByCondition(p => p.Usuario.Id == Guid.Parse(id_usuario) &&
+                                                         (p.Descricao.ToLower().Contains(descricao.ToLower()) ||
+                                                          p.Observacao.ToLower().Contains(descricao.ToLower()) ||
+                                                          p.Site.ToLower().Contains(descricao.ToLower())));
+
+
+            return lstSenhas;
         }
     }
 }

@@ -16,6 +16,10 @@ namespace ApplicationPrioridadesAPP.Interfaces
 
         Task<List<SenhaViewModel>> ObterRegistros(string id_usuario,
                                                   string descricao);
+
+        Task<List<Senha>> ObterRegistrosPorFiltros(string id_usuario,
+                                          string descricao);
+
         Task<Senha> GetSenhaById(string id);
 
     }

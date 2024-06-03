@@ -24,23 +24,36 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha.Queries
 
         public async Task<SenhaResponse> Handle(GetSenhaPorUsuarioQuery request, CancellationToken cancellationToken)
         {
-            var senhas = await _interfaceSenhaApp.ObterRegistros(request.UsuarioId.ToString());
+            try
+            {
+                var senhas = await _interfaceSenhaApp.ObterRegistros(request.UsuarioId.ToString());
 
-            if (senhas == null || !senhas.Any())
+                if (senhas == null || !senhas.Any())
+                {
+                    return new SenhaResponse
+                    {
+                        Success = false,
+                        ErrorCode = ErrorCodes.SENHA_NOT_FOUND,
+                        Message = ErrorCodes.SENHA_NOT_FOUND.ToString()
+                    };
+
+                }
+                return new SenhaResponse
+                {
+                    Lista = _mapper.Map<List<Domain.Prioridades.ViewModels.SenhaViewModel>>(senhas),
+                    Success = true
+                };
+            }
+            catch (System.Exception ex)
             {
                 return new SenhaResponse
                 {
                     Success = false,
-                    ErrorCode = ErrorCodes.SENHA_NOT_FOUND,
-                    Message = ErrorCodes.SENHA_NOT_FOUND.ToString()
+                    ErrorCode = ErrorCodes.COULDNOT_STORE_DATA,
+                    Message = ex.Message
                 };
-
             }
-            return new SenhaResponse
-            {
-                Lista = _mapper.Map<List<Domain.Prioridades.ViewModels.SenhaViewModel>>(senhas),
-                Success = true
-            };
+            
         }
     }
 }
