@@ -1,10 +1,8 @@
 ﻿
 
 using ApplicationPrioridadesAPP.Interfaces;
-using ApplicationPrioridadesAPP.OpenApp.Senha.Queries;
 using ApplicationPrioridadesAPP.OpenApp.Usuario.Queries;
 using AutoMapper;
-using Domain.Prioridades.ViewModels;
 using Moq;
 
 namespace ApplicationPrioritiesTests.Usuario
