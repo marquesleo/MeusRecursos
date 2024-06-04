@@ -4,6 +4,7 @@ using ApplicationPrioridadesAPP.Interfaces;
 using ApplicationPrioridadesAPP.OpenApp.Senha.Queries;
 using ApplicationPrioridadesAPP.OpenApp.Usuario.Queries;
 using AutoMapper;
+using Domain.Prioridades.ViewModels;
 using Moq;
 
 namespace ApplicationPrioritiesTests.Usuario
@@ -44,7 +45,7 @@ namespace ApplicationPrioritiesTests.Usuario
                 
             };
 
-            var usuarioDTO = new LoginViewModel
+            var usuarioDTO = new Domain.Prioridades.Entities.Usuario()
             {
                 Username = "leonardo",
                 Password = "testeleonardo",
@@ -52,40 +53,61 @@ namespace ApplicationPrioritiesTests.Usuario
                 Id = Guid.NewGuid()
 
             };
-            app.Setup(x => x.GetEntityById(query.Id))
-                .Returns(Task.FromResult(fake));
+
+            var lst = new List<Domain.Prioridades.Entities.Usuario>();
+            lst.Add(usuarioDTO);
+
+            usuarioDTO = new Domain.Prioridades.Entities.Usuario()
+            {
+                Username = "joaomarques",
+                Password = "123456",
+                Email = "joao@gmail.com",
+                Id = Guid.NewGuid()
+            };
+            lst.Add(usuarioDTO);
+            usuarioDTO = new Domain.Prioridades.Entities.Usuario()
+            {
+                Username = "pedrohenrique",
+                Password = "123456",
+                Email = "joao@gmail.com",
+                Id = Guid.NewGuid()
+            };
+            lst.Add(usuarioDTO);
+
+            app.Setup(x => x.List())
+                .Returns(Task.FromResult(lst));
 
             var handler = GetCommandMock(app);
             var resp = await handler.Handle(query, CancellationToken.None);
 
             Assert.NotNull(resp);
             Assert.True(resp.Success);
-            Assert.Equal(resp.Data.Id, fake.Id);
+            Assert.Equal(resp.Lista.Count, lst.Count);
 
         }
 
-        [Theory]
-        [InlineData("000b1a3d-6669-4356-8c74-c561c95aebc4")]
-        public async Task QuandoBuscoSenhaPorId_NaoRetornaSenha(string id)
+        [Fact]
+        public async Task QuandoTentaBuscarTodosUsuarios_NaoRetornaNenhum()
         {
-            var app = new Mock<InterfaceSenhaApp>();
+            var app = new Mock<InterfaceUsuarioApp>();
 
-            var query = new GetSenhaQuery
+            var query = new GetAllUsuarioQuery
             {
-                Id = Guid.Parse(id)
+
             };
 
-            Domain.Prioridades.Entities.Senha fake = null;
-
-            app.Setup(x => x.GetEntityById(query.Id))
-                .Returns(Task.FromResult(fake));
+            
+            List<Domain.Prioridades.Entities.Usuario> lst = null;
+          
+            app.Setup(x => x.List())
+                .Returns(Task.FromResult(lst));
 
             var handler = GetCommandMock(app);
             var resp = await handler.Handle(query, CancellationToken.None);
 
             Assert.NotNull(resp);
             Assert.False(resp.Success);
-            Assert.Equal(resp.ErrorCode, ApplicationPrioridadesAPP.ErrorCodes.SENHA_NOT_FOUND);
+            Assert.Equal(resp.ErrorCode, ApplicationPrioridadesAPP.ErrorCodes.USUARIO_NOT_FOUND);
 
         }
 
