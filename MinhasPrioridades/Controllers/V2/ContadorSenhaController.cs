@@ -39,7 +39,7 @@ namespace MinhasPrioridades.Controllers.V2
             var res = await _mediator.Send(query);
 
             if (res.Success)
-                return Ok(res.Data);
+                return Ok(res.List);
             else if (res.ErrorCode == ErrorCodes.CATEGORIA_NOT_FOUND)
                 return NotFound(res);
             else

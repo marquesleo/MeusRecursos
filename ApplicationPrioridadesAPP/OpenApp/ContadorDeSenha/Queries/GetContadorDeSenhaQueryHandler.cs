@@ -1,6 +1,7 @@
 ﻿using ApplicationPrioridadesAPP.Interfaces.Generics;
 using AutoMapper;
 using MediatR;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,7 +38,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.ContadorDeSenha.Queries
 
                 return new ContadorSenhaResponse
                 {
-                    Data = _mapper.Map<Domain.Prioridades.ViewModels.ContadorSenhaViewModel>(contadorDeSenha),
+                    List = _mapper.Map<List<Domain.Prioridades.ViewModels.ContadorSenhaViewModel>>(contadorDeSenha),
                     Success = true
                 };
             }
