@@ -14,7 +14,7 @@ namespace Domain.Prioridades.Entities.Extension
             dbPrioridade.Valor = prioridadeViewModel.Valor;
             dbPrioridade.Feito = prioridadeViewModel.Feito;
             dbPrioridade.Usuario = new Usuario();
-            dbPrioridade.Usuario.Id = Guid.Parse(prioridadeViewModel.Usuario);
+            dbPrioridade.Usuario.Id = prioridadeViewModel.Usuario;
 
         }
     }

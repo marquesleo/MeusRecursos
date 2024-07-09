@@ -1,10 +1,8 @@
 ﻿using ApplicationPrioridadesAPP.Authorization;
-using ApplicationPrioridadesAPP.Interfaces;
 using ApplicationPrioridadesAPP.Interfaces.Generics;
 using AutoMapper;
 using Domain.Prioridades.Entities;
 using Domain.Prioridades.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Notification;
 using System;

@@ -13,5 +13,6 @@ namespace ApplicationPrioridadesAPP.Interfaces
         Task AddCategoria(Categoria categoria);
         Task UpdateCategoria(Categoria categoria);
         Task<List<Categoria>> ObterCategoria(string id_usuario);
+
     }
 }

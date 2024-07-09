@@ -7,8 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MinhasPrioridades.Extensions;
+using MinhasPrioridades.Filters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Text.Json.Serialization;
 
 
 
@@ -34,9 +36,11 @@ namespace MinhasPrioridades
             services.Init(Configuration);
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.ConfigureDependences(Configuration);
-           
-        
-           
+            services.AddControllersWithViews()
+              .AddJsonOptions(options =>
+              options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -50,8 +54,9 @@ namespace MinhasPrioridades
                     CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
             });
 
+            services.AddMvc(options => options.Filters.Add<NotificationFilter>());
 
-            services.AddAutoMapper(typeof(ApplicationPrioridadesAPP.AutoMapper.AutoMapperConfig));
+
             services.ConfigureAutoMapper();
 
 

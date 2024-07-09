@@ -5,7 +5,6 @@ using ApplicationPrioridadesAPP.Authorization;
 using ApplicationPrioridadesAPP.Interfaces;
 using AutoMapper;
 using Domain.Prioridades.Entities;
-using Domain.Prioridades.Interface;
 using Domain.Prioridades.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Notification;

@@ -1,6 +1,9 @@
-﻿using Entities.Models;
+﻿using Domain.Prioridades.Validations;
+using Entities.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Domain.Prioridades.Entities
 {
@@ -14,8 +17,11 @@ namespace Domain.Prioridades.Entities
     [Table("prioridade", Schema = "personal")]
     public class Prioridade:Base
     {
-        [Column("descricao",TypeName ="varchar(200)")]
-        
+        [Column("descricao", TypeName = "varchar(200)")]
+
+
+        public override bool Invalid { get { return !Validate(this, new PrioridadeValidation()); } }
+
         public string Descricao { get; set; }
         [Column("valor")]
 
@@ -26,9 +32,12 @@ namespace Domain.Prioridades.Entities
         [Column("feito")]
         public bool Feito { get; set; }
 
-
-        [ForeignKey("usuario")]
+        [JsonIgnore]
+        [NotMapped]
         public virtual Usuario Usuario { get; set; }
+
+        [Column("usuario", TypeName = "uuid")]
+        public Guid Usuario_Id { get; set; }
 
         public void Map(ViewModels.PrioridadeViewModel prioridadeViewModel)
         {

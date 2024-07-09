@@ -16,7 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="MediatR" Version="11.1.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,8 +28,13 @@
 
   <ItemGroup>
     <None Remove="Helpers\" />
+    <None Remove="OpenApp\Prioridade\" />
+    <None Remove="OpenApp\Prioridade\Command\" />
+    <None Remove="OpenApp\Prioridade\Queries\" />
+    <None Remove="OpenApp\Prioridade\Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
+    <Folder Include="OpenApp\Prioridade\Exceptions\" />
   </ItemGroup>
 </Project>

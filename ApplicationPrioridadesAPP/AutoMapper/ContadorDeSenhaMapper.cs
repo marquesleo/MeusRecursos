@@ -10,7 +10,7 @@ namespace AplicationPrioridadesAPP.AutoMapper
         {
             try
             {
-                CreateMap<ContadorDeSenha, Domain.Prioridades.ViewModels.ContadorSenhaViewModel>()
+               CreateMap<ContadorDeSenha, Domain.Prioridades.ViewModels.ContadorSenhaViewModel>()
               .ForMember(dest => dest.contador,
                          opt => opt.MapFrom(src => src.Contador))
 

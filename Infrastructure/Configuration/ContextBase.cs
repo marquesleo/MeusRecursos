@@ -53,11 +53,25 @@ namespace Infrastructure.Configuration
             modelBuilder.Entity<Domain.Prioridades.Entities.Usuario>()
          .HasOne<Domain.Prioridades.Entities.Senha>(s => s.senha)
          .WithOne(ad => ad.Usuario)
-         .HasForeignKey<Domain.Prioridades.Entities.Senha>(ad => ad.Usuario_Id);
+         .HasForeignKey<Domain.Prioridades.Entities.Senha>(ad => ad.Usuario_Id)
+         .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Domain.Prioridades.Entities.Senha>()
                    .HasIndex(b => b.Usuario_Id)
                    .IsUnique(false);
+
+
+
+            modelBuilder.Entity<Domain.Prioridades.Entities.Usuario>()
+          .HasOne<Domain.Prioridades.Entities.Prioridade>(s => s.prioridade)
+          .WithOne(ad => ad.Usuario)
+          .HasForeignKey<Domain.Prioridades.Entities.Prioridade>(ad => ad.Usuario_Id)
+          .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Domain.Prioridades.Entities.Prioridade>()
+                   .HasIndex(b => b.Usuario_Id)
+                   .IsUnique(false);
+
 
 
             //categoria - > usuario
@@ -65,7 +79,8 @@ namespace Infrastructure.Configuration
             modelBuilder.Entity < Domain.Prioridades.Entities.Usuario>()
             .HasOne<Domain.Prioridades.Entities.Categoria>(s => s.categoria)
             .WithOne(ad => ad.Usuario)
-            .HasForeignKey<Domain.Prioridades.Entities.Categoria>(ad => ad.Usuario_Id);
+            .HasForeignKey<Domain.Prioridades.Entities.Categoria>(ad => ad.Usuario_Id)
+            .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Domain.Prioridades.Entities.Categoria>()
                    .HasIndex(b => b.Usuario_Id)

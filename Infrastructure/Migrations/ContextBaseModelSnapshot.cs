@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
+#nullable disable
+
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ContextBase))]
@@ -15,9 +17,10 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseIdentityByDefaultColumns()
-                .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.10");
+                .HasAnnotation("ProductVersion", "7.0.18")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Domain.Prioridades.Entities.Categoria", b =>
                 {
@@ -69,7 +72,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("contador");
 
                     b.Property<DateTime>("DataDeAcesso")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("DataDeAcesso");
 
                     b.Property<Guid>("SenhaId")
@@ -102,16 +105,17 @@ namespace Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("feito");
 
+                    b.Property<Guid>("Usuario_Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("usuario");
+
                     b.Property<int>("Valor")
                         .HasColumnType("integer")
                         .HasColumnName("valor");
 
-                    b.Property<Guid?>("usuario")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("usuario");
+                    b.HasIndex("Usuario_Id");
 
                     b.ToTable("prioridade", "personal");
                 });
@@ -123,19 +127,19 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedByIp")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Expires")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ReplacedByToken")
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("Revoked")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("RevokedByIp")
                         .HasColumnType("text");
@@ -173,7 +177,7 @@ namespace Infrastructure.Migrations
                         .HasColumnName("descricao");
 
                     b.Property<DateTime>("DtAtualizacao")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("data_atualizacao");
 
                     b.Property<byte[]>("Imagem")
@@ -246,7 +250,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Prioridades.Entities.Usuario", "Usuario")
                         .WithOne("categoria")
                         .HasForeignKey("Domain.Prioridades.Entities.Categoria", "Usuario_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Usuario");
@@ -266,8 +270,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Prioridades.Entities.Prioridade", b =>
                 {
                     b.HasOne("Domain.Prioridades.Entities.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("usuario");
+                        .WithOne("prioridade")
+                        .HasForeignKey("Domain.Prioridades.Entities.Prioridade", "Usuario_Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Usuario");
                 });
@@ -291,7 +297,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Prioridades.Entities.Usuario", "Usuario")
                         .WithOne("senha")
                         .HasForeignKey("Domain.Prioridades.Entities.Senha", "Usuario_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Categoria");
@@ -311,9 +317,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Prioridades.Entities.Usuario", b =>
                 {
+                    b.Navigation("RefreshTokens");
+
                     b.Navigation("categoria");
 
-                    b.Navigation("RefreshTokens");
+                    b.Navigation("prioridade");
 
                     b.Navigation("senha");
                 });

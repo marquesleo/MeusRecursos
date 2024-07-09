@@ -1,51 +1,48 @@
 ﻿using ApplicationPrioridadesAPP.Interfaces.Generics;
-using Domain.Prioridades.Entities;
 using Domain.Prioridades.Interface;
 using Domain.Prioridades.Interfaces;
-using Domain.Prioridades.InterfaceServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationPrioridadesAPP.OpenApp
+namespace ApplicationPrioridadesAPP.OpenApp.ContadorDeSenha
 {
     public class AppContadorSenha : InterfaceContadorSenhaApp
     {
 
         private readonly IContadorSenha _IContadorSenha;
         private readonly IUsuario _IUsuario;
-  
+
 
 
         public AppContadorSenha(IContadorSenha IContadorSenha,
                            IUsuario IUsuario)
         {
-            this._IContadorSenha = IContadorSenha;
-            this._IUsuario = IUsuario;
+            _IContadorSenha = IContadorSenha;
+            _IUsuario = IUsuario;
         }
 
 
-        public async Task AddContador(ContadorDeSenha contadorSenha)
+        public async Task AddContador(Domain.Prioridades.Entities.ContadorDeSenha contadorSenha)
         {
             await _IContadorSenha.Add(contadorSenha);
         }
 
-        public async Task Delete(ContadorDeSenha contadorSenha)
+        public async Task Delete(Domain.Prioridades.Entities.ContadorDeSenha contadorSenha)
         {
             await _IContadorSenha.Delete(contadorSenha);
         }
 
-        public async Task<List<ContadorDeSenha>> FindByCondition(Expression<Func<ContadorDeSenha, bool>> expression)
+        public async Task<List<Domain.Prioridades.Entities.ContadorDeSenha>> FindByCondition(Expression<Func<Domain.Prioridades.Entities.ContadorDeSenha, bool>> expression)
         {
             return await _IContadorSenha.FindByCondition(expression);
         }
 
-        
 
-        public async Task<ContadorDeSenha> GetContadorSenhaById(Guid id,DateTime dtAcesso)
+
+        public async Task<Domain.Prioridades.Entities.ContadorDeSenha> GetContadorSenhaById(Guid id, DateTime dtAcesso)
         {
             var lst = await FindByCondition(p => p.SenhaId == id &&
                                          p.DataDeAcesso.Date.Month == dtAcesso.Date.Month &&
@@ -57,7 +54,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
                 return null;
 
         }
-        public async Task<List<ContadorDeSenha>> GetContadorSenhaById(Guid id)
+        public async Task<List<Domain.Prioridades.Entities.ContadorDeSenha>> GetContadorSenhaById(Guid id)
         {
             var lst = await FindByCondition(p => p.SenhaId == id);
 
@@ -68,17 +65,17 @@ namespace ApplicationPrioridadesAPP.OpenApp
 
         }
 
-        public async Task<ContadorDeSenha> GetEntityById(Guid id)
+        public async Task<Domain.Prioridades.Entities.ContadorDeSenha> GetEntityById(Guid id)
         {
             return await _IContadorSenha.GetEntityById(id);
         }
 
-        public async Task<List<ContadorDeSenha>> List()
+        public async Task<List<Domain.Prioridades.Entities.ContadorDeSenha>> List()
         {
             return await _IContadorSenha.List();
         }
 
-        public async Task UpdateSenha(ContadorDeSenha contadorSenha)
+        public async Task UpdateSenha(Domain.Prioridades.Entities.ContadorDeSenha contadorSenha)
         {
             await _IContadorSenha.Update(contadorSenha);
         }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using ApplicationPrioridadesAPP.Interfaces;
 
-namespace ApplicationPrioridadesAPP.OpenApp
+namespace ApplicationPrioridadesAPP.OpenApp.Prioridade
 {
     public class AppPrioridade : InterfacePrioridadeApp
     {
@@ -30,18 +30,18 @@ namespace ApplicationPrioridadesAPP.OpenApp
           
         }   
         
-       private async Task CarregarUsuario(Prioridade prioridade){
-         prioridade.Usuario = await _IUsuario.GetEntityById(prioridade.Usuario.Id);
+       private async Task CarregarUsuario(Domain.Prioridades.Entities.Prioridade prioridade){
+         prioridade.Usuario = await _IUsuario.GetEntityById(prioridade.Usuario_Id);
        }
        
 
-        public async Task AddPrioridade(Prioridade prioridade)
+        public async Task AddPrioridade(Domain.Prioridades.Entities.Prioridade prioridade)
         {
             await CarregarUsuario(prioridade);
             await _IServicePrioridade.AddPrioridade(prioridade);
         }
 
-        public async Task Delete(Prioridade objeto)
+        public async Task Delete(Domain.Prioridades.Entities.Prioridade objeto)
         {
             await _IPrioridade.Delete(objeto);
         }
@@ -64,7 +64,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
                             prioridadeViewModel.Feito = obj.Feito;
                             prioridadeViewModel.Id = obj.Id;
                             prioridadeViewModel.Valor = obj.Valor;
-                            prioridadeViewModel.Usuario =id_usuario;
+                            prioridadeViewModel.Usuario =Guid.Parse(id_usuario);
                             lstNovasPrioridades.Add(prioridadeViewModel);
                         } 
 
@@ -77,38 +77,38 @@ namespace ApplicationPrioridadesAPP.OpenApp
         }
 
 
-        public async Task<List<Prioridade>> FindByCondition(Expression<Func<Prioridade, bool>> expression)
+        public async Task<List<Domain.Prioridades.Entities.Prioridade>> FindByCondition(Expression<Func<Domain.Prioridades.Entities.Prioridade, bool>> expression)
         {
             return await _IPrioridade.FindByCondition(expression);
         }
 
-        public async Task<Prioridade> GetEntityById(Guid id)
+        public async Task<Domain.Prioridades.Entities.Prioridade> GetEntityById(Guid id)
         {
             return await _IPrioridade.GetEntityById(id);
         }
 
-        public async Task<List<Prioridade>> List()
+        public async Task<List<Domain.Prioridades.Entities.Prioridade>> List()
         {
             return await _IPrioridade.List();
         }
     
-        public async Task UpdatePrioridade(Prioridade prioridade)
+        public async Task UpdatePrioridade(Domain.Prioridades.Entities.Prioridade prioridade)
         {
             await CarregarUsuario(prioridade);
             await _IServicePrioridade.UpdatePrioridade(prioridade);
         }
 
-        public async Task Up(Prioridade prioridade)
+        public async Task Up(Domain.Prioridades.Entities.Prioridade prioridade)
         {
            await _IServicePrioridade.Up(prioridade);
         }
 
-        public async Task Down(Prioridade prioridade)
+        public async Task Down(Domain.Prioridades.Entities.Prioridade prioridade)
         {
             await _IServicePrioridade.Down(prioridade);
         }
 
-        public async Task SetOrder(Prioridade prioridade, enuOrdem ordem)
+        public async Task SetOrder(Domain.Prioridades.Entities.Prioridade prioridade, enuOrdem ordem)
         {
             await _IServicePrioridade.SetOrder(prioridade,ordem);
         }

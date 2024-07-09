@@ -6,21 +6,19 @@ using System.Threading.Tasks;
 using Domain.Prioridades.Interface;
 using Domain.Prioridades.ViewModels;
 using Domain.Prioridades.Entities;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Text;
+
 using Domain.Prioridades.Services;
 using System.Linq;
 using Domain.Prioridades.Interfaces;
-using Microsoft.VisualBasic;
 using ApplicationPrioridadesAPP.Helpers;
 using Microsoft.Extensions.Options;
 using ApplicationPrioridadesAPP.Authorization;
 using static Domain.Prioridades.Services.TokenService;
+using Entities.Models;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 
-namespace ApplicationPrioridadesAPP.OpenApp
+namespace ApplicationPrioridadesAPP.OpenApp.Usuario
 {
     public class AppUsuario : InterfaceUsuarioApp
     {
@@ -35,92 +33,129 @@ namespace ApplicationPrioridadesAPP.OpenApp
                           IOptions<AppSettings> appSettings,
                           IJwtUtils jwtUtils)
         {
-            this._IUsuario = IUsuario;
-            this._IRefreshToken = IRefreshToken;
-            this._appSettings = appSettings.Value;
-            this._jwtUtils = jwtUtils;
+            _IUsuario = IUsuario;
+            _IRefreshToken = IRefreshToken;
+            _appSettings = appSettings.Value;
+            _jwtUtils = jwtUtils;
         }
 
+
+        [Obsolete]
         public async Task AddUsuario(LoginViewModel loginViewModel)
         {
 
-            var usuario = new Usuario();
+            var usuario = new Domain.Prioridades.Entities.Usuario();
             usuario.Username = loginViewModel.Username.ToUpper();
             usuario.Password = Utils.Criptografia.CriptografarSenha(loginViewModel.Password);
             usuario.Email = loginViewModel.Email;
-                               
+
             await _IUsuario.Add(usuario);
             loginViewModel.Id = usuario.Id;
         }
 
-        public async Task Delete(Usuario objeto)
+        public async Task Delete(Domain.Prioridades.Entities.Usuario objeto)
         {
-           await _IUsuario.Delete(objeto);
+            await _IUsuario.Delete(objeto);
         }
 
-        public async Task<List<Usuario>> FindByCondition(Expression<Func<Usuario, bool>> expression)
+        public async Task<List<Domain.Prioridades.Entities.Usuario>> FindByCondition(Expression<Func<Domain.Prioridades.Entities.Usuario, bool>> expression)
         {
             return await _IUsuario.FindByCondition(expression);
         }
 
-        public async Task<Usuario> GetEntityById(Guid id)
+        [Obsolete]
+        public async Task<Domain.Prioridades.Entities.Usuario> GetEntityById(Guid id)
         {
             var usuario = await _IUsuario.GetEntityById(id);
-            if (usuario != null) { 
-                 usuario.RefreshTokens = await _IRefreshToken.FindByCondition(r => r.UsuarioId == usuario.Id);
+            if (usuario != null)
+            {
+                usuario.RefreshTokens = await _IRefreshToken.FindByCondition(r => r.UsuarioId == usuario.Id);
             }
             return Criptografar(usuario);
         }
 
-        private Usuario Criptografar(Usuario usuario){
+        private Domain.Prioridades.Entities.Usuario Criptografar(Domain.Prioridades.Entities.Usuario usuario)
+        {
             if (usuario != null)
                 usuario.Password = Utils.Criptografia.Decriptografar(usuario.Password);
             else
-                usuario = new Usuario();
+                usuario = new Domain.Prioridades.Entities.Usuario();
 
-           return usuario;
+            return usuario;
 
         }
 
 
         public bool IsUsuarioExiste(string login)
         {
-            var usuario = this.ObterUsuario(login).Result;
+            var usuario = ObterUsuario(login).Result;
             if (usuario == null || usuario.Id == Guid.Empty)
-               return false;
+                return false;
             else
-               return true;
+                return true;
+        }
+
+
+        public async Task<bool> IsUsuarioExiste(Domain.Prioridades.Entities.Usuario usuario)
+        {
+            var dbUsuario = await ObterUsuario(usuario.Id);
+            if (dbUsuario != null && dbUsuario.Username.ToLower().Equals(usuario.Username.ToLower()) && !dbUsuario.Id.Equals(usuario.Id))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> IsUsuarioComEmailExistente(Domain.Prioridades.Entities.Usuario usuario)
+        {
+            var dbUsuario = await FindByCondition(p => p.Email == usuario.Email);
+
+            if (dbUsuario != null && dbUsuario.Any())
+            {
+                var usuarioUnico = dbUsuario.FirstOrDefault();
+
+                if (usuarioUnico != null && usuarioUnico.Email.ToLower().Equals(usuario.Email.ToLower()) && usuarioUnico.Id != usuario.Id)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool IsUsuarioComEmailExistente(string email)
         {
-            var usuario = this.FindByCondition(p=> p.Email == email).Result;
+            var usuario = FindByCondition(p => p.Email == email).Result;
             if (usuario == null || !usuario.Any())
                 return false;
             else
                 return true;
         }
 
-        public async Task<List<Usuario>> List()
+        public async Task<List<Domain.Prioridades.Entities.Usuario>> List()
         {
             return await _IUsuario.List();
         }
 
-        public async Task<Usuario> ObterUsuario(string login, string senha)
+        public async Task<Domain.Prioridades.Entities.Usuario> ObterUsuario(string login, string senha)
         {
             var usuario = await _IUsuario.ObterUsuario(login, senha);
-            return  Criptografar(usuario);;
+            return Criptografar(usuario); ;
         }
 
-        public async Task<Usuario> ObterUsuario(string login)
+
+
+        public async Task<Domain.Prioridades.Entities.Usuario> ObterUsuario(string login)
         {
             var usuario = await _IUsuario.ObterUsuario(login);
-            return Criptografar(usuario);;
+            return Criptografar(usuario); ;
         }
 
+
+        [Obsolete]
         public async Task UpdateUsuario(LoginViewModel loginViewModel)
         {
-             var usuario = new Domain.Prioridades.Entities.Usuario();
+            var usuario = new Domain.Prioridades.Entities.Usuario();
             usuario.Username = loginViewModel.Username.ToUpper();
             usuario.Password = Utils.Criptografia.CriptografarSenha(loginViewModel.Password);
             usuario.Email = loginViewModel.Email;
@@ -128,9 +163,9 @@ namespace ApplicationPrioridadesAPP.OpenApp
             await _IUsuario.Update(usuario);
         }
 
-        private MeuToken generateJwtToken(Usuario user)
+        private MeuToken generateJwtToken(Domain.Prioridades.Entities.Usuario user)
         {
-           return TokenService.GenerateToken(user);
+            return TokenService.GenerateToken(user);
         }
 
         private RefreshToken generateRefreshToken(string ipAddress)
@@ -156,38 +191,38 @@ namespace ApplicationPrioridadesAPP.OpenApp
             try
             {
 
-           
-            Usuario usuario = null;
-            var refresh = await _IRefreshToken.FindByCondition(r => r.Token == refreshToken);
-            usuario = await _IUsuario.GetEntityById(refresh.SingleOrDefault().UsuarioId);
 
-           if (refresh != null && refresh.SingleOrDefault().IsRevoked)
-            {
-                
-                // revoke all descendant tokens in case this token has been compromised
-                revokeDescendantRefreshTokens(refresh.SingleOrDefault(), usuario, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
-               
+                Domain.Prioridades.Entities.Usuario usuario = null;
+                var refresh = await _IRefreshToken.FindByCondition(r => r.Token == refreshToken);
+                usuario = await _IUsuario.GetEntityById(refresh.SingleOrDefault().UsuarioId);
+
+                if (refresh != null && refresh.SingleOrDefault().IsRevoked)
+                {
+
+                    // revoke all descendant tokens in case this token has been compromised
+                    revokeDescendantRefreshTokens(refresh.SingleOrDefault(), usuario, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
+
+                    await _IRefreshToken.Update(refresh.SingleOrDefault());
+
+                }
+
+                if (!refresh.SingleOrDefault().IsActive)
+                    throw new AppException("Invalid token");
+
+                // replace old refresh token with a new one (rotate token)
+                var newRefreshToken = rotateRefreshToken(refresh.SingleOrDefault(), ipAddress);
+
+                usuario.RefreshTokens.Add(newRefreshToken);
+
+                //remove old refresh tokens from user
+                removeOldRefreshTokens(usuario);
+
+                //save changes to db
+                await _IUsuario.Update(usuario);
                 await _IRefreshToken.Update(refresh.SingleOrDefault());
-              
-            }
-
-            if (!refresh.SingleOrDefault().IsActive)
-                throw new AppException("Invalid token");
-
-            // replace old refresh token with a new one (rotate token)
-            var newRefreshToken = rotateRefreshToken(refresh.SingleOrDefault(), ipAddress);
-            
-            usuario.RefreshTokens.Add(newRefreshToken);
-
-            //remove old refresh tokens from user
-            removeOldRefreshTokens(usuario);
-
-             //save changes to db
-             await _IUsuario.Update(usuario);
-             await _IRefreshToken.Update(refresh.SingleOrDefault());
-             // generate new jwt
-             var jwtToken = TokenService.GenerateToken(usuario);
-              return new AuthenticateResponse(usuario, jwtToken.token, newRefreshToken.Token,jwtToken.expira);
+                // generate new jwt
+                var jwtToken = TokenService.GenerateToken(usuario);
+                return new AuthenticateResponse(usuario, jwtToken.token, newRefreshToken.Token, jwtToken.expira);
             }
             catch (Exception ex)
             {
@@ -215,15 +250,15 @@ namespace ApplicationPrioridadesAPP.OpenApp
         }
 
 
-        public AuthenticateResponse Authenticate(Usuario usuario, string ipAddress)
+        public AuthenticateResponse Authenticate(Domain.Prioridades.Entities.Usuario usuario, string ipAddress)
         {
             try
             {
                 var jwtToken = generateJwtToken(usuario);
                 var refreshToken = generateRefreshToken(ipAddress);
-              //  refreshToken.Token = jwtToken;
+                //  refreshToken.Token = jwtToken;
                 // save refresh token
-              
+
                 refreshToken.Id = Guid.NewGuid();
                 refreshToken.UsuarioId = usuario.Id;
                 usuario.RefreshTokens.Add(refreshToken);
@@ -232,7 +267,7 @@ namespace ApplicationPrioridadesAPP.OpenApp
 
 
                 _IRefreshToken.Add(refreshToken);
-                return new AuthenticateResponse(usuario, jwtToken.token, refreshToken.Token,jwtToken.expira);
+                return new AuthenticateResponse(usuario, jwtToken.token, refreshToken.Token, jwtToken.expira);
             }
             catch (Exception ex)
             {
@@ -240,11 +275,11 @@ namespace ApplicationPrioridadesAPP.OpenApp
                 throw ex;
             }
             // authentication successful so generate jwt and refresh tokens
-      
-           
+
+
         }
 
-        private void removeOldRefreshTokens(Usuario user)
+        private void removeOldRefreshTokens(Domain.Prioridades.Entities.Usuario user)
         {
             // remove old inactive refresh tokens from user based on TTL in app settings
             user.RefreshTokens.RemoveAll(x =>
@@ -253,14 +288,14 @@ namespace ApplicationPrioridadesAPP.OpenApp
         }
         private RefreshToken rotateRefreshToken(RefreshToken refreshToken, string ipAddress)
         {
-         
+
             var newRefreshToken = _jwtUtils.GenerateRefreshToken(ipAddress);
             revokeRefreshToken(refreshToken, ipAddress, "Replaced by new token", newRefreshToken.Token);
-           
+
             return newRefreshToken;
         }
 
-        private async Task<Usuario> getUserByRefreshToken(string token)
+        private async Task<Domain.Prioridades.Entities.Usuario> getUserByRefreshToken(string token)
         {
             var user = await _IUsuario.FindByCondition(u => u.RefreshTokens.Any(t => t.Token == token));
 
@@ -270,17 +305,17 @@ namespace ApplicationPrioridadesAPP.OpenApp
             return user.SingleOrDefault();
         }
 
-        
-        private void revokeDescendantRefreshTokens(RefreshToken refreshToken, Usuario user, string ipAddress, string reason)
+
+        private void revokeDescendantRefreshTokens(RefreshToken refreshToken, Domain.Prioridades.Entities.Usuario user, string ipAddress, string reason)
         {
             // recursively traverse the refresh token chain and ensure all descendants are revoked
             if (!string.IsNullOrEmpty(refreshToken.ReplacedByToken))
             {
-              /*  var childToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken.ReplacedByToken);
-                if (childToken.IsActive)
-                    revokeRefreshToken(childToken, ipAddress, reason);
-                else
-                    revokeDescendantRefreshTokens(childToken, user, ipAddress, reason);*/
+                /*  var childToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken.ReplacedByToken);
+                  if (childToken.IsActive)
+                      revokeRefreshToken(childToken, ipAddress, reason);
+                  else
+                      revokeDescendantRefreshTokens(childToken, user, ipAddress, reason);*/
             }
         }
 
@@ -291,6 +326,34 @@ namespace ApplicationPrioridadesAPP.OpenApp
             token.ReplacedByToken = replacedByToken;
         }
 
-       
+        public async Task AddUsuario(Domain.Prioridades.Entities.Usuario usuario)
+        {
+            if (this.IsUsuarioExiste(usuario.Username))
+                throw new Exceptions.UsuarioDuplicadoException();
+
+            if (this.IsUsuarioComEmailExistente(usuario.Email))
+                throw new Exceptions.UsuarioComEmailExistenteException();
+
+            await _IUsuario.Add(usuario);
+
+        }
+
+        public async Task UpdateUsuario(Domain.Prioridades.Entities.Usuario usuario)
+        {
+           if (await this.IsUsuarioExiste(usuario))
+                throw new Exceptions.UsuarioDuplicadoException();
+
+
+            if (await this.IsUsuarioComEmailExistente(usuario))
+                throw new Exceptions.UsuarioComEmailExistenteException();
+
+            await _IUsuario.Update(usuario);
+        }
+
+        public async Task<Domain.Prioridades.Entities.Usuario> ObterUsuario(Guid id)
+        {
+            var usuario = await _IUsuario.GetEntityById(id);
+            return usuario;
+        }
     }
 }
