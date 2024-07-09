@@ -33,8 +33,8 @@ namespace AplicationPrioridadesAPP.AutoMapper
               .ForMember(dest => dest.Site,
                 opt => opt.MapFrom(src => src.Site))
 
-              .ForMember(dest => dest.Categoria,
-               opt => opt.MapFrom(src => src.Categoria_Id))
+              .ForMember(dest => Guid.Parse(dest.Categoria),
+               opt => opt.MapFrom(src => src.Categoria_Id.Value))
 
               .ForMember(dest => dest.Password,
                opt => opt.MapFrom(src => src.Password))
@@ -75,7 +75,7 @@ namespace AplicationPrioridadesAPP.AutoMapper
                .ForMember(dest => dest.DtAtualizacao,
                opt=> opt.MapFrom(src => src.DtAtualizacao))
 
-                .ForMember(dest => dest.Categoria_Id,
+                .ForMember(dest => dest.Categoria_Id.Value.ToString(),
                 opt => opt.MapFrom(src => src.Categoria))
 
                 .ForMember(dest => dest.Usuario, opt => opt.Ignore())

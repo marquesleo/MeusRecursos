@@ -34,7 +34,7 @@ namespace AplicationPrioridadesAPP.AutoMapper
                  opt => opt.MapFrom(src => src.UrlImageSite));
 
 
-                CreateMap<Domain.Prioridades.ViewModels.CategoriaViewModel, Categoria>()
+                CreateMap<CategoriaViewModel, Categoria>()
                     .ForMember(dest => dest.Id,
                     opt => opt.MapFrom(src => src.Id))
 
