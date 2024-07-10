@@ -45,7 +45,7 @@ namespace ApplicationPrioritiesTests.Usuario
             var usuarioDTO = new LoginViewModel
             {
                 Username = "leonardo",
-                Password = "testeleonardo",
+                Password = Utils.Criptografia.CriptografarSenha("testeleonardo"),
                 Email = "leo@gmail.com",
                 Id =Guid.Parse(id)
 
@@ -61,13 +61,13 @@ namespace ApplicationPrioritiesTests.Usuario
             {
                 Username = "leonardo",
                 Email = "leo@gmail.com",
-                Password = "testeleonardo",
+                Password = Utils.Criptografia.CriptografarSenha("testeleonardo"),
                 Id = usuarioDTO.Id
             };
 
             var app = new Mock<InterfaceUsuarioApp>();
 
-            app.Setup(x => x.GetEntityById(usuarioDTO.Id)).Returns(Task.FromResult(fake));
+            app.Setup(x => x.ObterUsuario(usuarioDTO.Id)).Returns(Task.FromResult(fake));
 
             app.Setup(x => x.UpdateUsuario(It.IsAny<Domain.Prioridades.Entities.Usuario>()))
                 .Returns(Task.FromResult(fake));

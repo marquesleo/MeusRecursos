@@ -42,7 +42,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha.Command
                     return new SenhaResponse
                     {
                         Success = false,
-                        ErrorCode = ErrorCodes.NOT_FOUND,
+                        ErrorCode = ErrorCodes.SENHA_NOT_FOUND,
                         Message = _notificationContext.GetErros()
                     };
                 }

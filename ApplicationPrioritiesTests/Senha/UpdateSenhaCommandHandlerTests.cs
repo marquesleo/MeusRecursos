@@ -47,7 +47,9 @@ namespace ApplicationPrioritiesTests.Senha
                 Ativo = true,
                 Descricao = "TESTE2",
                 Id = Guid.NewGuid(),
-                Usuario = usuario_id
+                Usuario = usuario_id,
+                Usuario_Site = "leouser",
+                Password = "123456"
             };
 
             var cmd = new UpdateSenhaCommand
@@ -61,12 +63,14 @@ namespace ApplicationPrioritiesTests.Senha
                 Id = senhaDTO.Id,
                 Descricao = "TESTE2",
                 Ativo = true,
-                Usuario_Id = Guid.Parse(usuario_id)
+                Usuario_Id = Guid.Parse(usuario_id),
+                Usuario_Site =  "leouser",
+                Password = "123456"
             };
 
             var app = new Mock<InterfaceSenhaApp>();
 
-            app.Setup(x => x.GetEntityById(senhaDTO.Id)).Returns(Task.FromResult(fake));
+            app.Setup(x => x.GetSenhaById(senhaDTO.Id.ToString())).Returns(Task.FromResult(fake));
 
             app.Setup(x => x.UpdateSenha(It.IsAny<Domain.Prioridades.Entities.Senha>()))
                 .Returns(Task.FromResult(fake));
@@ -102,7 +106,7 @@ namespace ApplicationPrioritiesTests.Senha
 
             var app = new Mock<InterfaceSenhaApp>();
 
-            app.Setup(x => x.GetEntityById(senhaDTO.Id)).Returns(Task.FromResult(fake));
+            app.Setup(x => x.GetSenhaById(senhaDTO.Id.ToString())).Returns(Task.FromResult(fake));
 
             var handler = GetCommandMock(app, null);
             var resp = await handler.Handle(cmd, CancellationToken.None);
@@ -144,7 +148,7 @@ namespace ApplicationPrioritiesTests.Senha
 
             var app = new Mock<InterfaceSenhaApp>();
 
-            app.Setup(x => x.GetEntityById(senhaDTO.Id)).Returns(Task.FromResult(fake));
+            app.Setup(x => x.GetSenhaById(senhaDTO.Id.ToString())).Returns(Task.FromResult(fake));
             app.Setup(x => x.UpdateSenha(It.IsAny<Domain.Prioridades.Entities.Senha>()))
               .Returns(Task.FromResult(fake));
 

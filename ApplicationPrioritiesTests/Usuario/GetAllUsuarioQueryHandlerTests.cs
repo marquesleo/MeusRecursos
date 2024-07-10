@@ -36,6 +36,7 @@ namespace ApplicationPrioritiesTests.Usuario
        
         public async Task QuandoTodosUsuarios_RetornaListaDeUsuarios()
         {
+            
             var app = new Mock<InterfaceUsuarioApp>();
 
             var query = new GetAllUsuarioQuery
@@ -46,7 +47,7 @@ namespace ApplicationPrioritiesTests.Usuario
             var usuarioDTO = new Domain.Prioridades.Entities.Usuario()
             {
                 Username = "leonardo",
-                Password = "testeleonardo",
+                Password = Utils.Criptografia.CriptografarSenha("testeleonardo"),
                 Email = "leo@gmail.com",
                 Id = Guid.NewGuid()
 
@@ -58,7 +59,7 @@ namespace ApplicationPrioritiesTests.Usuario
             usuarioDTO = new Domain.Prioridades.Entities.Usuario()
             {
                 Username = "joaomarques",
-                Password = "123456",
+                Password = Utils.Criptografia.CriptografarSenha("123456"),
                 Email = "joao@gmail.com",
                 Id = Guid.NewGuid()
             };
@@ -66,7 +67,7 @@ namespace ApplicationPrioritiesTests.Usuario
             usuarioDTO = new Domain.Prioridades.Entities.Usuario()
             {
                 Username = "pedrohenrique",
-                Password = "123456",
+                Password = Utils.Criptografia.CriptografarSenha("123456"),
                 Email = "joao@gmail.com",
                 Id = Guid.NewGuid()
             };
