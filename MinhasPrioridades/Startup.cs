@@ -29,9 +29,9 @@ namespace MinhasPrioridades
         public void ConfigureServices(IServiceCollection services)
         {
            
-            services.AddCors();
+          services.AddCors();
             services.ConfigureJWT();
-            
+                
             services.ConfigureSwagger();
             services.Init(Configuration);
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));

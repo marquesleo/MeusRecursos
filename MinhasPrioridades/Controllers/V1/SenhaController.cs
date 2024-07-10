@@ -45,7 +45,8 @@ namespace MinhasPrioridades.Controllers.V1
         {
             try
             {
-               return Ok(await _InterfaceSenhaApp.ObterRegistros(usuario_id));
+                var lista = await _InterfaceSenhaApp.ObterRegistros(usuario_id, "");
+                                return Ok(lista);
             }
             catch (Exception ex)
             {
