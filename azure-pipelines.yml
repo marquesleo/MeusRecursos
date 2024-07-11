@@ -29,14 +29,8 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: PublishBuildArtifacts@1
+- task: PublishPipelineArtifact@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Pago pelo Uso (9a9e2c34-5338-4cc7-823c-5873aa5583e0)'
-    appType: 'webApp'
-    WebAppName: 'priorities'
+    ArtifactName: 'priorities'
+  
