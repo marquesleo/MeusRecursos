@@ -6,7 +6,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  project: '**/MinhasPrioridades/MinhasPrioridades.csproj'
+  solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -15,11 +15,11 @@ steps:
 
 - task: NuGetCommand@2
   inputs:
-    restoreSolution: '$(project)'
+    restoreSolution: '$(solution)'
 
 - task: VSBuild@1
   inputs:
-    solution: '$(project)'
+    solution: '$(solution)'
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
@@ -32,10 +32,10 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'priorities'
+    ArtifactName: 'MinhasPrioridades'
   
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'priorities'
+    ArtifactName: 'MinhasPrioridades'
     publishLocation: 'Container'
