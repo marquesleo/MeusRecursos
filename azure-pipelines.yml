@@ -32,7 +32,10 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'priorities'
+    ArtifactName: 'MinhasPrioridades'
   
-
-  
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'MinhasPrioridades'
+    publishLocation: 'Container'
