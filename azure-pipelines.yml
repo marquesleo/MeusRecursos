@@ -6,7 +6,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
+  project: '**/MinhasPrioridades/MinhasPrioridades.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -34,5 +34,9 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'priorities'
   
-
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'priorities'
+    publishLocation: 'Container'
   
