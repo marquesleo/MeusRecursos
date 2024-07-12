@@ -112,6 +112,7 @@ namespace MinhasPrioridades.Controllers.V2
         public async Task<IActionResult> Update(Guid id, [FromBody] CategoriaViewModel categoriaViewModel)
         {
 
+            if (categoriaViewModel.ImagemData != null )
             categoriaViewModel.ImagemData = categoriaViewModel.ImagemData.Substring(categoriaViewModel.ImagemData.LastIndexOf(',') + 1);
 
             var command = new UpdateCategoriaCommand

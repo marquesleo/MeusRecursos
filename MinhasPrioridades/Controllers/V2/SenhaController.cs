@@ -122,7 +122,7 @@ namespace MinhasPrioridades.Controllers.V2
             var res = await _mediator.Send(query);
 
             if (res.Success)
-                return Ok(res.Data);
+                return Ok(res.Lista);
             else if (res.ErrorCode == ErrorCodes.SENHA_NOT_FOUND)
                 return NotFound(res);
             else
@@ -142,7 +142,7 @@ namespace MinhasPrioridades.Controllers.V2
             var res = await _mediator.Send(query);
 
             if (res.Success)
-                return Ok(res.Data);
+                return Ok(res.Lista);
             else if (res.ErrorCode == ErrorCodes.SENHA_NOT_FOUND)
                 return NotFound(res);
             else

@@ -46,6 +46,20 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade
             await _IPrioridade.Delete(objeto);
         }
 
+
+        public async Task<List<Domain.Prioridades.Entities.Prioridade>> ObterPrioridades(string id_usuario, bool? feito = false)
+        {
+            try
+            {
+                return await _IPrioridade.FindByCondition(p => p.Usuario.Id == Guid.Parse(id_usuario) &&
+                                                                       p.Feito == feito);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
         public async Task<List<PrioridadeViewModel>> ObterPrioridade(string id_usuario,bool? feito=false)
         {
 
@@ -94,8 +108,17 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade
     
         public async Task UpdatePrioridade(Domain.Prioridades.Entities.Prioridade prioridade)
         {
-            await CarregarUsuario(prioridade);
-            await _IServicePrioridade.UpdatePrioridade(prioridade);
+            try
+            {
+                await CarregarUsuario(prioridade);
+                await _IServicePrioridade.UpdatePrioridade(prioridade);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+          
         }
 
         public async Task Up(Domain.Prioridades.Entities.Prioridade prioridade)
@@ -112,5 +135,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade
         {
             await _IServicePrioridade.SetOrder(prioridade,ordem);
         }
+
+       
     }
 }

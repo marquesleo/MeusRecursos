@@ -84,7 +84,7 @@ namespace AplicationPrioridadesAPP.AutoMapper
                 opt => opt.MapFrom(src => src.DtAtualizacao))
 
                 .ForMember(dest => dest.Categoria_Id,
-                 opt => opt.MapFrom(src => src.Categoria != null ? new Guid(src.Categoria) : (Guid?)null))
+                 opt => opt.MapFrom(src =>  !string.IsNullOrEmpty(src.Categoria) ? Guid.Parse(src.Categoria) : Guid.Empty))
 
                  .ForMember(dest => dest.Usuario, opt => opt.Ignore())
 

@@ -1,5 +1,6 @@
 ﻿using Domain.Prioridades.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 
 namespace Infrastructure.Configuration
@@ -11,6 +12,7 @@ namespace Infrastructure.Configuration
         public ContextBase(DbContextOptions<ContextBase> options,MyDB myDB) : base(options) {
 
            this.myDB = myDB;
+           AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
 
 

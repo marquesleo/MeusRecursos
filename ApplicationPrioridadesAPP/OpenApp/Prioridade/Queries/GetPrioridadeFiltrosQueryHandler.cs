@@ -23,24 +23,40 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Queries
         }
         public async Task<PrioridadeResponse> Handle(GetPrioridadeFiltrosQuery request, CancellationToken cancellationToken)
         {
-            var prioridades = await _interfacePrioridadeApp.ObterPrioridade(request.Usuario_Id, request.Feito);
-
-            if (prioridades == null || !prioridades.Any())
+            try
             {
+                var prioridades = await _interfacePrioridadeApp.ObterPrioridades(request.Usuario_Id, request.Feito);
+
+                if (prioridades == null || !prioridades.Any())
+                {
+                    return new PrioridadeResponse
+                    {
+                        Success = false,
+                        ErrorCode = ErrorCodes.PRIORIDADE_NOT_FOUND,
+                        Message = ErrorCodes.PRIORIDADE_NOT_FOUND.ToString()
+                    };
+
+                }
+
                 return new PrioridadeResponse
                 {
-                    Success = false,
-                    ErrorCode = ErrorCodes.PRIORIDADE_NOT_FOUND,
-                    Message = ErrorCodes.PRIORIDADE_NOT_FOUND.ToString()
+                    Lista = _mapper.Map<List<Domain.Prioridades.ViewModels.PrioridadeViewModel>>(prioridades),
+                    Success = true
                 };
-
             }
-
-            return new PrioridadeResponse
+            catch (System.Exception ex)
             {
-                Lista = _mapper.Map<List<Domain.Prioridades.ViewModels.PrioridadeViewModel>>(prioridades),
-                Success = true
-            };
+
+                return new PrioridadeResponse
+                {
+                    ErrorCode = ErrorCodes.COULDNOT_STORE_DATA,
+                    Success = false,
+                     Message = ex.Message
+                    
+
+                };
+            }
+           
         }
     }
 }

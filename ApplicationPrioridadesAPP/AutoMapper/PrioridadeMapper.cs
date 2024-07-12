@@ -24,7 +24,7 @@ namespace AplicationPrioridadesAPP.AutoMapper
                          opt => opt.MapFrom(src => src.Feito))
 
               .ForMember(dest => dest.Usuario,
-                    opt => opt.MapFrom(src => src.Usuario))
+                    opt => opt.MapFrom(src => src.Usuario_Id))
 
               .ForMember(dest => dest.Valor,
                 opt => opt.MapFrom(src => src.Valor));
@@ -43,7 +43,7 @@ namespace AplicationPrioridadesAPP.AutoMapper
                     .ForMember(dest => dest.Valor,
                     opt => opt.MapFrom(src => src.Valor))
 
-                    .ForMember(dest => dest.Usuario,
+                    .ForMember(dest => dest.Usuario_Id,
                     opt => opt.MapFrom(src => src.Usuario))
 
                     .ForMember(dest => dest.Feito,

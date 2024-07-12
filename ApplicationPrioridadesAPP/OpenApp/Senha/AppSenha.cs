@@ -36,6 +36,8 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha
 
 
                 senha.Password = Utils.Criptografia.CriptografarSenha(senha.Password);
+                if (senha.Categoria_Id == Guid.Empty)
+                    senha.Categoria_Id = null;
                 await _IServiceSenha.AddSenha(senha);
             }
             catch (Exception ex)
@@ -159,6 +161,8 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha
                 await CarregarUsuario(senha);
                 senha.DtAtualizacao = DateTime.Now;
                 senha.Password = Utils.Criptografia.CriptografarSenha(senha.Password);
+                if (senha.Categoria_Id == Guid.Empty)
+                    senha.Categoria_Id = null;
                 await _IServiceSenha.UpdateSenha(senha);
             }
             catch (Exception)

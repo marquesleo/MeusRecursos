@@ -16,6 +16,7 @@ namespace ApplicationPrioridadesAPP.Interfaces
         Task Down(Prioridade prioridade);
         Task SetOrder(Prioridade prioridade, enuOrdem ordem);
         Task<List<PrioridadeViewModel>>  ObterPrioridade(string id_usuario, bool? feito=false);
+        Task<List<Prioridade>> ObterPrioridades(string id_usuario, bool? feito = false);
 
     }
 }

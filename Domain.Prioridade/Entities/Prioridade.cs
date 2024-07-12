@@ -17,11 +17,12 @@ namespace Domain.Prioridades.Entities
     [Table("prioridade", Schema = "personal")]
     public class Prioridade:Base
     {
-        [Column("descricao", TypeName = "varchar(200)")]
+       
 
 
         public override bool Invalid { get { return !Validate(this, new PrioridadeValidation()); } }
 
+        [Column("descricao", TypeName = "varchar(200)")]
         public string Descricao { get; set; }
         [Column("valor")]
 

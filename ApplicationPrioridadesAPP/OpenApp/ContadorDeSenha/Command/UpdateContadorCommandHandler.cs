@@ -17,9 +17,11 @@ namespace ApplicationPrioridadesAPP.OpenApp.ContadorDeSenha.Command
         private readonly InterfaceContadorSenhaApp _InterfaceContadorSenhaApp;
         
 
-        public UpdateContadorCommandHandler(InterfaceContadorSenhaApp InterfaceContadorSenhaApp)
+        public UpdateContadorCommandHandler(InterfaceContadorSenhaApp InterfaceContadorSenhaApp, 
+                                           IMapper mapper)
         {
             _InterfaceContadorSenhaApp = InterfaceContadorSenhaApp;
+            _mapper = mapper;
         }
         public async Task<ContadorSenhaResponse> Handle(UpdateContadorCommand request, CancellationToken cancellationToken)
         {

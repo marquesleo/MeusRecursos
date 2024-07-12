@@ -42,14 +42,23 @@ namespace Domain.Prioridades.Services
 
         public async Task UpdatePrioridade(Prioridade prioridade)
         {
-            if (!ExecutarValidacao(new PrioridadeValidation(), prioridade)) return;
-
-            if (_IPrioridade.FindByCondition(  p => p.Descricao == prioridade.Descricao && p.Id != prioridade.Id).Result.Any())
+            try
             {
-                Notificar("Já existe uma prioridade cadastrada!");
-                return;
+                if (!ExecutarValidacao(new PrioridadeValidation(), prioridade)) return;
+
+                if (_IPrioridade.FindByCondition(p => p.Descricao == prioridade.Descricao && p.Id != prioridade.Id).Result.Any())
+                {
+                    Notificar("Já existe uma prioridade cadastrada!");
+                    return;
+                }
+                await _IPrioridade.Update(prioridade);
             }
-            await _IPrioridade.Update(prioridade);
+            catch (System.Exception ex)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

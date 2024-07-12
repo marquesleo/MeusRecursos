@@ -71,7 +71,7 @@ namespace Infrastructure.Repository.Repositories
             lstParametro.Add(new NpgsqlParameter("@vdescricao",objeto.Descricao));
             lstParametro.Add(new NpgsqlParameter("@vativo",objeto.Ativo));
             lstParametro.Add(new NpgsqlParameter("@vfeito",objeto.Feito));
-            lstParametro.Add(new NpgsqlParameter("@vusuario_id",objeto.Usuario.Id));
+            lstParametro.Add(new NpgsqlParameter("@vusuario_id",objeto.Usuario_Id));
             return lstParametro; 
         }
 

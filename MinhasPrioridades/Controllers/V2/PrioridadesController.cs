@@ -11,7 +11,7 @@ using ApplicationPrioridadesAPP.OpenApp.Prioridade.Queries;
 
 namespace MinhasPrioridades.Controllers.V2
 {
-    [Route("api/v2/prioridade")]
+    [Route("api/v2/propriedades")]
     [ApiController]
     [Authorize]
     public class PrioridadesController : ControllerBase
