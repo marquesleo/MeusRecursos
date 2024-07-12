@@ -49,8 +49,8 @@ namespace ApplicationPrioritiesTests.Prioridade
             fakelstPrioridade = GetPrioridade(usuario_id);
             var lstPrioridade = _mapper.Map<List<PrioridadeViewModel>>(fakelstPrioridade);
 
-            appPrioridade.Setup(x => x.ObterPrioridade(usuario_id,feito))
-                .Returns(Task.FromResult(lstPrioridade));
+            appPrioridade.Setup(x => x.ObterPrioridades(usuario_id,feito))
+                .Returns(Task.FromResult(fakelstPrioridade));
 
             var handler = GetQyeryMock(appPrioridade);
             var resp = await handler.Handle(query, CancellationToken.None);
