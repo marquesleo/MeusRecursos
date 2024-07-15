@@ -98,7 +98,8 @@ namespace AplicationPrioridadesAPP.AutoMapper
                   opt => opt.MapFrom(src => Utils.Criptografia.CriptografarSenha(src.Password)))
 
                  .ForMember(dest => dest.Imagem,
-                 opt => opt.MapFrom(src => Convert.FromBase64String(src.ImagemData)))
+                 opt => opt.MapFrom(src => UtilMapper.getImageByte(src.ImagemData)))
+
                  .ForMember(dest => dest.Categoria, opt => opt.Ignore());
 
             }

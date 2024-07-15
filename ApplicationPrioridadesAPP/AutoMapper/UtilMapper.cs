@@ -17,5 +17,21 @@ namespace ApplicationPrioridadesAPP.AutoMapper
             }
             return null;
         }
+
+        public static byte[] getImageByte(string image)
+        {
+
+            if (!string.IsNullOrEmpty(image))
+            {
+               var strImage = image.Substring(image.LastIndexOf(',') + 1);
+                return Convert.FromBase64String(strImage);
+            }
+               
+
+
+            return null;
+        }
+
     }
+    
 }
