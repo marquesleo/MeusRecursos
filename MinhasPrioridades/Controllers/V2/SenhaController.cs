@@ -144,7 +144,7 @@ namespace MinhasPrioridades.Controllers.V2
             if (res.Success)
                 return Ok(res.Lista);
             else if (res.ErrorCode == ErrorCodes.SENHA_NOT_FOUND)
-                return NotFound(res);
+                return Ok(res.Lista);
             else
                 return BadRequest(res);
         }
