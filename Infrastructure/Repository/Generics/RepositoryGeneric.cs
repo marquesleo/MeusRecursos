@@ -87,7 +87,7 @@ namespace Infrastructure.Repository.Generics
 
             using (var data = new ContextBase(_optionsBuilder, myDB))
             {
-                return  await data.Set<T>().Where(expression).ToListAsync();
+                return  await data.Set<T>().Where(expression).AsNoTracking().ToListAsync();
             }
             
         }

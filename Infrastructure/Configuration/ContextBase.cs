@@ -36,6 +36,7 @@ namespace Infrastructure.Configuration
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseNpgsql(GetStringConectionConfig());
+                optionsBuilder.EnableSensitiveDataLogging();
 
             }
             base.OnConfiguring(optionsBuilder);

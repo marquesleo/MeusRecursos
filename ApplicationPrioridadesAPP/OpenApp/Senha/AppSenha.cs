@@ -231,13 +231,22 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha
 
         public async Task<List<Domain.Prioridades.Entities.Senha>> ObterRegistrosPorFiltros(string id_usuario, string descricao)
         {
-            var lstSenhas = await _ISenha.FindByCondition(p => p.Usuario.Id == Guid.Parse(id_usuario) &&
-                                                         (p.Descricao.ToLower().Contains(descricao.ToLower()) ||
-                                                          p.Observacao.ToLower().Contains(descricao.ToLower()) ||
-                                                          p.Site.ToLower().Contains(descricao.ToLower())));
+            try
+            {
+                var lstSenhas = await _ISenha.FindByCondition(p => p.Usuario.Id == Guid.Parse(id_usuario) &&
+                                                        ((!string.IsNullOrEmpty(descricao) && p.Descricao.ToLower().Contains(descricao.ToLower())) ||
+                                                        ((!string.IsNullOrEmpty(descricao) && p.Observacao.ToLower().Contains(descricao.ToLower()))) ||
+                                                        ((!string.IsNullOrEmpty(descricao) && p.Site.ToLower().Contains(descricao.ToLower())))));
 
 
-            return lstSenhas;
+                return lstSenhas;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+          
         }
     }
 }
