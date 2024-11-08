@@ -35,7 +35,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha
             {
 
 
-                senha.Password = Utils.Criptografia.CriptografarSenha(senha.Password);
+              //  senha.Password = Utils.Criptografia.CriptografarSenha(senha.Password);
                 if (senha.Categoria_Id == Guid.Empty)
                     senha.Categoria_Id = null;
                 await _IServiceSenha.AddSenha(senha);
@@ -119,7 +119,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha
             senhaViewModel.Observacao = senha.Observacao;
             senhaViewModel.Usuario = senha.Usuario_Id.ToString();
             senhaViewModel.DtAtualizacao = senha.DtAtualizacao;
-            senhaViewModel.Password = Utils.Criptografia.Decriptografar(senha.Password);
+           // senhaViewModel.Password = Utils.Criptografia.Decriptografar(senha.Password);
             senhaViewModel.UrlImageSite = senha.UrlImageSite;
             senhaViewModel.Usuario_Site = senha.Usuario_Site;
             if (senha.Categoria_Id != null && senha.Categoria_Id.HasValue)
