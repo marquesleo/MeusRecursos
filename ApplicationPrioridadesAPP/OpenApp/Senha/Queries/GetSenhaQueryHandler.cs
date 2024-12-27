@@ -37,8 +37,8 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha.Queries
 
                 }
 
-             //   var semha = Utils.Criptografia.Decriptografar("2dD4grzs53kFshZgTXdPOg==");
-
+              //var semha = Utils.Criptografia.Decriptografar(senha.Password);
+              //var senha2 = Utils.Criptografia.Decriptografar(semha);
 
                 return new SenhaResponse
                 {
