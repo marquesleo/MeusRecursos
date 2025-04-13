@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -234,9 +235,8 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha
             try
             {
                 var lstSenhas = await _ISenha.FindByCondition(p => p.Usuario.Id == Guid.Parse(id_usuario) &&
-                                                        ((!string.IsNullOrEmpty(descricao) && p.Descricao.ToLower().Contains(descricao.ToLower())) ||
-                                                        ((!string.IsNullOrEmpty(descricao) && p.Observacao.ToLower().Contains(descricao.ToLower()))) ||
-                                                        ((!string.IsNullOrEmpty(descricao) && p.Site.ToLower().Contains(descricao.ToLower())))));
+                                                        ((!string.IsNullOrEmpty(descricao) &&  
+                                                        descricao.Contains(p.Descricao.ToLower() + p.Observacao.ToLower() + p.Site.ToLower()))));
 
 
                 return lstSenhas;
