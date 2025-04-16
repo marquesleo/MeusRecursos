@@ -235,8 +235,14 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha
             try
             {
                 var lstSenhas = await _ISenha.FindByCondition(p => p.Usuario.Id == Guid.Parse(id_usuario) &&
-                                                        ((!string.IsNullOrEmpty(descricao) &&  
-                                                        descricao.Contains(p.Descricao.ToLower() + p.Observacao.ToLower() + p.Site.ToLower()))));
+                                                        (
+                                                        !string.IsNullOrEmpty(descricao) &&  
+                                                        (
+                                                         p.Descricao.ToLower().Contains(descricao) || 
+                                                          p.Observacao.ToLower().Contains(descricao) || 
+                                                          p.Site.ToLower().Contains(descricao))
+                                                         )
+                                                        );
 
 
                 return lstSenhas;
