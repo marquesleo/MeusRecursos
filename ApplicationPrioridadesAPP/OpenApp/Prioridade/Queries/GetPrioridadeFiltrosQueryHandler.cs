@@ -14,7 +14,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Queries
         private readonly InterfacePrioridadeApp _interfacePrioridadeApp;
 
         public GetPrioridadeFiltrosQueryHandler(IMapper mapper,
-                                             InterfacePrioridadeApp InterfacePrioridadeApp
+                                                InterfacePrioridadeApp InterfacePrioridadeApp
                                            )
         {
             this._interfacePrioridadeApp = InterfacePrioridadeApp;
@@ -51,7 +51,7 @@ namespace ApplicationPrioridadesAPP.OpenApp.Prioridade.Queries
                 {
                     ErrorCode = ErrorCodes.COULDNOT_STORE_DATA,
                     Success = false,
-                     Message = ex.Message
+                    Message = ex.Message
                     
 
                 };
