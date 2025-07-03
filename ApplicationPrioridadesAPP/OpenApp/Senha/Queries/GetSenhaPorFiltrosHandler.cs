@@ -30,14 +30,9 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha.Queries
 
                 if (senhas == null || !senhas.Any())
                 {
-                    return new SenhaResponse
-                    {
-                        Success = false,
-                        ErrorCode = ErrorCodes.SENHA_NOT_FOUND,
-                        Message = ErrorCodes.SENHA_NOT_FOUND.ToString()
-                    };
-
+                    senhas = new List<Domain.Prioridades.Entities.Senha>();
                 }
+               
                 return new SenhaResponse
                 {
                     Lista = _mapper.Map<List<Domain.Prioridades.ViewModels.SenhaViewModel>>(senhas),

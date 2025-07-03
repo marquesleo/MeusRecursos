@@ -238,9 +238,9 @@ namespace ApplicationPrioridadesAPP.OpenApp.Senha
                                                         (
                                                         !string.IsNullOrEmpty(descricao) &&  
                                                         (
-                                                         p.Descricao.ToLower().Contains(descricao) || 
-                                                          p.Observacao.ToLower().Contains(descricao) || 
-                                                          p.Site.ToLower().Contains(descricao))
+                                                         p.Descricao.ToLower().Contains(descricao.ToLower()) || 
+                                                          p.Observacao.ToLower().Contains(descricao.ToLower()) || 
+                                                          p.Site.ToLower().Contains(descricao.ToLower()))
                                                          )
                                                         );
 
