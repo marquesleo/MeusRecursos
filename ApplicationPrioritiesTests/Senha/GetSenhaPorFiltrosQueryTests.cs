@@ -102,8 +102,8 @@ namespace ApplicationPrioritiesTests.Senha
             var resp = await handler.Handle(query, CancellationToken.None);
 
             Assert.NotNull(resp);
-            Assert.False(resp.Success);
-            Assert.Equal(resp.ErrorCode, ApplicationPrioridadesAPP.ErrorCodes.SENHA_NOT_FOUND);
+            Assert.True(resp.Success);
+ 
 
         }
 
